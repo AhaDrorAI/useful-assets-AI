@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>New Computer Setup for Claude Code and Codex</title>
+  <style>
+    :root{--ink:#17211c;--muted:#5f6f66;--line:#dce5df;--paper:#fbfdfb;--soft:#eef7f1;--mint:#2f8f6b;--blue:#245fca;--warn-bg:#fff8eb;--warn-line:#ebd3a1;--code:#111a16}
+    *{box-sizing:border-box} body{margin:0;background:var(--paper);color:var(--ink);font-family:Arial,Helvetica,sans-serif;line-height:1.65}
+    main{width:min(1080px,calc(100% - 28px));margin:0 auto;padding:24px 0 56px}
+    header{padding:18px 0 28px;border-bottom:1px solid var(--line)} .eyebrow{margin:0 0 10px;color:var(--mint);font-weight:700}
+    h1{margin:0;max-width:850px;font-size:clamp(34px,5vw,58px);line-height:1.08;letter-spacing:0}.lead{max-width:780px;margin:18px 0 0;color:var(--muted);font-size:20px}
+    .notice,.step,.callout,.links{border:1px solid var(--line);border-radius:8px;background:white}.notice{margin:22px 0;padding:18px;background:var(--soft)}
+    .path{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:24px 0}.path div{padding:14px;min-height:120px;border:1px solid var(--line);border-radius:8px;background:white}
+    .path span{display:inline-grid;place-items:center;width:28px;height:28px;margin-bottom:8px;border-radius:50%;background:#173f32;color:white;font-weight:700;font-size:14px}
+    h2{margin:36px 0 14px;font-size:30px;letter-spacing:0}h3{margin:0 0 8px;font-size:22px;letter-spacing:0}
+    .step{display:grid;grid-template-columns:220px 1fr;gap:18px;margin:14px 0;padding:18px}.step aside{color:var(--muted);font-size:15px}.step ol,.step ul{margin:8px 0 0;padding-left:22px}
+    a{color:var(--blue);font-weight:700;text-underline-offset:3px}code{display:inline-block;padding:2px 6px;border-radius:6px;background:#edf2f7;color:#172554;font-size:.93em}
+    pre{margin:12px 0 0;padding:14px;overflow:auto;border-radius:8px;background:var(--code);color:#dff7e8;font-size:14px;line-height:1.55;white-space:pre-wrap}
+    .callout{margin:18px 0;padding:16px;border-color:var(--warn-line);background:var(--warn-bg)}.links{padding:16px}.links ul{columns:2;margin:0;padding-left:22px}.success{color:#17624a;font-weight:700}
+    @media(max-width:780px){main{width:min(100% - 20px,1080px)}.path,.step{grid-template-columns:1fr}.links ul{columns:1}}
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <p class="eyebrow">Before advanced guides</p>
+      <h1>Prepare a new computer for Claude Code and Codex</h1>
+      <p class="lead">A calm, beginner-first checklist: what to download, where to sign in, which command to paste, and what should appear when everything works.</p>
+    </header>
+
+    <section class="notice">
+      <strong>Use this before the advanced repo guide.</strong>
+      This page prepares the computer. After it works, continue to the repo operating guide and the project-init skill.
+    </section>
+
+    <section class="path">
+      <div><span>1</span><strong>Open terminal</strong><br>Learn where commands go.</div>
+      <div><span>2</span><strong>Install basics</strong><br>Editor, Git, GitHub CLI, Node.</div>
+      <div><span>3</span><strong>Sign in</strong><br>Claude Code, Codex, GitHub.</div>
+      <div><span>4</span><strong>Start safely</strong><br>Use low-risk modes first.</div>
+    </section>
+
+    <h2>Terminal Basics</h2>
+    <section class="step"><aside>What it is</aside><div><h3>A terminal is a text window for controlling the computer</h3><p>You paste a command, press Enter, and read the result.</p><pre>node --version</pre><p>If Node is installed, you see a version like <code>v24.15.0</code>.</p></div></section>
+    <section class="step"><aside>Windows</aside><div><h3>Open PowerShell</h3><ol><li>Press Start.</li><li>Type <code>PowerShell</code>.</li><li>Open Windows PowerShell or Terminal.</li><li>Do not use Run as Administrator unless official docs require it.</li></ol></div></section>
+    <section class="step"><aside>Mac</aside><div><h3>Open Terminal</h3><ol><li>Press <code>Command + Space</code>.</li><li>Type <code>Terminal</code>.</li><li>Press Enter.</li></ol></div></section>
+
+    <div class="callout"><strong>Safety rule</strong>If a command includes <code>delete</code>, <code>remove</code>, <code>rm</code>, <code>reset</code>, <code>force</code>, <code>sudo</code>, or asks for a secret key, stop and ask what it does before running it.</div>
+
+    <h2>Install Checklist</h2>
+    <section class="step"><aside>Step 1</aside><div><h3>Install a code editor</h3><ul><li><a href="https://code.visualstudio.com/download">VS Code</a> is the simplest default.</li><li><a href="https://cursor.com/download">Cursor</a> is useful if you want an AI-native editor.</li></ul></div></section>
+    <section class="step"><aside>Step 2</aside><div><h3>Install Git</h3><p><a href="https://git-scm.com/downloads">Download Git</a>, then check:</p><pre>git --version</pre><p class="success">Success: a line starts with <code>git version</code>.</p></div></section>
+    <section class="step"><aside>Step 3</aside><div><h3>Install GitHub CLI and sign in</h3><p><a href="https://cli.github.com/">Download GitHub CLI</a>, then run:</p><pre>gh --version
+gh auth login
+gh auth status</pre><p>Usually choose GitHub.com, HTTPS, and Login with a web browser.</p></div></section>
+    <section class="step"><aside>Step 4</aside><div><h3>Install Node.js</h3><p><a href="https://nodejs.org/en/download">Download Node.js LTS</a>, then open a new terminal:</p><pre>node --version
+npm --version</pre></div></section>
+
+    <section class="step"><aside>Step 5</aside><div><h3>Install Claude Code CLI</h3><p>Official docs: <a href="https://code.claude.com/docs/en/setup">Claude Code setup</a></p><p>Windows PowerShell:</p><pre>irm https://claude.ai/install.ps1 | iex</pre><p>Mac:</p><pre>curl -fsSL https://claude.ai/install.sh | bash</pre><p>Check and start:</p><pre>claude --version
+claude doctor
+claude</pre></div></section>
+
+    <section class="step"><aside>Claude Login</aside><div><h3>Sign in and choose an interface</h3><p>The first <code>claude</code> run opens a browser sign-in. Inside Claude Code, use <code>/login</code> if you need to sign in again.</p><ul><li><strong>Terminal CLI:</strong> run <code>claude</code> inside the project folder.</li><li><strong>Desktop app:</strong> download from <a href="https://claude.com/download">claude.com/download</a>, sign in, then open the Code tab. Desktop includes Code; install the CLI separately only if you want the <code>claude</code> terminal command.</li><li><strong>Web:</strong> use <a href="https://claude.ai/code">claude.ai/code</a> for Claude Code on the web or Remote Control workflows.</li></ul><pre>claude
+claude --continue
+claude --permission-mode plan
+claude --permission-mode acceptEdits</pre><div class="callout"><strong>Dangerous mode</strong><code>claude --dangerously-skip-permissions</code> is equivalent to <code>--permission-mode bypassPermissions</code>. Use only in isolated containers, VMs, or dev containers, not on a beginner's main machine.</div></div></section>
+
+    <section class="step"><aside>Step 6</aside><div><h3>Install Codex CLI</h3><p>Official docs: <a href="https://developers.openai.com/codex/cli">Codex CLI</a></p><pre>npm i -g @openai/codex
+codex</pre><p>The first run prompts you to sign in with ChatGPT or an API key.</p></div></section>
+
+    <section class="step"><aside>Codex Login</aside><div><h3>Sign in and choose an interface</h3><pre>codex login
+codex login status
+codex logout</pre><p>Use device auth when a browser cannot open:</p><pre>codex login --device-auth</pre><p>Use API key login through stdin, not by pasting secrets into chat:</p><pre>printenv OPENAI_API_KEY | codex login --with-api-key</pre><p>Codex also has desktop and cloud paths:</p><ul><li><strong>Terminal CLI:</strong> <code>codex</code></li><li><strong>Desktop app:</strong> <code>codex app</code> opens or starts installing Codex Desktop on macOS/Windows.</li><li><strong>Web:</strong> use <a href="https://chatgpt.com/codex">chatgpt.com/codex</a> when your plan includes Codex.</li></ul><pre>codex
+codex --model gpt-5.4
+codex --sandbox workspace-write --ask-for-approval on-request
+codex --search
+codex resume --last</pre><div class="callout"><strong>Dangerous mode</strong><code>codex --dangerously-bypass-approvals-and-sandbox</code> and <code>codex --yolo</code> bypass approvals and sandboxing. Use only inside an externally hardened runner.</div></div></section>
+
+    <section class="step"><aside>Step 7</aside><div><h3>Install Bun</h3><p><a href="https://bun.sh/docs/installation">Bun installation docs</a></p><p>Windows PowerShell:</p><pre>powershell -c "irm bun.sh/install.ps1|iex"</pre><p>Mac:</p><pre>curl -fsSL https://bun.com/install | bash</pre><pre>bun --version</pre></div></section>
+    <section class="step"><aside>Step 8</aside><div><h3>Optional project tools</h3><ul><li><a href="https://supabase.com/docs/guides/local-development/cli/getting-started">Supabase CLI</a> for database/auth/storage projects.</li><li><a href="https://docs.netlify.com/api-and-cli-guides/cli-guides/get-started-with-cli/">Netlify CLI</a> for publishing sites.</li><li><a href="https://playwright.dev/docs/intro">Playwright</a> for browser tests inside a project.</li></ul></div></section>
+
+    <h2>Final Check</h2>
+    <section class="step"><aside>Verify</aside><div><pre>git --version
+gh auth status
+node --version
+npm --version
+bun --version
+claude --version
+claude doctor
+codex login status</pre><p>If one command fails, stop and fix it before installing more tools.</p></div></section>
+
+    <h2>Official Links</h2>
+    <section class="links"><ul><li><a href="https://code.claude.com/docs/en/cli-usage">Claude Code CLI reference</a></li><li><a href="https://code.claude.com/docs/en/permission-modes">Claude permission modes</a></li><li><a href="https://code.claude.com/docs/en/desktop-quickstart">Claude Desktop quickstart</a></li><li><a href="https://developers.openai.com/codex/cli">Codex CLI</a></li><li><a href="https://developers.openai.com/codex/cli/reference">Codex CLI reference</a></li><li><a href="https://developers.openai.com/codex/cli/features">Codex CLI features</a></li></ul></section>
+  </main>
+</body>
+</html>
+

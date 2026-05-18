@@ -1,0 +1,469 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>מחשב חדש ל-Claude Code ו-Codex</title>
+  <style>
+    :root {
+      --ink: #17211c;
+      --muted: #5f6f66;
+      --line: #dce5df;
+      --paper: #fbfdfb;
+      --soft: #eef7f1;
+      --mint: #2f8f6b;
+      --blue: #245fca;
+      --warn-bg: #fff8eb;
+      --warn-line: #ebd3a1;
+      --code: #111a16;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: Arial, "Noto Sans Hebrew", sans-serif;
+      line-height: 1.7;
+    }
+
+    main {
+      width: min(1080px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 24px 0 56px;
+    }
+
+    header {
+      padding: 18px 0 28px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--mint);
+      font-weight: 700;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 850px;
+      font-size: clamp(34px, 5vw, 58px);
+      line-height: 1.08;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 760px;
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: 20px;
+    }
+
+    .notice, .step, .callout, .links {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: white;
+    }
+
+    .notice {
+      margin: 22px 0;
+      padding: 18px;
+      background: var(--soft);
+    }
+
+    .notice strong, .callout strong {
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .path {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin: 24px 0;
+    }
+
+    .path div {
+      padding: 14px;
+      min-height: 120px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: white;
+    }
+
+    .path span {
+      display: inline-grid;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      margin-bottom: 8px;
+      border-radius: 50%;
+      background: #173f32;
+      color: white;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    h2 {
+      margin: 36px 0 14px;
+      font-size: 30px;
+      letter-spacing: 0;
+    }
+
+    h3 {
+      margin: 0 0 8px;
+      font-size: 22px;
+      letter-spacing: 0;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 18px;
+      margin: 14px 0;
+      padding: 18px;
+    }
+
+    .step aside {
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .step ol, .step ul {
+      margin: 8px 0 0;
+      padding-right: 22px;
+    }
+
+    a {
+      color: var(--blue);
+      font-weight: 700;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    code {
+      direction: ltr;
+      unicode-bidi: embed;
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: #edf2f7;
+      color: #172554;
+      font-size: 0.93em;
+    }
+
+    pre {
+      direction: ltr;
+      text-align: left;
+      white-space: pre-wrap;
+      margin: 12px 0 0;
+      padding: 14px;
+      overflow: auto;
+      border-radius: 8px;
+      background: var(--code);
+      color: #dff7e8;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .callout {
+      margin: 18px 0;
+      padding: 16px;
+      border-color: var(--warn-line);
+      background: var(--warn-bg);
+    }
+
+    .links {
+      padding: 16px;
+    }
+
+    .links ul {
+      columns: 2;
+      margin: 0;
+      padding-right: 22px;
+    }
+
+    .success {
+      color: #17624a;
+      font-weight: 700;
+    }
+
+    @media (max-width: 780px) {
+      main { width: min(100% - 20px, 1080px); }
+      .path, .step { grid-template-columns: 1fr; }
+      .links ul { columns: 1; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <p class="eyebrow">לפני המדריכים המתקדמים</p>
+      <h1>מכינים מחשב חדש לעבודה עם Claude Code ו-Codex</h1>
+      <p class="lead">מדריך יד ביד לאדם שלא פתח טרמינל מעולם: מה להוריד, איפה ללחוץ, איזו פקודה להדביק, ומה אמור להופיע כשהכול עובד.</p>
+    </header>
+
+    <section class="notice">
+      <strong>יש כבר באתר מדריך Claude Code ומאגר ריפואים.</strong>
+      העמוד הזה מגיע לפניהם. הוא מלמד את הבסיס: טרמינל, התקנות, בדיקות הצלחה, וחיבור GitHub. אחרי זה אפשר להמשיך ל-<a href="https://drorlounchpad.netlify.app/toolbox/guides/claude-code-getting-started">מדריך Claude Code המלא</a> ול-<a href="https://drorlounchpad.netlify.app/toolbox/github-repos">מאגר הריפואים</a>.
+    </section>
+
+    <section class="path" aria-label="מסלול קצר">
+      <div><span>1</span><strong>פותחים טרמינל</strong><br>לומדים איפה מדביקים פקודות ומה הן עושות.</div>
+      <div><span>2</span><strong>מורידים בסיס</strong><br>עורך קוד, Git, GitHub CLI ו-Node.</div>
+      <div><span>3</span><strong>מחברים סוכנים</strong><br>מתקינים Claude Code ו-Codex ובודקים שהם עובדים.</div>
+      <div><span>4</span><strong>ממשיכים לפרויקט</strong><br>רק אחרי שהבסיס עובד עוברים ל-PRD, SPEC וריפו חדש.</div>
+    </section>
+
+    <h2>מה זה טרמינל?</h2>
+    <section class="step">
+      <aside>הסבר בלי ז׳רגון</aside>
+      <div>
+        <h3>טרמינל הוא חלון טקסט שמדבר עם המחשב</h3>
+        <p>במקום ללחוץ על כפתורים, מדביקים שורת טקסט ולוחצים Enter. השורה הזו נקראת פקודה.</p>
+        <p>לדוגמה, הפקודה הזו שואלת את המחשב איזו גרסה של Node מותקנת:</p>
+        <pre>node --version</pre>
+        <p>אם הכול תקין, תקבל תשובה קצרה כמו <code>v24.15.0</code>. המספר יכול להיות שונה וזה בסדר.</p>
+      </div>
+    </section>
+
+    <section class="step">
+      <aside>Windows</aside>
+      <div>
+        <h3>איך פותחים טרמינל ב-Windows</h3>
+        <ol>
+          <li>לחץ על Start.</li>
+          <li>כתוב <code>PowerShell</code>.</li>
+          <li>פתח את Windows PowerShell או Terminal.</li>
+          <li>אל תבחר Run as Administrator אלא אם מדריך רשמי מבקש זאת.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="step">
+      <aside>Mac</aside>
+      <div>
+        <h3>איך פותחים טרמינל ב-Mac</h3>
+        <ol>
+          <li>לחץ <code>Command + Space</code>.</li>
+          <li>כתוב <code>Terminal</code>.</li>
+          <li>לחץ Enter.</li>
+        </ol>
+      </div>
+    </section>
+
+    <div class="callout">
+      <strong>כלל בטיחות ראשון</strong>
+      אם פקודה כוללת מילים כמו <code>delete</code>, <code>remove</code>, <code>rm</code>, <code>reset</code>, <code>force</code> או מבקשת מפתח סודי, לא מריצים לפני שמבינים למה.
+    </div>
+
+    <h2>שלבי ההתקנה</h2>
+
+    <section class="step">
+      <aside>שלב 1</aside>
+      <div>
+        <h3>התקן עורך קוד</h3>
+        <p>עורך קוד הוא המקום שבו תראה את קבצי הפרויקט. גם אם הסוכן כותב את הקוד, אתה צריך מקום לפתוח את התיקייה.</p>
+        <ul>
+          <li><a href="https://code.visualstudio.com/download">הורדת VS Code</a> - הבחירה הפשוטה להתחלה.</li>
+          <li><a href="https://cursor.com/download">הורדת Cursor</a> - עורך קוד עם יכולות AI מובנות.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="step">
+      <aside>שלב 2</aside>
+      <div>
+        <h3>התקן Git</h3>
+        <p>Git שומר היסטוריה של הפרויקט ומאפשר לחזור אחורה אם משהו השתבש.</p>
+        <p><a href="https://git-scm.com/downloads">הורדת Git מהאתר הרשמי</a></p>
+        <p>אחרי ההתקנה פתח טרמינל חדש והריץ:</p>
+        <pre>git --version</pre>
+        <p class="success">הצלחה: מופיעה שורה שמתחילה ב-<code>git version</code>.</p>
+      </div>
+    </section>
+
+    <section class="step">
+      <aside>שלב 3</aside>
+      <div>
+        <h3>התקן GitHub CLI והתחבר</h3>
+        <p>הכלי הזה מאפשר לסוכן לעבוד מול GitHub: ליצור ריפו, לבדוק חיבור, ובהמשך לפתוח PR.</p>
+        <p><a href="https://cli.github.com/">הורדת GitHub CLI</a></p>
+        <pre>gh --version</pre>
+        <p>אחר כך התחבר:</p>
+        <pre>gh auth login</pre>
+        <p>בדרך כלל בוחרים GitHub.com, אחר כך HTTPS, ואז Login with a web browser.</p>
+        <pre>gh auth status</pre>
+        <p class="success">הצלחה: כתוב שאתה מחובר ל-GitHub.</p>
+      </div>
+    </section>
+
+    <section class="step">
+      <aside>שלב 4</aside>
+      <div>
+        <h3>התקן Node.js</h3>
+        <p>Node מריץ הרבה פרויקטים מודרניים, ו-npm שמגיע איתו מאפשר להתקין כלים כמו Codex.</p>
+        <p><a href="https://nodejs.org/en/download">הורדת Node.js</a> - בחר גרסת LTS.</p>
+        <pre>node --version
+npm --version</pre>
+      </div>
+    </section>
+
+    <section class="step">
+      <aside>שלב 5</aside>
+      <div>
+        <h3>התקן Claude Code</h3>
+        <p><a href="https://code.claude.com/docs/en/setup">דוקומנטציה רשמית של Claude Code</a></p>
+        <p>Windows PowerShell:</p>
+        <pre>irm https://claude.ai/install.ps1 | iex</pre>
+        <p>Mac:</p>
+        <pre>curl -fsSL https://claude.ai/install.sh | bash</pre>
+        <p>בדיקה:</p>
+        <pre>claude --version
+claude doctor</pre>
+        <p>התחברות ראשונה:</p>
+        <pre>claude</pre>
+      </div>
+    </section>
+
+    <section class="step">
+      <aside>Claude Login</aside>
+      <div>
+        <h3>כניסה ל-Claude Code ואפשרויות שימוש</h3>
+        <p>בפעם הראשונה שמריצים <code>claude</code>, משלימים התחברות בדפדפן לחשבון Anthropic. בתוך Claude Code אפשר גם להריץ <code>/login</code> אם צריך להתחבר מחדש.</p>
+        <p>אפשר לעבוד בשלוש דרכים עיקריות:</p>
+        <ul>
+          <li><strong>Terminal CLI:</strong> מריצים <code>claude</code> מתוך תיקיית הפרויקט.</li>
+          <li><strong>Desktop app:</strong> מורידים מ-<a href="https://claude.com/download">claude.com/download</a>, נכנסים לחשבון, ואז פותחים את לשונית Code.</li>
+          <li><strong>Web:</strong> משתמשים ב-<a href="https://claude.ai/code">claude.ai/code</a> למשימות Code בענן או להפעלה דרך Remote Control.</li>
+        </ul>
+        <p>מצבי פתיחה שימושיים:</p>
+        <pre>claude
+claude --continue
+claude --permission-mode plan
+claude --permission-mode acceptEdits</pre>
+        <div class="callout">
+          <strong>זהירות עם מצב מסוכן</strong>
+          <code>claude --dangerously-skip-permissions</code> זהה ל-<code>--permission-mode bypassPermissions</code>. הוא מדלג על בקשות אישור והרבה בדיקות בטיחות. משתמשים בו רק בסביבה מבודדת כמו container, VM או dev container, לא על המחשב הראשי של תלמיד מתחיל.
+        </div>
+      </div>
+    </section>
+
+    <section class="step">
+      <aside>שלב 6</aside>
+      <div>
+        <h3>התקן Codex CLI</h3>
+        <p><a href="https://github.com/openai/codex">מקור רשמי: openai/codex</a></p>
+        <pre>npm install -g @openai/codex</pre>
+        <p>בדיקה:</p>
+        <pre>codex</pre>
+      </div>
+    </section>
+
+    <section class="step">
+      <aside>Codex Login</aside>
+      <div>
+        <h3>כניסה ל-Codex ואפשרויות שימוש</h3>
+        <p>בפעם הראשונה שמריצים <code>codex</code>, Codex יבקש התחברות. אפשר להתחבר עם חשבון ChatGPT מתאים או עם API key.</p>
+        <pre>codex login
+codex login status
+codex logout</pre>
+        <p>אם הדפדפן לא נפתח, למשל בשרת מרוחק:</p>
+        <pre>codex login --device-auth</pre>
+        <p>אם משתמשים ב-API key, לא מדביקים מפתח ישירות לצ'אט. משתמשים במשתנה סביבה:</p>
+        <pre>printenv OPENAI_API_KEY | codex login --with-api-key</pre>
+        <p>אפשר לעבוד עם Codex בכמה דרכים:</p>
+        <ul>
+          <li><strong>Terminal CLI:</strong> מריצים <code>codex</code> מתוך תיקיית הפרויקט.</li>
+          <li><strong>Desktop app:</strong> מריצים <code>codex app</code>. ב-macOS זה פותח את Codex Desktop או מתחיל התקנה; ב-Windows הוא יציג את הנתיב לפתיחה אחרי התקנה.</li>
+          <li><strong>Web:</strong> משתמשים ב-<a href="https://chatgpt.com/codex">chatgpt.com/codex</a> אם התוכנית שלך כוללת גישה ל-Codex.</li>
+        </ul>
+        <p>מצבי פתיחה שימושיים:</p>
+        <pre>codex
+codex --model gpt-5.4
+codex --sandbox workspace-write --ask-for-approval on-request
+codex --search</pre>
+        <div class="callout">
+          <strong>זהירות עם מצב מסוכן</strong>
+          <code>codex --dangerously-bypass-approvals-and-sandbox</code> או <code>codex --yolo</code> מריצים פקודות בלי אישורים ובלי sandbox. משתמשים בזה רק בסביבת sandbox חיצונית ומבודדת.
+        </div>
+      </div>
+    </section>
+
+    <section class="step">
+      <aside>שלב 7</aside>
+      <div>
+        <h3>התקן Bun</h3>
+        <p>Bun הוא כלי מהיר להרצת פרויקטים חדשים. לא צריך להבין אותו לעומק עכשיו; מספיק לדעת שהוא שימושי בהמשך.</p>
+        <p><a href="https://bun.sh/docs/installation">דוקומנטציה רשמית של Bun</a></p>
+        <p>Windows PowerShell:</p>
+        <pre>powershell -c "irm bun.sh/install.ps1|iex"</pre>
+        <p>Mac:</p>
+        <pre>curl -fsSL https://bun.com/install | bash</pre>
+        <pre>bun --version</pre>
+      </div>
+    </section>
+
+    <section class="step">
+      <aside>שלב 8</aside>
+      <div>
+        <h3>כלים לפרויקטים ספציפיים</h3>
+        <p>לא חייבים להתקין הכול עכשיו. אלו כלים לפי צורך:</p>
+        <ul>
+          <li><a href="https://supabase.com/docs/guides/local-development/cli/getting-started">Supabase CLI</a> לפרויקטים עם Database/Auth.</li>
+          <li><a href="https://docs.netlify.com/api-and-cli-guides/cli-guides/get-started-with-cli/">Netlify CLI</a> לפרסום אתרים.</li>
+          <li><a href="https://playwright.dev/docs/intro">Playwright</a> לבדיקות דפדפן.</li>
+        </ul>
+      </div>
+    </section>
+
+    <h2>מה לתת לסוכן אחרי ההתקנה</h2>
+    <section class="step">
+      <aside>Prompt מוכן</aside>
+      <div>
+        <h3>העתק את זה ל-Claude Code או Codex</h3>
+        <pre>I am setting up this computer for AI coding work.
+
+Please help me verify the setup slowly and safely.
+
+I am not a developer, so explain every step in plain language.
+
+Do not install anything before showing me:
+1. What you are checking
+2. Why it matters
+3. The exact command
+4. What a successful result should look like
+5. What could go wrong
+
+Check these tools:
+- Git
+- GitHub CLI
+- Node and npm
+- Bun
+- Claude Code
+- Codex CLI
+
+After each check, wait for the result before moving to the next step.</pre>
+      </div>
+    </section>
+
+    <h2>קישורים רשמיים</h2>
+    <section class="links">
+      <ul>
+        <li><a href="https://code.visualstudio.com/download">VS Code</a></li>
+        <li><a href="https://cursor.com/download">Cursor</a></li>
+        <li><a href="https://git-scm.com/downloads">Git</a></li>
+        <li><a href="https://cli.github.com/">GitHub CLI</a></li>
+        <li><a href="https://nodejs.org/en/download">Node.js</a></li>
+        <li><a href="https://code.claude.com/docs/en/setup">Claude Code</a></li>
+        <li><a href="https://github.com/openai/codex">Codex CLI</a></li>
+        <li><a href="https://bun.sh/docs/installation">Bun</a></li>
+        <li><a href="https://supabase.com/docs/guides/local-development/cli/getting-started">Supabase CLI</a></li>
+        <li><a href="https://docs.netlify.com/api-and-cli-guides/cli-guides/get-started-with-cli/">Netlify CLI</a></li>
+        <li><a href="https://playwright.dev/docs/intro">Playwright</a></li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>

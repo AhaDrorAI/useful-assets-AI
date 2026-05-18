@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>מחשב חדש ל-Claude Code ו-Codex</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #17201b;
+      --muted: #607067;
+      --line: #d8e2dc;
+      --paper: #fbfdfb;
+      --soft: #eef6f1;
+      --mint: #2f8f6b;
+      --amber: #b7791f;
+      --blue: #246bfe;
+      --rose: #b43b57;
+      --code: #101916;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, "Noto Sans Hebrew", sans-serif;
+      background: var(--paper);
+      color: var(--ink);
+      line-height: 1.6;
+    }
+
+    main {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 32px 0 56px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      font-weight: 700;
+    }
+
+    .mark {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      background: #173f32;
+      color: white;
+      font-weight: 800;
+    }
+
+    .status {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .intro {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(300px, 0.9fr);
+      gap: 28px;
+      align-items: center;
+      padding: 46px 0 34px;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(34px, 4vw, 58px);
+      line-height: 1.05;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      margin: 0;
+      color: var(--muted);
+      font-size: 19px;
+      max-width: 680px;
+    }
+
+    .terminal {
+      border: 1px solid #29443a;
+      border-radius: 8px;
+      background: var(--code);
+      color: #dff7e8;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(16, 25, 22, 0.14);
+      direction: ltr;
+    }
+
+    .terminal-head {
+      display: flex;
+      gap: 7px;
+      padding: 12px;
+      background: #16231f;
+      border-bottom: 1px solid #263a33;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #68d391;
+    }
+
+    .dot:nth-child(2) { background: #f6ad55; }
+    .dot:nth-child(3) { background: #fc8181; }
+
+    pre {
+      margin: 0;
+      padding: 18px;
+      white-space: pre-wrap;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .quick-actions {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 18px 0 32px;
+    }
+
+    .action, .layer, .warning, .prompt-box {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: white;
+    }
+
+    .action {
+      padding: 16px;
+      min-height: 112px;
+    }
+
+    .action strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 18px;
+    }
+
+    .action span {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    h2 {
+      margin: 34px 0 14px;
+      font-size: 28px;
+      letter-spacing: 0;
+    }
+
+    .layer {
+      padding: 18px;
+    }
+
+    .layer h3 {
+      margin: 0 0 8px;
+      font-size: 20px;
+    }
+
+    .layer p {
+      margin: 0 0 12px;
+      color: var(--muted);
+    }
+
+    .checks {
+      display: grid;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .checks li {
+      display: grid;
+      grid-template-columns: 24px 1fr;
+      gap: 8px;
+      align-items: start;
+      min-height: 28px;
+    }
+
+    .box {
+      width: 18px;
+      height: 18px;
+      margin-top: 4px;
+      border-radius: 4px;
+      border: 2px solid var(--mint);
+      background: var(--soft);
+    }
+
+    code {
+      direction: ltr;
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: #edf2f7;
+      color: #14213d;
+      font-size: 0.92em;
+    }
+
+    .warning {
+      padding: 16px;
+      border-color: #eed6a7;
+      background: #fffaf0;
+    }
+
+    .warning strong { color: var(--amber); }
+
+    .prompt-box {
+      padding: 18px;
+      background: #f7fbff;
+      border-color: #c9ddff;
+    }
+
+    .prompt-box pre {
+      margin-top: 12px;
+      border-radius: 8px;
+      background: #0f172a;
+      color: #e2e8f0;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .pill {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 6px 10px;
+      background: white;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    @media (max-width: 780px) {
+      main { width: min(100% - 22px, 1120px); }
+      .intro, .grid, .quick-actions { grid-template-columns: 1fr; }
+      .topbar { align-items: flex-start; flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header class="topbar">
+      <div class="brand"><span class="mark">AI</span><span>Launchpad Setup</span></div>
+      <div class="status">מחשב חדש → סוכן קוד → ריפו ראשון</div>
+    </header>
+
+    <section class="intro">
+      <div>
+        <h1>מחשב חדש ל-Claude Code ו-Codex</h1>
+        <p class="lead">עמוד אחד שמחזיק לך את היד: מה מתקינים, מה בודקים, מה מחכים איתו, ואיך יודעים שהמחשב מוכן לפתיחת פרויקט חדש מתוך PRD או SPEC.</p>
+        <div class="pill-row">
+          <span class="pill">יזמים ללא רקע טכני</span>
+          <span class="pill">Bun כלול</span>
+          <span class="pill">Supabase + Netlify</span>
+          <span class="pill">GitHub-ready</span>
+        </div>
+      </div>
+      <div class="terminal" aria-label="Bootstrap command preview">
+        <div class="terminal-head"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+        <pre>$ claude
+> I am setting up a new computer for Claude Code and Codex work.
+> Check what is missing.
+> Do not install yet.
+> Show me one safe layer at a time.</pre>
+      </div>
+    </section>
+
+    <section class="quick-actions" aria-label="Quick actions">
+      <div class="action"><strong>1. התקן בסיס</strong><span>Git, GitHub CLI, עורך קוד וטרמינל שעובד בלי הפתעות.</span></div>
+      <div class="action"><strong>2. חבר סוכנים</strong><span>Claude Code ו-Codex עם בדיקות גרסה ו-login מסודר.</span></div>
+      <div class="action"><strong>3. הכן פרויקטים</strong><span>Node LTS, Bun, uv, Supabase, Netlify ו-Playwright לפי הצורך.</span></div>
+    </section>
+
+    <section class="warning">
+      <strong>כלל בטיחות:</strong>
+      לא נותנים לסוכן `service_role`, לא מריצים מחיקות בלי אישור, ולא מתקינים עשרה כלי AI מתקדמים לפני שהבסיס עובד.
+    </section>
+
+    <h2>שכבות ההתקנה</h2>
+    <section class="grid">
+      <article class="layer">
+        <h3>בסיס</h3>
+        <p>הדברים שבלעדיהם הסוכן לא יכול לעבוד כמו teammate אמיתי.</p>
+        <ul class="checks">
+          <li><span class="box"></span><span>Git: <code>git --version</code></span></li>
+          <li><span class="box"></span><span>GitHub CLI: <code>gh auth status</code></span></li>
+          <li><span class="box"></span><span>VS Code או Cursor</span></li>
+        </ul>
+      </article>
+
+      <article class="layer">
+        <h3>Runtime</h3>
+        <p>מה שמאפשר לפרויקטים לרוץ מקומית.</p>
+        <ul class="checks">
+          <li><span class="box"></span><span>Node LTS: <code>node --version</code></span></li>
+          <li><span class="box"></span><span>Bun: <code>bun --version</code></span></li>
+          <li><span class="box"></span><span>uv: <code>uv --version</code></span></li>
+        </ul>
+      </article>
+
+      <article class="layer">
+        <h3>Agents</h3>
+        <p>שני הכלים המרכזיים לעבודה agentic על קוד.</p>
+        <ul class="checks">
+          <li><span class="box"></span><span>Claude Code: <code>claude doctor</code></span></li>
+          <li><span class="box"></span><span>Codex CLI: <code>codex</code></span></li>
+          <li><span class="box"></span><span>קובץ כללי עבודה: <code>CLAUDE.md</code> / <code>AGENTS.md</code></span></li>
+        </ul>
+      </article>
+
+      <article class="layer">
+        <h3>Project Tools</h3>
+        <p>רק לפי סוג הפרויקט. לא חובה להתקין הכל ביום הראשון.</p>
+        <ul class="checks">
+          <li><span class="box"></span><span>Supabase: <code>npx supabase --help</code></span></li>
+          <li><span class="box"></span><span>Netlify: <code>netlify login</code></span></li>
+          <li><span class="box"></span><span>Playwright: <code>npm init playwright@latest</code></span></li>
+        </ul>
+      </article>
+    </section>
+
+    <h2>זה לא Skill, וזה בכוונה</h2>
+    <section class="warning">
+      <strong>שלב מחשב חדש הוא pre-skill.</strong>
+      קודם מתקינים Claude Code או Codex, מחברים GitHub ומוודאים שהטרמינל עובד. רק אחר כך יש טעם להשתמש ב-Skill. ה-Skill הראשון שנבנה בהמשך יהיה לפתיחת פרויקט חדש מ-PRD/SPEC עד ריפו עובד.
+    </section>
+
+    <h2>כלל Bun</h2>
+    <section class="warning">
+      <strong>Bun מומלץ לפרויקטים חדשים.</strong>
+      בפרויקט קיים, מתחילים לפי ה-lockfile הקיים: `package-lock.json` שייך ל-npm, ו-`pnpm-lock.yaml` שייך ל-pnpm. לא מחליפים package manager באמצע בלי בדיקה.
+    </section>
+
+    <h2>Prompt להתחלה</h2>
+    <section class="prompt-box">
+      תן לסוכן את זה לפני ההתקנות. הוא יחזיר טבלה מסודרת ולא ירוץ קדימה.
+      <pre>I am setting up a new computer for Claude Code and Codex work.
+
+Goal:
+- Prepare a reliable local environment for building projects from PRD/SPEC.
+- Connect GitHub.
+- Install only the tools needed for a safe first workflow.
+
+Please:
+1. Detect my OS and shell.
+2. Check whether Git, gh, Node, npm, Bun, uv, Claude Code, Codex, Netlify CLI, and Supabase CLI are installed.
+3. Do not install anything yet. First show me a table of missing tools, why each matters, install command, and verification command.
+4. Mark risky commands clearly.
+5. After I approve, install one layer at a time and verify each layer before continuing.</pre>
+    </section>
+  </main>
+</body>
+</html>

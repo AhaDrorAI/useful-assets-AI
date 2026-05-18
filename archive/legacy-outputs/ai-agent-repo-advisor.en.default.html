@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Agent Repo Advisor</title>
+  <style>
+    :root {
+      --bg: #f7f8f4;
+      --ink: #20231f;
+      --muted: #626a61;
+      --line: #d9ded3;
+      --panel: #ffffff;
+      --green: #2f7d5c;
+      --blue: #265fbd;
+      --amber: #9a6818;
+      --soft: #edf5ee;
+      --code: #16201a;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.55;
+    }
+
+    main {
+      width: min(1180px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 28px 0 64px;
+    }
+
+    header {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+      gap: 28px;
+      align-items: end;
+      padding: 16px 0 28px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--green);
+      font-weight: 700;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 760px;
+      font-size: clamp(36px, 6vw, 64px);
+      line-height: 1.02;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      margin: 18px 0 0;
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 20px;
+    }
+
+    .hero-panel, .advisor, .repo, .rule, .prompt {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+    }
+
+    .hero-panel {
+      padding: 18px;
+    }
+
+    .hero-panel strong {
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .stages {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      margin: 22px 0;
+    }
+
+    button {
+      min-height: 44px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: white;
+      color: var(--ink);
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    button:hover, button.active {
+      border-color: var(--green);
+      background: var(--soft);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .advisor {
+      position: sticky;
+      top: 16px;
+      padding: 16px;
+    }
+
+    .advisor h2, .catalog h2 {
+      margin: 0 0 12px;
+      font-size: 24px;
+      letter-spacing: 0;
+    }
+
+    label {
+      display: block;
+      margin: 14px 0 6px;
+      color: var(--muted);
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    select {
+      width: 100%;
+      min-height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0 10px;
+      background: white;
+      color: var(--ink);
+      font: inherit;
+    }
+
+    .recommendation {
+      margin-top: 16px;
+      padding: 14px;
+      border-radius: 8px;
+      background: var(--soft);
+    }
+
+    .recommendation ul {
+      margin: 8px 0 0;
+      padding-left: 20px;
+    }
+
+    .repo-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .repo {
+      padding: 16px;
+    }
+
+    .repo h3 {
+      margin: 0 0 6px;
+      font-size: 20px;
+      letter-spacing: 0;
+    }
+
+    .repo p {
+      margin: 8px 0;
+      color: var(--muted);
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 0 8px;
+      border-radius: 999px;
+      background: #eef1f6;
+      color: #263044;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .tag.warn {
+      background: #fff3d8;
+      color: var(--amber);
+    }
+
+    a {
+      color: var(--blue);
+      font-weight: 700;
+      text-underline-offset: 3px;
+    }
+
+    .rules {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin: 28px 0;
+    }
+
+    .rule {
+      padding: 16px;
+    }
+
+    .rule strong {
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .prompt {
+      margin-top: 28px;
+      padding: 16px;
+    }
+
+    pre {
+      margin: 12px 0 0;
+      padding: 14px;
+      overflow: auto;
+      border-radius: 8px;
+      background: var(--code);
+      color: #e6f6e9;
+      white-space: pre-wrap;
+      font-size: 14px;
+    }
+
+    @media (max-width: 880px) {
+      header, .layout, .repo-grid, .rules, .stages { grid-template-columns: 1fr; }
+      .advisor { position: static; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div>
+        <p class="eyebrow">After Claude Code / Codex installation</p>
+        <h1>Choose the right AI coding repo for the moment you are in</h1>
+        <p class="lead">A practical guide for founders and non-developers. Use this when you are starting a project, stuck mid-build, improving quality, or deciding what to install next.</p>
+      </div>
+      <aside class="hero-panel">
+        <strong>The rule</strong>
+        Global install only if you expect to use it in almost every project. Project install if it helps this specific project. Read-only reference if you only need ideas.
+      </aside>
+    </header>
+
+    <nav class="stages" aria-label="Workflow filters">
+      <button class="active" data-stage="all">All</button>
+      <button data-stage="new-machine">New machine</button>
+      <button data-stage="new-project">New project</button>
+      <button data-stage="mid-project">Mid-project</button>
+      <button data-stage="advanced">Advanced</button>
+    </nav>
+
+    <section class="layout">
+      <aside class="advisor">
+        <h2>Advisor</h2>
+        <label for="situation">What are you doing now?</label>
+        <select id="situation">
+          <option value="new-machine">Setting up a new computer</option>
+          <option value="new-project">Opening a new project from PRD/SPEC</option>
+          <option value="stuck">I am stuck or scattered</option>
+          <option value="react">Improving a React/Next project</option>
+          <option value="security">Before merge or publish</option>
+          <option value="ai-product">Building an AI-heavy product</option>
+          <option value="agent-platform">Building agent infrastructure</option>
+        </select>
+
+        <label for="experience">Technical comfort</label>
+        <select id="experience">
+          <option value="beginner">Non-developer / beginner</option>
+          <option value="builder">Comfortable with terminal</option>
+          <option value="advanced">Advanced / technical</option>
+        </select>
+
+        <div class="recommendation" id="recommendation"></div>
+      </aside>
+
+      <section class="catalog">
+        <h2>Repo Catalog</h2>
+        <div class="repo-grid" id="repoGrid"></div>
+      </section>
+    </section>
+
+    <section class="rules">
+      <div class="rule"><strong>Start small</strong>Install workflow guardrails before installing catalogs, memory, browser automation, or full agent platforms.</div>
+      <div class="rule"><strong>Prefer project-level first</strong>Put experimental skills in `.claude/` for one project before promoting them globally.</div>
+      <div class="rule"><strong>Ask for verification</strong>Every workflow should end with a test, screenshot, PR summary, or explicit known-risk list.</div>
+    </section>
+
+    <section class="prompt">
+      <h2>Copy-paste starter prompt</h2>
+      <pre>I already installed Claude Code / Codex.
+Help me choose the smallest useful agent setup for this project.
+
+First inspect the project context and tell me:
+1. Which workflow stage I am in
+2. Which repos or skills are useful now
+3. Which ones should be skipped for now
+4. What should be installed globally vs project-level
+5. How we will verify the setup
+
+Do not install anything before explaining the reason and asking for approval.</pre>
+    </section>
+  </main>
+
+  <script>
+    const repos = [
+      {
+        name: "obra/superpowers",
+        url: "https://github.com/obra/superpowers",
+        stages: ["new-machine", "new-project", "mid-project"],
+        level: "beginner",
+        use: "Workflow guardrails for planning, TDD, debugging, verification, reviews, and finishing branches.",
+        install: "Install early. Use often.",
+        caution: "Do not treat it as a substitute for clear goals."
+      },
+      {
+        name: "affaan-m/everything-claude-code",
+        url: "https://github.com/affaan-m/everything-claude-code",
+        stages: ["new-project", "mid-project"],
+        level: "builder",
+        use: "Large Claude Code catalog: skills, commands, hooks, rules, memory, agents, and workflows.",
+        install: "Use as a catalog. Copy only relevant pieces.",
+        caution: "Do not bulk install."
+      },
+      {
+        name: "addyosmani/agent-skills",
+        url: "https://github.com/addyosmani/agent-skills",
+        stages: ["new-project", "mid-project"],
+        level: "builder",
+        use: "Production-grade engineering skills for planning, testing, code review, docs, and delivery.",
+        install: "Install or reference when quality discipline matters.",
+        caution: "Pick workflow-specific skills."
+      },
+      {
+        name: "garrytan/gstack",
+        url: "https://github.com/garrytan/gstack",
+        stages: ["new-project"],
+        level: "builder",
+        use: "Founder/operator style agent roles for product, design, QA, docs, and release thinking.",
+        install: "Use as inspiration for a small role set.",
+        caution: "Too many roles create fake process."
+      },
+      {
+        name: "colbymchenry/codegraph",
+        url: "https://github.com/colbymchenry/codegraph",
+        stages: ["mid-project"],
+        level: "advanced",
+        use: "Local code knowledge graph for larger repos where agents need better structure understanding.",
+        install: "Use when the repo gets large or relationships are hard to track.",
+        caution: "Skip for tiny projects."
+      },
+      {
+        name: "VoltAgent/awesome-claude-code-subagents",
+        url: "https://github.com/VoltAgent/awesome-claude-code-subagents",
+        stages: ["new-project", "mid-project"],
+        level: "builder",
+        use: "Specialized Claude Code subagents by role, language, infrastructure, testing, and more.",
+        install: "Install only specialists with a clear job.",
+        caution: "Do not ask subagents to own the whole project."
+      },
+      {
+        name: "promptfoo/promptfoo",
+        url: "https://github.com/promptfoo/promptfoo",
+        stages: ["mid-project"],
+        level: "advanced",
+        use: "Evals and regression tests for prompts, LLM outputs, and agent workflows.",
+        install: "Use once an AI behavior needs to stay reliable.",
+        caution: "Overkill before you have repeatable AI flows."
+      },
+      {
+        name: "anthropics/skills",
+        url: "https://github.com/anthropics/skills",
+        stages: ["new-project", "advanced"],
+        level: "builder",
+        use: "Official public repository for Agent Skills and examples of skill structure.",
+        install: "Use as reference or install specific official skills.",
+        caution: "Reference first, install second."
+      },
+      {
+        name: "trailofbits/skills",
+        url: "https://github.com/trailofbits/skills",
+        stages: ["mid-project"],
+        level: "advanced",
+        use: "Security research, vulnerability detection, audit workflows, supply-chain checks, and review.",
+        install: "Use before merge/publish or when touching sensitive areas.",
+        caution: "Security findings need careful review."
+      },
+      {
+        name: "rohitg00/agentmemory",
+        url: "https://github.com/rohitg00/agentmemory",
+        stages: ["mid-project", "advanced"],
+        level: "advanced",
+        use: "Persistent memory for long-running coding agents.",
+        install: "Use after project_state.md stops being enough.",
+        caution: "Memory can preserve bad assumptions."
+      },
+      {
+        name: "topoteretes/cognee",
+        url: "https://github.com/topoteretes/cognee",
+        stages: ["advanced"],
+        level: "advanced",
+        use: "Memory and knowledge graph infrastructure for broader agent knowledge bases.",
+        install: "Use for multi-source knowledge systems.",
+        caution: "Needs explicit indexing boundaries."
+      },
+      {
+        name: "millionco/react-doctor",
+        url: "https://github.com/millionco/react-doctor",
+        stages: ["mid-project"],
+        level: "builder",
+        use: "React/Next health checks for dead code, rendering problems, performance, and agent-created issues.",
+        install: "Use once a React UI exists.",
+        caution: "Fix one category at a time."
+      },
+      {
+        name: "browser-use/browser-use",
+        url: "https://github.com/browser-use/browser-use",
+        stages: ["mid-project", "advanced"],
+        level: "advanced",
+        use: "Browser automation for web workflows, form filling, scraping-like tasks, and browser-based agents.",
+        install: "Use only when API or Playwright is not enough.",
+        caution: "Browser automation is fragile."
+      },
+      {
+        name: "OpenHands/OpenHands",
+        url: "https://github.com/OpenHands/OpenHands",
+        stages: ["advanced"],
+        level: "advanced",
+        use: "Full self-hosted AI software development agent environment.",
+        install: "Treat as infrastructure.",
+        caution: "Start in a sandbox."
+      },
+      {
+        name: "VoltAgent/voltagent",
+        url: "https://github.com/VoltAgent/voltagent",
+        stages: ["advanced"],
+        level: "advanced",
+        use: "TypeScript framework for building and orchestrating agent applications.",
+        install: "Use when the product itself needs agents.",
+        caution: "Not needed for a normal website/app."
+      },
+      {
+        name: "langchain-ai/open-swe",
+        url: "https://github.com/langchain-ai/open-swe",
+        stages: ["advanced"],
+        level: "advanced",
+        use: "Open-source asynchronous coding agent architecture connected to GitHub-style workflows.",
+        install: "Study after local workflows are mature.",
+        caution: "Advanced platform, not a beginner setup."
+      }
+    ];
+
+    const recommendations = {
+      "new-machine": ["obra/superpowers", "anthropics/skills"],
+      "new-project": ["obra/superpowers", "affaan-m/everything-claude-code", "addyosmani/agent-skills", "VoltAgent/awesome-claude-code-subagents"],
+      "stuck": ["obra/superpowers", "addyosmani/agent-skills"],
+      "react": ["millionco/react-doctor", "addyosmani/agent-skills", "obra/superpowers"],
+      "security": ["trailofbits/skills", "promptfoo/promptfoo", "addyosmani/agent-skills"],
+      "ai-product": ["promptfoo/promptfoo", "rohitg00/agentmemory", "topoteretes/cognee"],
+      "agent-platform": ["VoltAgent/voltagent", "OpenHands/OpenHands", "langchain-ai/open-swe"]
+    };
+
+    const stageButtons = document.querySelectorAll("[data-stage]");
+    const grid = document.getElementById("repoGrid");
+    const situation = document.getElementById("situation");
+    const experience = document.getElementById("experience");
+    const recommendation = document.getElementById("recommendation");
+    let activeStage = "all";
+
+    function renderRepos() {
+      grid.innerHTML = "";
+      repos
+        .filter(repo => activeStage === "all" || repo.stages.includes(activeStage))
+        .forEach(repo => {
+          const article = document.createElement("article");
+          article.className = "repo";
+          article.innerHTML = `
+            <h3><a href="${repo.url}">${repo.name}</a></h3>
+            <p>${repo.use}</p>
+            <p><strong>Use:</strong> ${repo.install}</p>
+            <div class="meta">
+              ${repo.stages.map(stage => `<span class="tag">${stage}</span>`).join("")}
+              <span class="tag">${repo.level}</span>
+              <span class="tag warn">${repo.caution}</span>
+            </div>
+          `;
+          grid.appendChild(article);
+        });
+    }
+
+    function renderRecommendation() {
+      const selected = recommendations[situation.value] || [];
+      const exp = experience.value;
+      let skip = "Skip advanced infrastructure until you can name the workflow it improves.";
+      if (exp === "advanced") skip = "You can evaluate advanced tools, but still install project-level first.";
+      if (exp === "beginner") skip = "Start with one workflow tool. Do not install catalogs in bulk.";
+      recommendation.innerHTML = `
+        <strong>Recommended now</strong>
+        <ul>${selected.map(name => `<li>${name}</li>`).join("")}</ul>
+        <p>${skip}</p>
+      `;
+    }
+
+    stageButtons.forEach(button => {
+      button.addEventListener("click", () => {
+        stageButtons.forEach(item => item.classList.remove("active"));
+        button.classList.add("active");
+        activeStage = button.dataset.stage;
+        renderRepos();
+      });
+    });
+
+    situation.addEventListener("change", renderRecommendation);
+    experience.addEventListener("change", renderRecommendation);
+    renderRepos();
+    renderRecommendation();
+  </script>
+</body>
+</html>
+

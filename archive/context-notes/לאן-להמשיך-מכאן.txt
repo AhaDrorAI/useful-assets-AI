@@ -1,0 +1,300 @@
+כתוב מדריך למתחילים עבור קלוד קוד\קודקס.
+מה הREPO-ים המומלצים להתחלת עבודה עם קלוד קוד או קורדקס או כל סוכן קוד AI בסגנון?
+איך עובדים איתם ומה מומלץ לעשות איתם.
+שיהיה יפה ויזואלית ויהיה פרקטי והכי מותאם לאנשים שאינם מפתחים ורק מחפשים דרך להביא את הפתרונות והרעיונות שלהם לפועל.
+הרעיון הוא שהם יוכלו להכנס לאתר הזה גם בשלבים מתקדמים או בפתיחת פרויקט חדש ולמצוא פתרון מתאים.
+מבחינתי אולי אפילו להפוך את הז לסקיל.
+
+זו הרשימה שחשבתי עליה:
+חובה להתחלה
+
+affaan-m/everything-claude-code
+הבסיס הכי טוב. skills, memory, security, context discipline ו-workflows
+
+obra/superpowers
+שכבת עבודה ו-guardrails. עוזר לסוכן לעבוד כמו teammate ולא כמו junior עם ביטחון של founder
+
+garrytan/gstack
+ארגז כלים פרקטי למפתח שעובד עם agents
+
+addyosmani/agent-skills
+סטנדרטים של Google לפיתוח עם agents. תכנון, פירוק משימות, docs, testing, code review
+
+colbymchenry/codegraph
+knowledge graph מקומי לקוד. פחות tool calls, פחות טוקנים, יותר הבנה של הריפו
+
+VoltAgent/awesome-claude-code-subagents
+ספריית subagents גדולה. טוב למומחים קטנים לפי תפקיד במקום agent אחד שעושה הכול
+
+promptfoo/promptfoo
+evals ו-regression tests ל-prompts ול-agent workflows. חובה אם רוצים שיטה ולא “נראה לי עובד”
+שכבה שנייה, אחרי שהבסיס רץ
+
+anthropics/skills
+המקור הרשמי להבנת מבנה skills טוב
+
+hesreallyhim/awesome-claude-code
+אינדקס טוב לעולם Claude Code. לא לקרוא הכל, להשתמש כמפה
+
+trailofbits/skills
+skills לביקורת קוד ו-security review לפני merge
+
+rohitg00/agentmemory
+זיכרון מתמשך ל-coding agents בפרויקטים ארוכים
+
+topoteretes/cognee
+memory ו-knowledge graph רחבים יותר ל-agents ולבסיסי ידע
+
+millionco/react-doctor
+אם יש React, לשים מיד. dead code, rendering issues, performance, agent slop
+
+browser-use/browser-use
+אם הסוכן צריך לעבוד בדפדפן, UI testing, scraping או workflows
+
+OpenHands/OpenHands
+runtime מלא לסוכני פיתוח. self-hosted agent team
+
+VoltAgent/voltagent
+פלטפורמת TypeScript לבניית agents, טובה אם אתה רוצה orchestration רציני
+
+langchain-ai/open-swe
+יותר מתקדם, אבל חשוב אם אתה בונה או לומד software engineering agents
+                                                       
+  use team of agents for this task.                                                                                                                 
+  Before we start, define for yourself and each team_agent the ideal persona for performing this task at a 'Top 1% in the world' level.             
+  Detail for each: professional knowledge, unique working methods, and the terminology you'll use in our subsequent conversation. After that, ask 
+  me the questions whose answers will enable you to perform the task in the optimal way.
+
+מעולה. אני אעבוד עם צוות קטן, אבל אני אהיה ה־editor-in-chief שמחבר הכל לתוצר אחד ברור, יפה ושימושי.
+
+**הצוות**
+**אני: עורך ראשי ומעצב מערכת למידה**  
+ידע מקצועי: סוכני קוד, UX למתחילים, כתיבת מדריכים, הערכת כלים, בניית workflows.  
+שיטת עבודה: להפוך רשימת ריפואים למסלולי שימוש: “אני רוצה לבנות X”, “אני תקוע”, “אני פותח פרויקט חדש”.  
+מונחים שנשתמש בהם: `מסלול עבודה`, `שער בטיחות`, `רמת חיכוך`, `תוצאה ראשונה`, `מתכון פעולה`, `בדיקת הצלחה`.
+
+**Euler: ארכיטקט למידה ללא-מפתחים**  
+מומחה בלמידת מבוגרים, UX writing והפחתת פחד מטרמינל/קוד.  
+יעבוד עם `מדרגות ביטחון`, `הצלחה ראשונה`, `מסלולי חילוץ`, ותרגום ז’רגון לשפה אנושית.
+
+**Meitner: אוצר ריפואים וחוקר אמינות**  
+מומחה ל־GitHub hygiene, Claude Code/Codex tooling, security ו־supply chain.  
+יעבוד בשיטת `evidence-first curation`: טריות, תחזוקה, חיכוך התקנה, סיכוני הרשאות, התאמה למתחילים.
+
+**Locke: ארכיטקט מידע ומעצב חוויית אתר**  
+מומחה לניווט, decision trees, learning hubs ו־progressive disclosure.  
+יעבוד עם `עץ החלטה`, `כרטיס משימה`, `מסלול כניסה`, `חזרת עומק`, `ספריית פרומפטים`.
+
+**Maxwell: ארכיטקט Skills ו־Agent Workflows**  
+מומחה ל־skills, guardrails, prompt scaffolds, verification loops ו־definition of done.  
+יעזור להחליט אם זה צריך להיות אתר, מדריך, skill, checklist, או שילוב ביניהם.
+
+**השאלות שצריך ממך**
+1. מי הקהל הכי חשוב: אנשים בלי רקע טכני בכלל, יזמים, בעלי עסקים, אנשי מוצר/אופרציה, יוצרים, או קהל אחר?
+
+2. מה התוצר הראשי שאתה רוצה עכשיו: אתר יפה, מדריך Markdown, Skill לקודקס/קלוד, או חבילה של שלושתם?
+
+3. מה המשתמש אמור לעשות תוך 10 דקות מהכניסה הראשונה: להבין מה זה סוכן קוד, להתקין משהו, לבחור ריפו, להתחיל פרויקט, או לפתור בעיה קיימת?
+
+4. האם המדריך צריך להיות מאוד דעתני, כלומר “תתחילו מכאן, אחר כך זה”, או יותר אינדקס פתוח עם דירוגים וסינונים?
+
+5. איך לדרג ריפואים: קלות למתחילים, בטיחות, פופולריות, תחזוקה פעילה, מקור רשמי, או “הכי מביא תוצאה מהר”?
+
+6. כמה להיזהר מהתקנות והרשאות: רק כלים פשוטים ובטוחים, או לכלול גם כלים מתקדמים עם אזהרות ברורות?
+
+7. האם להתמקד ב־Claude Code ו־Codex בלבד, או לבנות מדריך רחב לכל סוכני הקוד בסגנון הזה?
+
+8. אילו “מצבי משתמש” חייבים להיות באתר: פותח פרויקט חדש, תקוע בשגיאה, רוצה לשפר ריפו קיים, רוצה לבנות MVP, רוצה ללמוד workflows?
+
+9. האם לכלול תבניות פרומפטים בעברית שאפשר להעתיק, כמו “תבדוק את הריפו”, “תבנה לי MVP”, “אל תכתוב קוד לפני תכנון”?
+
+10. מה הטון הוויזואלי הרצוי: נקי ומקצועי, יותר playful, תחושה של operating manual, או “מפה אינטראקטיבית” של עולם הסוכנים?
+
+11. האם הרשימה שנתת היא הבסיס המחייב, או שמותר לי להוסיף/להסיר/לשנות סדר אחרי בדיקה עדכנית של הריפואים?
+
+12. מה ייחשב הצלחה בסוף: מדריך שאפשר לפרסם, אתר רץ, skill עובד, או מסמך אסטרטגי שממנו נבנה אחר כך?
+
+בשלב הבא, אחרי התשובות שלך, אני אאמת את הריפואים והמקורות העדכניים, ואז אציע 2-3 מבנים אפשריים לתוצר לפני כתיבה או בנייה.
+
+1. קהל היעד הכי חשוב הוא יזמים ללא רקע טכני שנכנסים לעולם כלי הAI
+2. מבחינתי הם משלימים זה את זה. המידע שתיצור עבור אחד ישרת את כל השלושה, לכן עושים את כולם במקביל.
+3. לפתוח פרויקט חדש, לחבר אותו לריפו בגיטהאב, ליצור את התשתית לפרויקט החדש הזה
+המצב האולטימטיבי שהוא מגיע כבר עם PRD\SPEC מוכן ואז הפרויקט נבנה בהתאם אליו.
+הרבה חלקים פה הם טכניים וזה עבור הSKILL, חלקם קושרים לדרך בה חושבים ומתשמשים בשותף - ועבור זה האתר המדריך.
+4. חלק אחד "דעתני" חלק אחר פתוח לחיפוש חופשי לצורך ספציפי - אפשר אולי אפילו לחבר בוט שיעזור למצוא את הפתרון או המהלצה המתאימה (בהתאם לMD FILE?)
+5. לא יודע, תחליט בשבילי
+6. גם כלים מתקדמים עם אזהרות ברורות
+7. תתמקד בשניהם כרגע
+8. פתיחת פרויקט חדש, תקוע, טיפים לשימוש מתקדם\יעיל\פרקטי, למידת\מעקב אחרי WORKFLOW
+9. פרומפטים באנגלית עדיף - אנחנו כבר לא בפרומפטים, יש סקילים לכל דבר.
+10. אני רוצה שהתחושה של המתשתמש\מבקר באתר תהיה: מחזיקים לי את היד, זה נעים, נותן לי תחושת ביטחון, אני מסוגל לעשות את זה, זה לא כזה קשה!
+11. מותר לך להוסיף/להסיר/לשנות סדר אחרי בדיקה עדכנית של הריפואים
+12. מדריך שמשתתפי הקורס שלי ישתמשו בו ויציגו לי הצלחות מבלי שהיו צריכים לפנות אלי לעזרה
+
+את האפשרות הראשונה כמעט יש לי באתר שלי שמחובר לSUPABASE
+באתר יש מדריך עבור קלוד קוד:
+https://drorlounchpad.netlify.app/toolbox/guides/claude-code-getting-started
+יש מאגר של ריפואים (לא בטוח שכל מי שכתוב כאן נמצא שם, אבל קל לדאוג שיהיו):
+https://drorlounchpad.netlify.app/toolbox/github-repos
+
+אפשר להשתמש במה שקיים לפיתוח משהו מורכז\מותאם יותר.
+
+אני אגיד אפילו באופן מפורש. אני עובד עם קלוד קוד, מכיר את כל הדברים האלו אבל מתקשה להניע את עצמי לפעול לפי כל ההמלצות האלו - אני רוצה לבנות לעצמי WORKFOL גמיש
+אני רוצה לדעת מה אני צריך להתקין על מחשב חדש שבו אני מתקין קלוד קוד
+
+כן. עכשיו זה נהיה הרבה יותר חד: אתה לא צריך עוד מאגר מידע. אתה צריך **Operating System אישי לעבודה עם Claude Code**.
+
+הייתי בונה את זה סביב שני דברים:
+
+1. **New Machine Bootstrap**: מה מתקינים על מחשב חדש כדי שתוכל להתחיל לעבוד נכון תוך שעה.
+2. **Flexible Project Workflow**: טקס עבודה שלא מחייב אותך להיות “ממושמע מושלם”, אבל כן מחזיר אותך למסילה כשאתה מתפזר.
+
+לא הצלחתי לפתוח ישירות את שני עמודי Netlify שנתת דרך כלי הקריאה, אבל כן ראיתי שהאתר מאונדקס ויש בו כבר Toolbox, Claude Code, ריפואים, קורסים וכלי AI. לכן הייתי משתמש במה שקיים בתור בסיס, ובונה מעליו שכבה יותר “מרוכזת”: **Claude Code Launch Checklist**.
+
+**מה להתקין על מחשב חדש**
+הבסיס, בסדר הזה:
+
+1. **תשתית עבודה**
+   - Git
+   - GitHub CLI: `gh`
+   - Node.js LTS
+   - Python + `uv`
+   - VS Code או Cursor
+   - Docker Desktop, רק אם תעבוד עם פרויקטים שצריכים DB/local services
+
+2. **סוכן הקוד**
+   - Claude Code
+   - Codex CLI: [openai/codex](https://github.com/openai/codex)
+   - התחברות ל־GitHub
+   - קובץ `CLAUDE.md` / `AGENTS.md` גלובלי עם כללי עבודה שלך
+
+3. **שכבת עבודה מומלצת**
+   - [obra/superpowers](https://github.com/obra/superpowers) כ־workflow guardrails
+   - [affaan-m/everything-claude-code](https://github.com/affaan-m/everything-claude-code) כמקור השראה/מערכת רחבה, לא להתקין הכל בעיוורון
+   - [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) לסטנדרטים של spec, plan, build, test, review
+
+4. **שכבת פרויקט**
+   - Supabase CLI אם אתה בונה עם Supabase
+   - Netlify CLI אם האתרים שלך שם
+   - Playwright לבדיקות UI
+   - `pnpm` או `npm`, לפי הסטאק שלך
+
+5. **שכבה מתקדמת, לא ביום הראשון**
+   - [CodeGraph](https://github.com/colbymchenry/codegraph) לריפואים גדולים
+   - [promptfoo](https://github.com/promptfoo/promptfoo) אם יש workflows/prompts שחייבים להיות יציבים
+   - [Trail of Bits skills](https://github.com/trailofbits/skills) לביקורת אבטחה
+   - [browser-use](https://github.com/browser-use/browser-use) רק אם אתה באמת צריך אוטומציה בדפדפן
+   - [React Doctor](https://github.com/millionco/react-doctor) אם הפרויקט React/Next
+
+**ה־Workflow הגמיש שלך**
+הייתי מגדיר לך 5 מצבים, וכל מצב מפעיל checklist אחר:
+
+**1. מחשב חדש**  
+“תכין לי סביבת Claude Code מלאה לפי הסטנדרט שלי.”  
+תוצאה: התקנות, התחברות, בדיקת `gh auth status`, בדיקת `claude`, בדיקת `codex`, ותיקיית templates.
+
+**2. פרויקט חדש**  
+לא מתחילים קוד. קודם:
+- רעיון גולמי
+- PRD
+- SPEC
+- החלטת stack
+- יצירת GitHub repo
+- scaffold
+- README
+- CLAUDE.md/AGENTS.md
+- issue ראשון או plan ראשון
+
+**3. סשן עבודה יומי**  
+הסוכן חייב להתחיל ב:
+- מה המטרה היום?
+- מה הקובץ/האזור הרלוונטי?
+- מה לא נוגעים?
+- איך נבדוק שזה עובד?
+
+**4. תקוע / התפזרתי**  
+פקודת חילוץ:
+- סכם מצב
+- מצא blockers
+- הצע 3 צעדים קטנים
+- בצע רק את הצעד הראשון
+- עצור עם תוצאה נראית
+
+**5. לפני Merge / פרסום**  
+- בדיקות
+- סקירת קוד
+- אבטחה בסיסית
+- עדכון docs
+- PR summary
+- מה נשאר פתוח
+
+**מה הייתי הופך ל־Skill**
+שם אפשרי: `ai-project-launchpad`
+
+ה־Skill לא יהיה “מדריך על Claude Code”. הוא יהיה **מלווה התנעה לפרויקט**.
+
+הוא יופעל כשאתה כותב דברים כמו:
+- “I want to start a new project”
+- “Create a repo from this idea”
+- “Turn this PRD into a working app”
+- “Set up my Claude Code workflow”
+- “I’m stuck and need to regain momentum”
+
+והוא יכריח את הסוכן לעבוד כך:
+`clarify → PRD → SPEC → repo setup → scaffold → first working slice → verify → handoff`
+
+**הדבר הכי חשוב**
+לא הייתי מנסה לגרום לך “לעבוד לפי כל ההמלצות”. זה מתכון לאשמה.  
+הייתי בונה לך מערכת שבה יש רק שלושה כפתורים מנטליים:
+
+- **Start**: פתח פרויקט נכון
+- **Continue**: המשך מהנקודה האחרונה
+- **Rescue**: אני תקוע, תחזיר אותי למסילה
+
+זה יכול להיות באתר שלך כעמוד מרכזי, ובמקביל כ־Skill שהסוכן באמת מפעיל.
+
+השאלה היחידה עכשיו: האם ה־Skill הראשון שנבנה צריך להיות **“מחשב חדש + התקנות”** או **“פתיחת פרויקט חדש מ־PRD/SPEC עד ריפו עובד”**?
+
+ברור. אז ה־MVP הראשון הוא:
+
+**New Machine For Claude Code**
+חבילת התנעה למחשב חדש שכוללת:
+1. עמוד אתר נעים וברור למשתמש.
+2. מדריך Markdown מפורט.
+3. Skill בשם למשל `new-machine-bootstrap`.
+4. בהמשך: אותו מבנה יתרחב ל־`new-project-from-prd`.
+
+אני אכניס את **Bun** לשכבת הפרויקט כבחירה מומלצת ומהירה, לצד `npm/pnpm`, עם כלל פשוט: בפרויקט חדש אפשר לבחור Bun; בפרויקט קיים לא מחליפים package manager בלי לבדוק lockfile ו־CI.
+
+**מבנה האתר**
+העמוד יהיה בנוי כ־checklist רגוע:
+
+- “מה אני מתקין קודם?”
+- “מה חובה ומה אופציונלי?”
+- “איך יודעים שזה עובד?”
+- “מה עושים אם משהו נשבר?”
+- “איזה סטאק לבחור לפרויקט חדש?”
+- “כפתור: תן לי פקודת Bootstrap למחשב שלי”
+
+**שכבות ההתקנה**
+- בסיס: Git, GitHub CLI, VS Code/Cursor, shell נוח.
+- Runtime: Node LTS, Bun, Python/uv.
+- Agents: Claude Code, Codex CLI.
+- Project tools: Supabase CLI, Netlify CLI, Playwright.
+- Workflow: Superpowers, AGENTS.md/CLAUDE.md templates.
+- Advanced later: CodeGraph, promptfoo, Trail of Bits, React Doctor.
+
+אשתמש בפקודות עדכניות ממקורות רשמיים: [Claude Code install](https://support.claude.com/en/articles/14554922-claude-code-user-faq), [Bun install](https://bun.sh/docs/installation), [uv install](https://docs.astral.sh/uv/getting-started/installation/), [Supabase CLI](https://supabase.com/docs/guides/cli/getting-started), [Netlify CLI](https://docs.netlify.com/api-and-cli-guides/cli-guides/get-started-with-cli/), [Codex CLI](https://github.com/openai/codex).
+
+רק שאלה אחת לפני שאני מתחיל לכתוב קבצים: לבנות את עמוד “מחשב חדש” כעמוד עצמאי בתיקייה הנוכחית שאפשר אחר כך להטמיע באתר הקיים, או שאתה רוצה לתת לי את ריפו האתר הקיים כדי שאשלב אותו ישר שם?
+
+את האפשרות הראשונה כמעט יש לי באתר שלי שמחובר לSUPABASE
+באתר יש מדריך עבור קלוד קוד:
+https://drorlounchpad.netlify.app/toolbox/guides/claude-code-getting-started
+יש מאגר של ריפואים (לא בטוח שכל מי שכתוב כאן נמצא שם, אבל קל לדאוג שיהיו):
+https://drorlounchpad.netlify.app/toolbox/github-repos
+
+צריך ליצור מדריך חדש שלוקח את כל הREPO-אים מההתחלה ומדריך את המשתמשים כיצד להשתמש בהם ואיך לעבוד איתם.
+אחרי התקנה ראשונה של קלוד קוד\קודקס - מה מומלץ להתקין ולמה
+בתחילת פרויקט חדש
+באמצע פרויקט - טיפים לשימוש מתקדם

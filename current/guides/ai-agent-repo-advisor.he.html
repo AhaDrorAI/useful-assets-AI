@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>יועץ ריפואים לסוכני קוד AI</title>
+  <style>
+    :root{--bg:#f7f8f4;--ink:#20231f;--muted:#626a61;--line:#d9ded3;--panel:#fff;--green:#2f7d5c;--blue:#265fbd;--amber:#9a6818;--soft:#edf5ee;--code:#16201a}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,"Noto Sans Hebrew",sans-serif;line-height:1.6}
+    main{width:min(1180px,calc(100% - 28px));margin:0 auto;padding:28px 0 64px}
+    header{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(280px,.8fr);gap:28px;align-items:end;padding:16px 0 28px;border-bottom:1px solid var(--line)}
+    .eyebrow{margin:0 0 10px;color:var(--green);font-weight:700}h1{margin:0;max-width:760px;font-size:clamp(36px,6vw,64px);line-height:1.04;letter-spacing:0}.lead{margin:18px 0 0;max-width:760px;color:var(--muted);font-size:20px}
+    .hero-panel,.advisor,.repo,.rule,.prompt{border:1px solid var(--line);border-radius:8px;background:var(--panel)}.hero-panel{padding:18px}.hero-panel strong{display:block;margin-bottom:8px}
+    .stages{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:22px 0}button{min-height:44px;border:1px solid var(--line);border-radius:8px;background:white;color:var(--ink);font:inherit;font-weight:700;cursor:pointer}button:hover,button.active{border-color:var(--green);background:var(--soft)}
+    .layout{display:grid;grid-template-columns:320px 1fr;gap:18px;align-items:start}.advisor{position:sticky;top:16px;padding:16px}.advisor h2,.catalog h2{margin:0 0 12px;font-size:24px;letter-spacing:0}
+    label{display:block;margin:14px 0 6px;color:var(--muted);font-weight:700;font-size:14px}select{width:100%;min-height:42px;border:1px solid var(--line);border-radius:8px;padding:0 10px;background:white;color:var(--ink);font:inherit}
+    .recommendation{margin-top:16px;padding:14px;border-radius:8px;background:var(--soft)}.recommendation ul{margin:8px 0 0;padding-right:20px}
+    .repo-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.repo{padding:16px}.repo h3{margin:0 0 6px;font-size:20px;letter-spacing:0}.repo p{margin:8px 0;color:var(--muted)}
+    .meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.tag{display:inline-flex;align-items:center;min-height:28px;padding:0 8px;border-radius:999px;background:#eef1f6;color:#263044;font-size:13px;font-weight:700}.tag.warn{background:#fff3d8;color:var(--amber)}
+    a{color:var(--blue);font-weight:700;text-underline-offset:3px}.rules{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:28px 0}.rule{padding:16px}.rule strong{display:block;margin-bottom:8px}.prompt{margin-top:28px;padding:16px}
+    pre{direction:ltr;text-align:left;margin:12px 0 0;padding:14px;overflow:auto;border-radius:8px;background:var(--code);color:#e6f6e9;white-space:pre-wrap;font-size:14px}
+    @media(max-width:880px){header,.layout,.repo-grid,.rules,.stages{grid-template-columns:1fr}.advisor{position:static}}
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div>
+        <p class="eyebrow">אחרי התקנת Claude Code / Codex</p>
+        <h1>בחרו את ריפו ה-AI coding שמתאים לרגע שבו אתם נמצאים</h1>
+        <p class="lead">מדריך מעשי ליזמים ולאנשים שאינם מפתחים: מה להתקין, מה רק לקרוא, ומה לדחות עד שיהיה צורך אמיתי.</p>
+      </div>
+      <aside class="hero-panel"><strong>הכלל</strong>התקנה גלובלית רק למה שתשתמשו בו כמעט בכל פרויקט. התקנה לפרויקט רק למה שעוזר לפרויקט הזה. ריפו כהשראה אם צריך רק רעיונות.</aside>
+    </header>
+
+    <nav class="stages" aria-label="סינון לפי שלב עבודה">
+      <button class="active" data-stage="all">הכול</button>
+      <button data-stage="new-machine">מחשב חדש</button>
+      <button data-stage="new-project">פרויקט חדש</button>
+      <button data-stage="mid-project">אמצע פרויקט</button>
+      <button data-stage="advanced">מתקדם</button>
+    </nav>
+
+    <section class="layout">
+      <aside class="advisor">
+        <h2>יועץ קצר</h2>
+        <label for="situation">מה אתם עושים עכשיו?</label>
+        <select id="situation">
+          <option value="new-machine">מכינים מחשב חדש</option>
+          <option value="new-project">פותחים פרויקט חדש מ-PRD/SPEC</option>
+          <option value="stuck">אני תקוע או מפוזר</option>
+          <option value="react">משפרים פרויקט React/Next</option>
+          <option value="security">לפני Merge או פרסום</option>
+          <option value="ai-product">בונים מוצר AI משמעותי</option>
+          <option value="agent-platform">בונים תשתית Agents</option>
+        </select>
+
+        <label for="experience">נוחות טכנית</label>
+        <select id="experience">
+          <option value="beginner">לא מפתח / מתחיל</option>
+          <option value="builder">נוח לי עם טרמינל</option>
+          <option value="advanced">מתקדם / טכני</option>
+        </select>
+
+        <div class="recommendation" id="recommendation"></div>
+      </aside>
+
+      <section class="catalog">
+        <h2>קטלוג ריפואים</h2>
+        <div class="repo-grid" id="repoGrid"></div>
+      </section>
+    </section>
+
+    <section class="rules">
+      <div class="rule"><strong>להתחיל קטן</strong>קודם workflow guardrails. רק אחר כך memory, browser automation או platform מלא.</div>
+      <div class="rule"><strong>קודם פרויקט, אחר כך גלובלי</strong>נסו skill או agent בתוך פרויקט אחד לפני שמקדמים אותו להתקנה גלובלית.</div>
+      <div class="rule"><strong>תמיד לבדוק</strong>כל workflow צריך להסתיים בבדיקה, screenshot, PR summary או רשימת סיכונים.</div>
+    </section>
+
+    <section class="prompt">
+      <h2>Prompt מוכן להעתקה</h2>
+      <pre>I already installed Claude Code / Codex.
+Help me choose the smallest useful agent setup for this project.
+
+First inspect the project context and tell me:
+1. Which workflow stage I am in
+2. Which repos or skills are useful now
+3. Which ones should be skipped for now
+4. What should be installed globally vs project-level
+5. How we will verify the setup
+
+Do not install anything before explaining the reason and asking for approval.</pre>
+    </section>
+  </main>
+
+  <script>
+    const repos=[
+      {name:"obra/superpowers",url:"https://github.com/obra/superpowers",stages:["new-machine","new-project","mid-project"],level:"מתחיל",use:"שכבת עבודה מסודרת: תכנון, TDD, debugging, verification, review וסיום branch.",install:"להתקין מוקדם ולהשתמש הרבה.",caution:"לא מחליף מטרה ברורה."},
+      {name:"affaan-m/everything-claude-code",url:"https://github.com/affaan-m/everything-claude-code",stages:["new-project","mid-project"],level:"בונה",use:"קטלוג גדול של skills, commands, hooks, rules, memory, agents ו-workflows ל-Claude Code.",install:"להשתמש כקטלוג. להעתיק רק מה שרלוונטי.",caution:"לא להתקין הכול בבת אחת."},
+      {name:"addyosmani/agent-skills",url:"https://github.com/addyosmani/agent-skills",stages:["new-project","mid-project"],level:"בונה",use:"הרגלי הנדסה טובים: תכנון, בדיקות, code review, docs ומוכנות לפרודקשן.",install:"לבחור skills לפי workflow נוכחי.",caution:"לא להפוך לרשימת חובה."},
+      {name:"garrytan/gstack",url:"https://github.com/garrytan/gstack",stages:["new-project"],level:"בונה",use:"השראה לצוות agents קטן סביב product, design, QA, docs ו-release.",install:"להשתמש כרפרנס לתפקידים.",caution:"יותר מדי תפקידים יוצרים תהליך מזויף."},
+      {name:"colbymchenry/codegraph",url:"https://github.com/colbymchenry/codegraph",stages:["mid-project"],level:"מתקדם",use:"Knowledge graph מקומי להבנת ריפו גדול.",install:"רק כשהריפו גדל וקשרים בין קבצים קשים למעקב.",caution:"לא ליום הראשון."},
+      {name:"VoltAgent/awesome-claude-code-subagents",url:"https://github.com/VoltAgent/awesome-claude-code-subagents",stages:["new-project","mid-project"],level:"בונה",use:"ספריית subagents מומחים לפי תפקיד, שפה, בדיקות, תשתיות ועוד.",install:"להתקין מומחה אחד רק כשיש לו משימה ברורה.",caution:"לא לתת subagent אחד לבנות הכול."},
+      {name:"promptfoo/promptfoo",url:"https://github.com/promptfoo/promptfoo",stages:["mid-project"],level:"מתקדם",use:"Evals ו-regression tests ל-prompts, outputs ו-agent workflows.",install:"כשיש התנהגות AI שצריכה להיות יציבה.",caution:"מוקדם מדי לפני workflow חוזר."},
+      {name:"anthropics/skills",url:"https://github.com/anthropics/skills",stages:["new-project","advanced"],level:"בונה",use:"ריפו רשמי ללמידת מבנה Skills טוב.",install:"קודם ללמוד, אחר כך להתקין נקודתית.",caution:"לא להעתיק skills גדולים בלי צורך."},
+      {name:"trailofbits/skills",url:"https://github.com/trailofbits/skills",stages:["mid-project"],level:"מתקדם",use:"Security review, audit, supply-chain ובדיקות סיכון.",install:"לפני פרסום או כשנוגעים ב-auth, payments, secrets או user data.",caution:"ממצאי אבטחה דורשים שיקול דעת."},
+      {name:"millionco/react-doctor",url:"https://github.com/millionco/react-doctor",stages:["mid-project"],level:"בונה",use:"בדיקות בריאות לפרויקטי React/Next.",install:"אחרי שיש UI ראשון.",caution:"לתקן קטגוריה אחת בכל פעם."},
+      {name:"browser-use/browser-use",url:"https://github.com/browser-use/browser-use",stages:["mid-project","advanced"],level:"מתקדם",use:"אוטומציה בדפדפן למשימות web מורכבות.",install:"רק כש-API או Playwright לא מספיקים.",caution:"אוטומציה בדפדפן שברירית."},
+      {name:"OpenHands/OpenHands",url:"https://github.com/OpenHands/OpenHands",stages:["advanced"],level:"מתקדם",use:"סביבת agent מלאה לפיתוח תוכנה.",install:"להתייחס כתשתית.",caution:"להתחיל ב-sandbox."},
+      {name:"VoltAgent/voltagent",url:"https://github.com/VoltAgent/voltagent",stages:["advanced"],level:"מתקדם",use:"Framework ב-TypeScript לבניית מערכות agents.",install:"כשמוצר עצמו צריך agents.",caution:"לא נדרש לאתר רגיל."},
+      {name:"langchain-ai/open-swe",url:"https://github.com/langchain-ai/open-swe",stages:["advanced"],level:"מתקדם",use:"ארכיטקטורה ל-software engineering agents אסינכרוניים.",install:"ללמוד אחרי ש-workflow מקומי בשל.",caution:"מתקדם לצוותים."}
+    ];
+    const recommendations={"new-machine":["obra/superpowers","anthropics/skills"],"new-project":["obra/superpowers","affaan-m/everything-claude-code","addyosmani/agent-skills","VoltAgent/awesome-claude-code-subagents"],"stuck":["obra/superpowers","addyosmani/agent-skills"],"react":["millionco/react-doctor","addyosmani/agent-skills","obra/superpowers"],"security":["trailofbits/skills","promptfoo/promptfoo","addyosmani/agent-skills"],"ai-product":["promptfoo/promptfoo","rohitg00/agentmemory","topoteretes/cognee"],"agent-platform":["VoltAgent/voltagent","OpenHands/OpenHands","langchain-ai/open-swe"]};
+    const stageButtons=document.querySelectorAll("[data-stage]"),grid=document.getElementById("repoGrid"),situation=document.getElementById("situation"),experience=document.getElementById("experience"),recommendation=document.getElementById("recommendation");let activeStage="all";
+    function renderRepos(){grid.innerHTML="";repos.filter(r=>activeStage==="all"||r.stages.includes(activeStage)).forEach(r=>{const article=document.createElement("article");article.className="repo";article.innerHTML=`<h3><a href="${r.url}">${r.name}</a></h3><p>${r.use}</p><p><strong>שימוש:</strong> ${r.install}</p><div class="meta">${r.stages.map(s=>`<span class="tag">${s}</span>`).join("")}<span class="tag">${r.level}</span><span class="tag warn">${r.caution}</span></div>`;grid.appendChild(article)})}
+    function renderRecommendation(){const selected=recommendations[situation.value]||[];let skip="דלגו על תשתיות מתקדמות עד שאפשר להסביר איזה workflow הן משפרות.";if(experience.value==="advanced")skip="אפשר לבדוק כלים מתקדמים, אבל עדיין להתחיל ברמת פרויקט.";if(experience.value==="beginner")skip="להתחיל עם כלי workflow אחד. לא להתקין קטלוגים שלמים.";recommendation.innerHTML=`<strong>מומלץ עכשיו</strong><ul>${selected.map(n=>`<li>${n}</li>`).join("")}</ul><p>${skip}</p>`}
+    stageButtons.forEach(b=>b.addEventListener("click",()=>{stageButtons.forEach(i=>i.classList.remove("active"));b.classList.add("active");activeStage=b.dataset.stage;renderRepos()}));situation.addEventListener("change",renderRecommendation);experience.addEventListener("change",renderRecommendation);renderRepos();renderRecommendation();
+  </script>
+</body>
+</html>
+

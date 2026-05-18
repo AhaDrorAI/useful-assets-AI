@@ -1,0 +1,15 @@
+_private/
+
+.DS_Store
+Thumbs.db
+desktop.ini
+
+.env
+.env.*
+!.env.example
+
+*.log
+node_modules/
+.venv/
+__pycache__/
+
