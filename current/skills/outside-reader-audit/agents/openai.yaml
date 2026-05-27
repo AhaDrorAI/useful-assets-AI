@@ -1,0 +1,4 @@
+interface:
+  display_name: "Outside Reader Audit"
+  short_description: "External-reader clarity audit"
+  default_prompt: "Audit this external-facing text as an outside reader with no additional context. Report what you understand, what is missing, what feels irrelevant or too internal, and where raw facts need to be transformed into audience-ready meaning."

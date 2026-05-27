@@ -1,0 +1,3 @@
+display_name: CV Story Builder
+short_description: Evidence-first CV storytelling
+default_prompt: "Create a tailored CV using the CV Story Builder workflow: read the job, audit source facts, ask only missing questions, and produce the strongest accurate CV for the role and location."

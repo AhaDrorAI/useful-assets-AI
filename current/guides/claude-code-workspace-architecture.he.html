@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ארכיטקטורת Workspace — Claude Code</title>
+  <style>
+    :root {
+      --ink: #17211c;
+      --muted: #5f6f66;
+      --line: #dce5df;
+      --paper: #fbfdfb;
+      --soft: #eef7f1;
+      --mint: #2f8f6b;
+      --blue: #245fca;
+      --warn-bg: #fff8eb;
+      --warn-line: #ebd3a1;
+      --code: #111a16;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: Arial, "Noto Sans Hebrew", sans-serif;
+      line-height: 1.7;
+    }
+
+    main {
+      width: min(1080px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 24px 0 56px;
+    }
+
+    header {
+      padding: 18px 0 28px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--mint);
+      font-weight: 700;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 850px;
+      font-size: clamp(34px, 5vw, 58px);
+      line-height: 1.08;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 760px;
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: 20px;
+    }
+
+    .notice, .step, .callout, .links {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: white;
+    }
+
+    .notice {
+      margin: 22px 0;
+      padding: 18px;
+      background: var(--soft);
+    }
+
+    .notice strong, .callout strong {
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    h2 {
+      margin: 36px 0 14px;
+      font-size: 30px;
+      letter-spacing: 0;
+    }
+
+    h3 {
+      margin: 0 0 8px;
+      font-size: 22px;
+      letter-spacing: 0;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 18px;
+      margin: 14px 0;
+      padding: 18px;
+    }
+
+    .step aside {
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .step ol, .step ul {
+      margin: 8px 0 0;
+      padding-right: 22px;
+    }
+
+    a {
+      color: var(--blue);
+      font-weight: 700;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    code {
+      direction: ltr;
+      unicode-bidi: embed;
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: #edf2f7;
+      color: #172554;
+      font-size: 0.93em;
+    }
+
+    pre {
+      direction: ltr;
+      text-align: left;
+      white-space: pre-wrap;
+      margin: 12px 0 0;
+      padding: 14px;
+      overflow: auto;
+      border-radius: 8px;
+      background: var(--code);
+      color: #dff7e8;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .callout {
+      margin: 18px 0;
+      padding: 16px;
+      border-color: var(--warn-line);
+      background: var(--warn-bg);
+    }
+
+    .folder-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+      margin: 20px 0;
+    }
+
+    .folder-card {
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: white;
+    }
+
+    .folder-card .folder-name {
+      display: block;
+      margin-bottom: 6px;
+      font-family: monospace;
+      font-size: 15px;
+      font-weight: 700;
+      color: #173f32;
+      direction: ltr;
+      unicode-bidi: embed;
+    }
+
+    .folder-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .concept-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin: 20px 0;
+    }
+
+    .concept-card {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: white;
+    }
+
+    .concept-card h3 {
+      font-size: 19px;
+      margin: 0 0 8px;
+    }
+
+    .concept-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .problem-solution {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin: 20px 0;
+    }
+
+    .problem {
+      padding: 16px;
+      border: 1px solid #f3cdc4;
+      border-radius: 8px;
+      background: #fff5f3;
+    }
+
+    .solution {
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--soft);
+    }
+
+    .problem strong, .solution strong {
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .links {
+      padding: 16px;
+    }
+
+    .links ul {
+      columns: 2;
+      margin: 0;
+      padding-right: 22px;
+    }
+
+    @media (max-width: 780px) {
+      main { width: min(100% - 20px, 1080px); }
+      .step, .problem-solution, .concept-grid { grid-template-columns: 1fr; }
+      .links ul { columns: 1; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <p class="eyebrow">שבוע Claude Code — פוסט 4</p>
+      <h1>ארכיטקטורת Workspace: 7 תיקיות שמשמרות את הריכוז של הסוכן</h1>
+      <p class="lead">בלי מבנה נכון, Claude Code "שוכח" מה הוא עושה אחרי כ-20 הודעות. עם המבנה הנכון — הוא זוכר מי אתה, מה המטרה, ואיך לעבוד, לאורך כל הפרויקט.</p>
+    </header>
+
+    <section class="notice">
+      <strong>קישור למדריך המלא</strong>
+      מדריך ארכיטקטורת ה-workspace המלא של Eden Bibs: <a href="https://go.brainai.co.il/claude-code-architecture">go.brainai.co.il/claude-code-architecture</a>
+    </section>
+
+    <h2>הבעיה: Context Overflow</h2>
+
+    <div class="problem-solution">
+      <div class="problem">
+        <strong>בלי מבנה — כך נראית השיחה</strong>
+        <p>אתם מתחילים פרויקט. בהודעה 5 Claude מבין מה הוא צריך לעשות. בהודעה 15 הוא עדיין עובד. בהודעה 25 הוא כבר לא זוכר שיש קובץ CSS נפרד, ששינוי X לא אמור לפגוע ב-Y, ושהסגנון צריך להישאר עקבי. הוא מתחיל להמציא מחדש.</p>
+      </div>
+      <div class="solution">
+        <strong>עם מבנה — Claude מחובר לאורך זמן</strong>
+        <p>בתחילת כל שיחה Claude Code טוען את קובץ <code>CLAUDE.md</code> ואת מבנה התיקיות. הוא יודע: מי אתה, מה הפרויקט, אילו כלים בשימוש, מה הסגנון, ומה כבר הוחלט. אין צורך להסביר מחדש.</p>
+      </div>
+    </div>
+
+    <h2>שבע התיקיות</h2>
+
+    <div class="folder-grid">
+      <div class="folder-card">
+        <span class="folder-name">01-context/</span>
+        <p>מי אתה, מה הפרויקט, מה המטרות. Claude קורא מכאן בתחילת כל שיחה.</p>
+      </div>
+      <div class="folder-card">
+        <span class="folder-name">02-specs/</span>
+        <p>מפרטים טכניים, PRD, SPEC. Claude מתייחס לכאן כ"מה שוסכם".</p>
+      </div>
+      <div class="folder-card">
+        <span class="folder-name">03-src/</span>
+        <p>קוד הפרויקט עצמו. Claude כותב ומשנה כאן.</p>
+      </div>
+      <div class="folder-card">
+        <span class="folder-name">04-tasks/</span>
+        <p>רשימת משימות פעילות. Claude מעדכן כאן תוך כדי עבודה.</p>
+      </div>
+      <div class="folder-card">
+        <span class="folder-name">05-decisions/</span>
+        <p>החלטות שכבר התקבלו. Claude לא שואל שוב שאלות שכבר הוחלטו.</p>
+      </div>
+      <div class="folder-card">
+        <span class="folder-name">06-assets/</span>
+        <p>תמונות, קבצי עיצוב, מסמכים. Claude יודע איפה לחפש.</p>
+      </div>
+      <div class="folder-card">
+        <span class="folder-name">07-output/</span>
+        <p>פלטים גמורים: קבצים מוכנים, דוחות, תוצרים. ברור מה "גמור" ומה "בתהליך".</p>
+      </div>
+    </div>
+
+    <h2>שני הכלים שהופכים את המבנה לחי</h2>
+
+    <div class="concept-grid">
+      <div class="concept-card">
+        <h3>CLAUDE.md — זהות הפרויקט</h3>
+        <p>קובץ טקסט אחד בשורש הפרויקט. Claude Code טוען אותו אוטומטית בתחילת כל שיחה. כאן תכתבו: מי אתם, מה הפרויקט, אילו כלים בשימוש, מה הסגנון, ומה Claude לא אמור לעשות לעולם.</p>
+        <p style="margin-top:10px;">זה כאילו נתתם ל-Claude "briefing" מלא — בלי שתצטרכו לחזור עליו כל פעם מחדש.</p>
+      </div>
+      <div class="concept-card">
+        <h3>Slash Commands — ספר מתכונים</h3>
+        <p>פקודות מותאמות אישית שמגדירים אחת ומשתמשים בהן שוב ושוב. במקום לכתוב בכל פעם "כתוב בדיקות ל-X לפי הסגנון שלנו עם coverage מלא וכלול edge cases", אתם פשוט מריצים:</p>
+        <pre>/test</pre>
+        <p style="margin-top:8px;">Claude יודע בדיוק מה זה אומר — כי הגדרתם אחת ושמרתם.</p>
+      </div>
+    </div>
+
+    <h2>דוגמה: איך נראה CLAUDE.md</h2>
+
+    <section class="step">
+      <aside>תבנית מומלצת</aside>
+      <div>
+        <h3>מה לכלול ב-CLAUDE.md</h3>
+        <p><strong>כיצד יוצרים קובץ CLAUDE.md:</strong><br>
+        ב-VS Code: לחצו ימני על תיקיית הפרויקט → <strong>New File</strong> → הקלידו <code>CLAUDE.md</code> → Enter.<br>
+        אחר כך הדביקו את התוכן שלמטה ושמרו (<code>Ctrl+S</code>).</p>
+        <p>זהו קובץ Markdown רגיל. Claude Code קורא אותו בכל התחלת שיחה. דוגמה:</p>
+        <pre># הקשר הפרויקט
+
+## מי אני
+בעל עסק קטן, לא מפתח. מנהל קורסי אונליין ב-Teachable.
+
+## מה הפרויקט
+אתר Landing Page לקורס AI לסטארטאפים. מבוסס Next.js.
+
+## כלים בשימוש
+- GitHub: repo my-org/landing-ai
+- Supabase: לאחסון רשומות leads
+- Netlify: פרסום אוטומטי מ-main
+
+## כללים חשובים
+- אל תשנה את הסגנון הויזואלי בלי לשאול
+- כל קובץ חדש → ספר לי מה עשית ולמה
+- שמות קבצים תמיד באנגלית, kebab-case</pre>
+      </div>
+    </section>
+
+    <section class="step">
+      <aside>Slash Command לדוגמה</aside>
+      <div>
+        <h3>יצירת slash command מותאם</h3>
+        <p><strong>כיצד יוצרים את התיקייה ב-VS Code:</strong></p>
+        <ol>
+          <li>פתחו את תיקיית הפרויקט ב-VS Code</li>
+          <li>בסרגל הצד, לחצו ימני על שם הפרויקט → <strong>New Folder</strong> → הקלידו <code>.claude</code> → Enter</li>
+          <li>לחצו ימני על <code>.claude</code> → <strong>New Folder</strong> → הקלידו <code>commands</code> → Enter</li>
+          <li>לחצו ימני על <code>commands</code> → <strong>New File</strong> → הקלידו <code>review.md</code> → Enter</li>
+        </ol>
+        <p><em>שימו לב: תיקיות שמתחילות בנקודה הן נסתרות. VS Code מציג אותן תמיד, אבל ב-File Explorer רגיל הן לא נראות.</em></p>
+        <p>יוצרים קובץ בתיקייה <code>.claude/commands/</code>. לדוגמה, הקובץ <code>review.md</code>:</p>
+        <pre>סקור את הקוד שכתבת בשיחה הזו.
+בדוק:
+1. האם יש קוד כפול?
+2. האם הטיפול בשגיאות שלם?
+3. האם הסגנון עקבי עם שאר הפרויקט?
+
+פלט: רשימת ממצאים, מסודרת לפי חומרה.</pre>
+        <p style="margin-top:10px;">מעכשיו, בכל שיחה, <code>/review</code> יריץ את כל הבדיקות האלו בלי לחזור עליהן ידנית.
+        </p>
+      </div>
+    </section>
+
+    <div class="callout">
+      <strong>הטיפ החשוב ביותר</strong>
+      CLAUDE.md ו-slash commands הם לא "פיצ'רים מתקדמים" — הם הבסיס של עבודה יעילה עם Claude Code. ככל שתשקיעו יותר בהגדרתם, כך Claude יעבוד בדיוק לפי הציפיות שלכם — גם בשיחה הבאה, גם בפרויקט הבא.
+    </div>
+
+    <h2>קישורים להמשך</h2>
+    <section class="links">
+      <ul>
+        <li><a href="claude-code-why-infrastructure.he.html">למה Claude Code — כלי פיתוח או תשתית?</a></li>
+        <li><a href="new-machine-claude-code-setup.he.html">מדריך התקנה — מחשב חדש</a></li>
+        <li><a href="claude-code-composio-mcp.he.html">חיבור כלים חיצוניים עם Composio</a></li>
+        <li><a href="https://docs.anthropic.com/en/docs/claude-code/memory">תיעוד רשמי — Claude Code Memory</a></li>
+      </ul>
+    </section>
+
+  </main>
+</body>
+</html>

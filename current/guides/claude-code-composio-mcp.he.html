@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>חיבור כלים חיצוניים ל-Claude Code עם Composio</title>
+  <style>
+    :root {
+      --ink: #17211c;
+      --muted: #5f6f66;
+      --line: #dce5df;
+      --paper: #fbfdfb;
+      --soft: #eef7f1;
+      --mint: #2f8f6b;
+      --blue: #245fca;
+      --warn-bg: #fff8eb;
+      --warn-line: #ebd3a1;
+      --code: #111a16;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: Arial, "Noto Sans Hebrew", sans-serif;
+      line-height: 1.7;
+    }
+
+    main {
+      width: min(1080px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 24px 0 56px;
+    }
+
+    header {
+      padding: 18px 0 28px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--mint);
+      font-weight: 700;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 850px;
+      font-size: clamp(34px, 5vw, 58px);
+      line-height: 1.08;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 760px;
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: 20px;
+    }
+
+    .notice, .step, .callout, .links {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: white;
+    }
+
+    .notice {
+      margin: 22px 0;
+      padding: 18px;
+      background: var(--soft);
+    }
+
+    .notice strong, .callout strong {
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    h2 {
+      margin: 36px 0 14px;
+      font-size: 30px;
+      letter-spacing: 0;
+    }
+
+    h3 {
+      margin: 0 0 8px;
+      font-size: 22px;
+      letter-spacing: 0;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 18px;
+      margin: 14px 0;
+      padding: 18px;
+    }
+
+    .step aside {
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .step ol, .step ul {
+      margin: 8px 0 0;
+      padding-right: 22px;
+    }
+
+    a {
+      color: var(--blue);
+      font-weight: 700;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    code {
+      direction: ltr;
+      unicode-bidi: embed;
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: #edf2f7;
+      color: #172554;
+      font-size: 0.93em;
+    }
+
+    pre {
+      direction: ltr;
+      text-align: left;
+      white-space: pre-wrap;
+      margin: 12px 0 0;
+      padding: 14px;
+      overflow: auto;
+      border-radius: 8px;
+      background: var(--code);
+      color: #dff7e8;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .callout {
+      margin: 18px 0;
+      padding: 16px;
+      border-color: var(--warn-line);
+      background: var(--warn-bg);
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      margin: 24px 0;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .flow-step {
+      padding: 20px;
+      background: white;
+      border-left: 1px solid var(--line);
+    }
+
+    .flow-step:last-child {
+      border-left: none;
+    }
+
+    .flow-step .flow-num {
+      display: inline-grid;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      margin-bottom: 8px;
+      border-radius: 50%;
+      background: #173f32;
+      color: white;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .flow-step h3 {
+      font-size: 17px;
+      margin: 0 0 6px;
+    }
+
+    .flow-step p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 10px;
+      margin: 16px 0;
+    }
+
+    .tool-tag {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: white;
+      font-weight: 700;
+      font-size: 15px;
+      text-align: center;
+    }
+
+    .links {
+      padding: 16px;
+    }
+
+    .links ul {
+      columns: 2;
+      margin: 0;
+      padding-right: 22px;
+    }
+
+    .success {
+      color: #17624a;
+      font-weight: 700;
+    }
+
+    @media (max-width: 780px) {
+      main { width: min(100% - 20px, 1080px); }
+      .step, .flow { grid-template-columns: 1fr; }
+      .flow-step { border-left: none; border-top: 1px solid var(--line); }
+      .flow-step:first-child { border-top: none; }
+      .links ul { columns: 1; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <p class="eyebrow">שבוע Claude Code — פוסט 5</p>
+      <h1>חיבור כלים חיצוניים ל-Claude Code עם Composio</h1>
+      <p class="lead">MCP הוא הפרוטוקול שמאפשר ל-Claude Code "לגעת" בכלים שלכם. Composio הוא הגשר שמקל את החיבור לכל הכלים האלה בקליק אחד.</p>
+    </header>
+
+    <section class="notice">
+      <strong>סרטון הסבר</strong>
+      סרטון מלא על חיבור כלים חיצוניים ל-Claude Code: <a href="https://youtu.be/_jOR8y4QYhc">youtu.be/_jOR8y4QYhc</a>
+    </section>
+
+    <h2>רגע — מה זה MCP?</h2>
+
+    <section class="step">
+      <aside>הרקע</aside>
+      <div>
+        <h3>Model Context Protocol — תקן פתוח לחיבור סוכנים לכלים</h3>
+        <p>MCP (Model Context Protocol) הוא תקן פתוח שפרסמה Anthropic ב-2024. הוא מגדיר "שפה משותפת" שבאמצעותה סוכן AI יכול לדבר עם כלים חיצוניים.</p>
+        <p>בלי MCP: Claude יודע <em>לכתוב</em> אימייל, אבל לא יכול <em>לשלוח</em> אותו.</p>
+        <p>עם MCP: Claude מחובר ל-Gmail ויכול לשלוח, לחפש, לארגן — הכול מממשק אחד.</p>
+        <p>כל חיבור כזה נקרא <strong>MCP Server</strong>. Composio מספקת עשרות MCP Servers מוכנים מראש.</p>
+      </div>
+    </section>
+
+    <h2>הזרימה: מ-Composio לתוך Claude Code</h2>
+
+    <div class="flow">
+      <div class="flow-step">
+        <span class="flow-num">1</span>
+        <h3>מחברים כלים ב-Composio</h3>
+        <p>נכנסים ל-Composio, בוחרים Gmail / Notion / Slack ועוד, ומאשרים גישה. הכול עם OAuth — בלי לשמור סיסמאות.</p>
+      </div>
+      <div class="flow-step">
+        <span class="flow-num">2</span>
+        <h3>Composio יוצר MCP Server</h3>
+        <p>Composio מייצרת URL ייחודי שמתנהג כ-MCP Server. הוא כולל את כל הכלים שחיברתם בשלב 1.</p>
+      </div>
+      <div class="flow-step">
+        <span class="flow-num">3</span>
+        <h3>מוסיפים ל-Claude Code</h3>
+        <p>מדביקים את ה-URL בקובץ הגדרות Claude Code. מעכשיו Claude Code "רואה" את כל הכלים.</p>
+      </div>
+    </div>
+
+    <h2>הגדרה שלב אחר שלב</h2>
+
+    <section class="notice">
+      <strong>לפני שמתחילים:</strong>
+      <ul style="margin: 6px 0 0; padding-right: 22px;">
+        <li><strong>Claude Code</strong> מותקן על המחשב (ראו <a href="new-machine-claude-code-setup.he.html">מדריך ההתקנה</a>)</li>
+        <li><strong>חשבון Composio</strong> חינמי: <a href="https://composio.dev">composio.dev</a> — צרו לפני שממשיכים</li>
+      </ul>
+    </section>
+
+    <section class="step">
+      <aside>שלב 1</aside>
+      <div>
+        <h3>צרו חשבון Composio</h3>
+        <p>היכנסו ל-<a href="https://composio.dev">composio.dev</a> וצרו חשבון חינמי.</p>
+        <p>בחרו את הכלים שאתם רוצים לחבר — לדוגמה Gmail, Google Calendar, Notion, Slack, Linear, GitHub ועוד.</p>
+        <p>לכל כלי, Composio יבקש אישור גישה דרך OAuth — תהליך מוכר של "כניסה עם Google".</p>
+      </div>
+    </section>
+
+    <section class="step">
+      <aside>שלב 2</aside>
+      <div>
+        <h3>השיגו MCP URL</h3>
+        <p>בממשק Composio, נווטו אל <strong>MCP Servers</strong> ולחצו <strong>Create MCP Server</strong>.</p>
+        <p>בחרו אילו כלים לכלול. Composio יחזיר URL בצורה:</p>
+        <pre>https://mcp.composio.dev/your-unique-token</pre>
+        <p class="success">שמרו את ה-URL הזה — תזדקקו לו בשלב הבא.</p>
+      </div>
+    </section>
+
+    <section class="step">
+      <aside>שלב 3</aside>
+      <div>
+        <h3>הוסיפו את ה-MCP ל-Claude Code</h3>
+        <p><strong>כיצד מוצאים את קובץ ההגדרות:</strong></p>
+        <p>קובץ ה-MCP של Claude Code נמצא בתיקיית הבית שלכם:</p>
+        <ul>
+          <li><strong>Windows:</strong> <code>C:\Users\&lt;שם המשתמש שלכם&gt;\.claude.json</code><br>
+          (לדוגמה: <code>C:\Users\Gamestation\.claude.json</code>)</li>
+          <li><strong>Mac:</strong> <code>~/.claude.json</code></li>
+        </ul>
+        <p><strong>כיצד מגיעים לשם ב-Windows:</strong></p>
+        <ol>
+          <li>פתחו File Explorer</li>
+          <li>לחצו על שורת הנתיב למעלה ומחקו את התוכן</li>
+          <li>הקלידו: <code>%USERPROFILE%</code> ולחצו Enter</li>
+          <li>תראו תיקייה עם שם המשתמש שלכם (Desktop, Documents, וכד')</li>
+          <li>חפשו קובץ בשם <code>.claude.json</code></li>
+        </ol>
+        <p><strong>אם הקובץ לא קיים:</strong></p>
+        <ul>
+          <li>פתחו Notepad</li>
+          <li>שמרו קובץ חדש בנתיב <code>%USERPROFILE%\.claude.json</code><br>
+          (חשוב: שנו את "Save as type" ל-"All Files" כדי שהסיומת תהיה <code>.json</code> ולא <code>.json.txt</code>)</li>
+        </ul>
+        <p><strong>אם הקובץ קיים</strong> — פתחו אותו ב-Notepad ומצאו את הסוגר הראשי <code>{</code>. הכניסו את בלוק ה-<code>mcpServers</code> <em>בתוך</em> הסוגריים הקיימים.</p>
+        <pre>{
+  "mcpServers": {
+    "composio": {
+      "command": "npx",
+      "args": ["-y", "@composio-dev/mcp@latest"],
+      "env": {
+        "COMPOSIO_API_KEY": "המפתח-שלכם-מ-Composio"
+      }
+    }
+  }
+}</pre>
+        <div class="callout" style="margin: 12px 0 0;">
+          <strong>הסבר על JSON</strong>
+          JSON הוא פורמט קובץ טקסט מובנה. חשוב: אל תוסיפו פסיק אחרי הסוגר האחרון <code>}</code> — זה יגרום לשגיאה.
+        </div>
+        <p style="margin-top: 12px;">לאחר השמירה: סגרו את Claude Code לגמרי (כולל מהטריי בשורת המשימות) ופתחו אותו מחדש.</p>
+      </div>
+    </section>
+
+    <section class="step">
+      <aside>בדיקה</aside>
+      <div>
+        <h3>ודאו שהחיבור עובד</h3>
+        <p>בתוך Claude Code, כתבו:</p>
+        <pre>list the available tools you have access to</pre>
+        <p>Claude Code אמור להציג את כל הכלים שחיברתם דרך Composio.</p>
+        <p>לאחר מכן בדקו עם בקשה קצרה:</p>
+        <pre>what are my last 3 emails from today?</pre>
+        <p class="success">אם Claude Code מחזיר מידע מ-Gmail — החיבור עובד.</p>
+      </div>
+    </section>
+
+    <h2>כלים שאפשר לחבר</h2>
+
+    <section class="step">
+      <aside>קטגוריות נפוצות</aside>
+      <div>
+        <h3>דוגמאות לכלים שתמצאו ב-Composio</h3>
+        <div class="tools-grid">
+          <div class="tool-tag">Gmail</div>
+          <div class="tool-tag">Google Calendar</div>
+          <div class="tool-tag">Google Drive</div>
+          <div class="tool-tag">Notion</div>
+          <div class="tool-tag">Slack</div>
+          <div class="tool-tag">GitHub</div>
+          <div class="tool-tag">Linear</div>
+          <div class="tool-tag">Jira</div>
+          <div class="tool-tag">Airtable</div>
+          <div class="tool-tag">HubSpot</div>
+          <div class="tool-tag">Salesforce</div>
+          <div class="tool-tag">Trello</div>
+          <div class="tool-tag">Asana</div>
+          <div class="tool-tag">Stripe</div>
+          <div class="tool-tag">Typeform</div>
+          <div class="tool-tag">Supabase</div>
+        </div>
+        <p>ו-150+ נוספים. Composio מוסיפה כלים חדשים כל הזמן.</p>
+      </div>
+    </section>
+
+    <div class="callout">
+      <strong>מה עם אבטחה?</strong>
+      Composio לא שומרת סיסמאות — היא עובדת עם OAuth tokens בדיוק כמו שהכלים עצמם מבקשים. אפשר לבטל גישה בכל עת מהגדרות Composio, ולחלופין מהגדרות הכלי עצמו (לדוגמה, מ-Google Account Security). Claude Code רק מדבר עם ה-MCP Server — הוא לא שומר אישורים בכלל.
+    </div>
+
+    <h2>לאחר החיבור — מה אפשר לעשות</h2>
+
+    <section class="step">
+      <aside>דוגמאות שימוש</aside>
+      <div>
+        <h3>בקשות שהפכו אפשריות</h3>
+        <ul>
+          <li>ענה לאימייל האחרון מ-X ואמור שאנחנו מתקדמים לשלב הבא.</li>
+          <li>צור אירוע בקלנדר ל-15 ביוני, שעתיים, וזמן לגיל ולרון.</li>
+          <li>עדכן את המשימה "בדיקת מוצר" ב-Linear לסטטוס "Done".</li>
+          <li>פתח Issue ב-GitHub בפרויקט landing-ai עם הכותרת "תיקון מובייל".</li>
+          <li>קרא את ה-3 הודעות האחרונות בערוץ #general ב-Slack וסכם.</li>
+        </ul>
+      </div>
+    </section>
+
+    <h2>קישורים</h2>
+    <section class="links">
+      <ul>
+        <li><a href="https://youtu.be/_jOR8y4QYhc">סרטון: חיבור כלים ל-Claude Code</a></li>
+        <li><a href="https://composio.dev">composio.dev — אתר רשמי</a></li>
+        <li><a href="claude-code-why-infrastructure.he.html">למה Claude Code הוא תשתית</a></li>
+        <li><a href="claude-code-workspace-architecture.he.html">ארכיטקטורת Workspace</a></li>
+        <li><a href="new-machine-claude-code-setup.he.html">מדריך התקנה — מחשוב חדש</a></li>
+        <li><a href="https://code.claude.com/docs/en/setup">דוקומנטציה רשמית Claude Code</a></li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>

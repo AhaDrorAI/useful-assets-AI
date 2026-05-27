@@ -33,6 +33,24 @@
       <aside class="hero-panel"><strong>הכלל</strong>התקנה גלובלית רק למה שתשתמשו בו כמעט בכל פרויקט. התקנה לפרויקט רק למה שעוזר לפרויקט הזה. ריפו כהשראה אם צריך רק רעיונות.</aside>
     </header>
 
+    <section style="border:1px solid var(--line);border-radius:8px;background:var(--panel);padding:20px;margin:24px 0;">
+      <h2 style="margin:0 0 12px;font-size:24px;letter-spacing:0;">מה זה ריפו ואיך "מתקינים" אותו?</h2>
+      <p><strong>ריפו</strong> (repository) הוא תיקיית קובצי קוד שמתארחת ב-GitHub. "להתקין ריפו" = להוריד אותו למחשב שלכם ולהגיד ל-Claude Code היכן הוא.</p>
+
+      <p><strong>שיטה 1 — אוטומטית (מומלץ):</strong><br>
+      השתמשו ב-Prompt המוכן שבתחתית הדף — שלחו אותו ל-Claude Code והוא יתקין הכל בשבילכם.</p>
+
+      <p><strong>שיטה 2 — ידנית (אם רוצים להבין מה קורה):</strong></p>
+      <ol style="margin:4px 0 12px;padding-right:22px;">
+        <li>לחצו על שם הריפו (הקישור הכחול)</li>
+        <li>ב-GitHub, לחצו על הכפתור הירוק <strong>Code</strong> → העתיקו את ה-URL</li>
+        <li>בטרמינל, כתבו: <code>git clone [URL שהעתקתם]</code></li>
+        <li>ספרו ל-Claude Code היכן התיקייה: "יש לי את הריפו [שם] בנתיב [נתיב]"</li>
+      </ol>
+
+      <p><strong>גלובלי vs. לפרויקט:</strong> "גלובלי" = מותקן פעם אחת ועובד בכל הפרויקטים. "לפרויקט" = מוסיפים לפרויקט ספציפי בלבד.</p>
+    </section>
+
     <nav class="stages" aria-label="סינון לפי שלב עבודה">
       <button class="active" data-stage="all">הכול</button>
       <button data-stage="new-machine">מחשב חדש</button>
@@ -77,6 +95,16 @@
       <div class="rule"><strong>תמיד לבדוק</strong>כל workflow צריך להסתיים בבדיקה, screenshot, PR summary או רשימת סיכונים.</div>
     </section>
 
+    <section style="border:1px solid var(--line);border-radius:8px;background:var(--panel);padding:20px;margin:28px 0;">
+      <h2 style="margin:0 0 12px;font-size:24px;letter-spacing:0;">מילון מונחים</h2>
+      <ul style="margin:0;padding-right:22px;line-height:2;">
+        <li><strong>TDD</strong> — פיתוח מונחה-בדיקות (Test-Driven Development): כותבים בדיקות לפני הקוד</li>
+        <li><strong>hooks</strong> — קוד שרץ אוטומטית לפני/אחרי פעולות מסוימות (למשל: לפני שמירה, לפני commit)</li>
+        <li><strong>evals</strong> — הערכות — בדיקות אוטומטיות לאיכות תשובות AI</li>
+        <li><strong>sandbox</strong> — סביבה מבודדת — Claude Code עובד שם בלי לפגוע בקבצים אמיתיים</li>
+      </ul>
+    </section>
+
     <section class="prompt">
       <h2>Prompt מוכן להעתקה</h2>
       <pre>I already installed Claude Code / Codex.
@@ -113,9 +141,8 @@ Do not install anything before explaining the reason and asking for approval.</p
     const recommendations={"new-machine":["obra/superpowers","anthropics/skills"],"new-project":["obra/superpowers","affaan-m/everything-claude-code","addyosmani/agent-skills","VoltAgent/awesome-claude-code-subagents"],"stuck":["obra/superpowers","addyosmani/agent-skills"],"react":["millionco/react-doctor","addyosmani/agent-skills","obra/superpowers"],"security":["trailofbits/skills","promptfoo/promptfoo","addyosmani/agent-skills"],"ai-product":["promptfoo/promptfoo","rohitg00/agentmemory","topoteretes/cognee"],"agent-platform":["VoltAgent/voltagent","OpenHands/OpenHands","langchain-ai/open-swe"]};
     const stageButtons=document.querySelectorAll("[data-stage]"),grid=document.getElementById("repoGrid"),situation=document.getElementById("situation"),experience=document.getElementById("experience"),recommendation=document.getElementById("recommendation");let activeStage="all";
     function renderRepos(){grid.innerHTML="";repos.filter(r=>activeStage==="all"||r.stages.includes(activeStage)).forEach(r=>{const article=document.createElement("article");article.className="repo";article.innerHTML=`<h3><a href="${r.url}">${r.name}</a></h3><p>${r.use}</p><p><strong>שימוש:</strong> ${r.install}</p><div class="meta">${r.stages.map(s=>`<span class="tag">${s}</span>`).join("")}<span class="tag">${r.level}</span><span class="tag warn">${r.caution}</span></div>`;grid.appendChild(article)})}
-    function renderRecommendation(){const selected=recommendations[situation.value]||[];let skip="דלגו על תשתיות מתקדמות עד שאפשר להסביר איזה workflow הן משפרות.";if(experience.value==="advanced")skip="אפשר לבדוק כלים מתקדמים, אבל עדיין להתחיל ברמת פרויקט.";if(experience.value==="beginner")skip="להתחיל עם כלי workflow אחד. לא להתקין קטלוגים שלמים.";recommendation.innerHTML=`<strong>מומלץ עכשיו</strong><ul>${selected.map(n=>`<li>${n}</li>`).join("")}</ul><p>${skip}</p>`}
+    function renderRecommendation(){const selected=recommendations[situation.value]||[];let skip="דלגו על תשתיות מתקדמות עד שאפשר להסביר איזה workflow הן משפרות.";if(experience.value==="advanced")skip="אפשר לבדוק כלים מתקדמים, אבל עדיין להתחיל ברמת פרויקט.";if(experience.value==="beginner")skip="להתחיל עם כלי workflow אחד. לא להתקין קטלוגים שלמים.";recommendation.innerHTML=`<strong>מומלץ עכשוו</strong><ul>${selected.map(n=>`<li>${n}</li>`).join("")}</ul><p>${skip}</p>`}
     stageButtons.forEach(b=>b.addEventListener("click",()=>{stageButtons.forEach(i=>i.classList.remove("active"));b.classList.add("active");activeStage=b.dataset.stage;renderRepos()}));situation.addEventListener("change",renderRecommendation);experience.addEventListener("change",renderRecommendation);renderRepos();renderRecommendation();
   </script>
 </body>
 </html>
-

@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>למה Claude Code — כלי פיתוח או תשתית?</title>
+  <style>
+    :root {
+      --ink: #17211c;
+      --muted: #5f6f66;
+      --line: #dce5df;
+      --paper: #fbfdfb;
+      --soft: #eef7f1;
+      --mint: #2f8f6b;
+      --blue: #245fca;
+      --warn-bg: #fff8eb;
+      --warn-line: #ebd3a1;
+      --code: #111a16;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: Arial, "Noto Sans Hebrew", sans-serif;
+      line-height: 1.7;
+    }
+
+    main {
+      width: min(1080px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 24px 0 56px;
+    }
+
+    header {
+      padding: 18px 0 28px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--mint);
+      font-weight: 700;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 850px;
+      font-size: clamp(34px, 5vw, 58px);
+      line-height: 1.08;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 760px;
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: 20px;
+    }
+
+    .notice, .step, .callout, .links {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: white;
+    }
+
+    .notice {
+      margin: 22px 0;
+      padding: 18px;
+      background: var(--soft);
+    }
+
+    .notice strong, .callout strong {
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .pillars {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin: 24px 0;
+    }
+
+    .pillar {
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: white;
+    }
+
+    .pillar-num {
+      display: inline-grid;
+      place-items: center;
+      width: 32px;
+      height: 32px;
+      margin-bottom: 10px;
+      border-radius: 50%;
+      background: #173f32;
+      color: white;
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .pillar h3 {
+      margin: 0 0 8px;
+      font-size: 20px;
+    }
+
+    .pillar p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    h2 {
+      margin: 36px 0 14px;
+      font-size: 30px;
+      letter-spacing: 0;
+    }
+
+    h3 {
+      margin: 0 0 8px;
+      font-size: 22px;
+      letter-spacing: 0;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 18px;
+      margin: 14px 0;
+      padding: 18px;
+    }
+
+    .step aside {
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .step ol, .step ul {
+      margin: 8px 0 0;
+      padding-right: 22px;
+    }
+
+    a {
+      color: var(--blue);
+      font-weight: 700;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    code {
+      direction: ltr;
+      unicode-bidi: embed;
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: #edf2f7;
+      color: #172554;
+      font-size: 0.93em;
+    }
+
+    .callout {
+      margin: 18px 0;
+      padding: 16px;
+      border-color: var(--warn-line);
+      background: var(--warn-bg);
+    }
+
+    .platforms {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin: 18px 0;
+    }
+
+    .platform-card {
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: white;
+      text-align: center;
+    }
+
+    .platform-card strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 17px;
+    }
+
+    .platform-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .links {
+      padding: 16px;
+    }
+
+    .links ul {
+      columns: 2;
+      margin: 0;
+      padding-right: 22px;
+    }
+
+    @media (max-width: 780px) {
+      main { width: min(100% - 20px, 1080px); }
+      .pillars, .platforms, .step { grid-template-columns: 1fr; }
+      .links ul { columns: 1; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <p class="eyebrow">שבוע Claude Code — פוסט 1</p>
+      <h1>Claude Code הוא לא כלי פיתוח — הוא תשתית</h1>
+      <p class="lead">רוב האנשים חושבים על Claude Code ככלי כתיבת קוד. זו טעות. הוא מסגרת עבודה שמשנה את מי שעושה עבור מי — ואיך אתם שולטים בנתונים שלכם.</p>
+    </header>
+
+    <section class="notice">
+      <strong>ההבדל שחשוב להבין מההתחלה</strong>
+      כלי AI רגיל מבצע משימה. תשתית AI מנהלת את כל זרימת העבודה שלך — מתחברת לכלים שלך, זוכרת את ההקשר שלך, ופועלת בשמך. Claude Code הוא השני.
+    </section>
+
+    <h2>שלושה עקרונות שהופכים אותו לתשתית</h2>
+
+    <div class="pillars">
+      <div class="pillar">
+        <span class="pillar-num">1</span>
+        <h3>הנתונים שלך, במחשב שלך</h3>
+        <p>Claude Code רץ על תיקייה במחשב שלך. הפרויקט, ההיסטוריה, ההוראות — הכול אצלך. אפשר לשנות מחשב, לגבות, לשתף עם שותף. אתה לא תלוי בענן של חברה זרה שתחליט מחר לסגור שירות.</p>
+      </div>
+      <div class="pillar">
+        <span class="pillar-num">2</span>
+        <h3>ממשק אחד לכל הכלים</h3>
+        <p>עם MCP (Model Context Protocol) אפשר לחבר את Claude Code לכל כלי שאתם משתמשים בו — Gmail, Notion, GitHub, Slack, Supabase ועוד. במקום לקפץ בין עשרה ממשקים, אתם שולחים הוראה אחת.</p>
+      </div>
+      <div class="pillar">
+        <span class="pillar-num">3</span>
+        <h3>הסוכן פועל בשבילך</h3>
+        <p>אנחנו עוברים מ"תעזור לי לכתוב" ל"עשה זאת בשבילי". Claude Code לא רק מציע — הוא פותח קבצים, מריץ פקודות, שולח בקשות ל-API, ומדווח בחזרה. זו תמורה אמיתית ב-ROI של הזמן שלך.</p>
+      </div>
+    </div>
+
+    <h2>מה זה אומר בפועל</h2>
+
+    <section class="step">
+      <aside>בעלות על נתונים</aside>
+      <div>
+        <h3>הפרויקט שלך נשאר אצלך</h3>
+        <p>כשאתה עובד עם Claude Code, הקבצים יושבים בתיקיית הפרויקט שלך. Claude Code קורא אותם, כותב אליהם, ועוזב אותם שם.</p>
+        <ul>
+          <li>אפשר לפתוח את אותה תיקייה ב-VS Code, Cursor, או כל עורך אחר — הכול גלוי.</li>
+          <li>מחר תרצה לעבוד עם כלי אחר? הקבצים נשארים. אין Lock-in.</li>
+          <li>רוצה לגבות? פשוט גיבוי רגיל של תיקייה, או דחיפה ל-GitHub.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="step">
+      <aside>MCP — ממשק אחד</aside>
+      <div>
+        <h3>עצור לקפוץ בין כלים</h3>
+        <p>MCP (Model Context Protocol) הוא תקן פתוח שמאפשר לסוכני AI להתחבר לכלים חיצוניים. פעם היה צריך לפתוח Gmail, להעתיק תוכן, להדביק ל-Claude, לכתוב תגובה, לחזור ל-Gmail. עכשיו:</p>
+        <pre>תשובה לאימייל האחרון מדן בנושא הצעת המחיר — תוסיף שאנחנו זמינים מתחילת יולי</pre>
+        <p>Claude Code מתחבר ל-Gmail, מוצא את האימייל, כותב תגובה, ושולח — הכול מממשק אחד.</p>
+      </div>
+    </section>
+
+    <section class="step">
+      <aside>עידן חדש</aside>
+      <div>
+        <h3>מ"עזור לי לחשוב" ל"עשה זאת"</h3>
+        <p>ChatGPT ו-Claude.ai הם כלים מצוינים לשיחה ולחשיבה. אבל הם לא פועלים — הם מייעצים. Claude Code (וסוכנים דומים) הם שלב הבא: הם <strong>מבצעים</strong>.</p>
+        <ul>
+          <li>מריץ קוד ובודק אם הוא עובד.</li>
+          <li>פותח PR ב-GitHub.</li>
+          <li>שולח הודעה ב-Slack כשמשימה הסתיימה.</li>
+          <li>מעדכן רשומה ב-CRM אחרי שיחה.</li>
+        </ul>
+        <p>זה השינוי שהופך את Claude Code מ"כלי שכותב קוד" ל"תשתית שעובדת בשבילך".</p>
+      </div>
+    </section>
+
+    <div class="callout">
+      <strong>לא חייבים להיות מפתחים</strong>
+      Claude Code מתאים גם לאנשים שלא כותבים קוד בכלל. אם אתם מנהלים פרויקטים, כותבים תוכן, מנהלים לקוחות, או מפעילים עסק קטן — הוא יכול לנהל תהליכים, לחבר כלים, ולבצע משימות חוזרות. הקוד הוא רק אחד מהדברים שהוא עושה.
+    </div>
+
+    <h2>פלטפורמות סוכנים נוספות</h2>
+
+    <section class="step">
+      <aside>לא רק Claude</aside>
+      <div>
+        <h3>סוכני קוד אחרים שכדאי להכיר</h3>
+        <p>Claude Code אינו היחיד. האקוסיסטם גדל במהירות, וכדאי להכיר את הנוף:</p>
+        <div class="platforms">
+          <div class="platform-card">
+            <strong>Codex</strong>
+            <p>סוכן הקוד של OpenAI. מתאים לסביבות שכבר עובדות עם ChatGPT.</p>
+          </div>
+          <div class="platform-card">
+            <strong>Manus</strong>
+            <p>סוכן סיני שעובד בענן ויכול לגלוש, לכתוב ולנהל משימות ארוכות.</p>
+          </div>
+          <div class="platform-card">
+            <strong>Open Hands</strong>
+            <p>סוכן קוד פתוח (OpenHands) שמאפשר שליטה מלאה על סביבת הריצה.</p>
+          </div>
+          <div class="platform-card">
+            <strong>Agentless</strong>
+            <p>גישה מחקרית לפתרון באגים ומשימות קוד ללא סוכן מתמשך.</p>
+          </div>
+        </div>
+        <p>הסיבה לבחור ב-Claude Code לעכשיו: בשל של יכולות MCP, תמיכה בעברית, ואיכות הניסיון הכוללת — הוא עדיין המוביל לשימוש יומיומי ועסקי.</p>
+      </div>
+    </section>
+
+    <h2>מילון מונחים</h2>
+
+    <div class="callout">
+      <strong>API</strong>
+      ממשק תכנותי — מאפשר לתוכנות לדבר אחת עם השנייה. כשאתם אומרים ל-Claude Code "שלח אימייל", הוא עושה זאת דרך ה-API של Gmail — בלי שתפתחו את הדפדפן בכלל.
+    </div>
+
+    <div class="callout">
+      <strong>CRM</strong>
+      מערכת ניהול לקוחות (Customer Relationship Management) — תוכנה לניהול אנשי קשר, עסקאות ותקשורת עם לקוחות. דוגמאות: HubSpot, Salesforce, Monday.
+    </div>
+
+    <div class="callout">
+      <strong>Lock-in</strong>
+      תלות — מצב שבו קשה לעבור לכלי אחר כי כל הנתונים, ההיסטוריה או ההגדרות שלכם כלואות בפלטפורמה אחת. Claude Code עובד על קבצים מקומיים — אין Lock-in.
+    </div>
+
+    <h2>קישורים להמשך</h2>
+    <section class="links">
+      <ul>
+        <li><a href="new-machine-claude-code-setup.he.html">מדריך התקנה — מחשב חדש</a></li>
+        <li><a href="claude-code-workspace-architecture.he.html">ארכיטקטורת workspace — 7 תיקיות</a></li>
+        <li><a href="claude-code-composio-mcp.he.html">חיבור כלים חיצוניים עם Composio</a></li>
+        <li><a href="https://code.claude.com/docs/en/setup">דוקומנטציה רשמית של Claude Code</a></li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>

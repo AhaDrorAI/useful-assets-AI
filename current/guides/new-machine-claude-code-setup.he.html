@@ -209,6 +209,16 @@
       העמוד הזה מגיע לפניהם. הוא מלמד את הבסיס: טרמינל, התקנות, בדיקות הצלחה, וחיבור GitHub. אחרי זה אפשר להמשיך ל-<a href="https://drorlounchpad.netlify.app/toolbox/guides/claude-code-getting-started">מדריך Claude Code המלא</a> ול-<a href="https://drorlounchpad.netlify.app/toolbox/github-repos">מאגר הריפואים</a>.
     </section>
 
+    <section class="notice">
+      <strong>לפני שמתחילים — צרו את החשבונות הבאים:</strong>
+      <ul style="margin: 6px 0 0; padding-right: 22px;">
+        <li><strong>GitHub</strong> (חינם): <a href="https://github.com">github.com</a> — נדרש לשלב 3</li>
+        <li><strong>Anthropic</strong> (בתשלום / ניסיון חינם): <a href="https://claude.ai">claude.ai</a> — נדרש לשלב 5</li>
+        <li><strong>אם רוצים Codex גם</strong> — OpenAI: <a href="https://platform.openai.com">platform.openai.com</a> — נדרש לשלב 6</li>
+      </ul>
+      <p style="margin: 8px 0 0;">כבר יש לכם? דלגו על זה.</p>
+    </section>
+
     <section class="path" aria-label="מסלול קצר">
       <div><span>1</span><strong>פותחים טרמינל</strong><br>לומדים איפה מדביקים פקודות ומה הן עושות.</div>
       <div><span>2</span><strong>מורידים בסיס</strong><br>עורך קוד, Git, GitHub CLI ו-Node.</div>
@@ -294,6 +304,7 @@
         <p>אחר כך התחבר:</p>
         <pre>gh auth login</pre>
         <p>בדרך כלל בוחרים GitHub.com, אחר כך HTTPS, ואז Login with a web browser.</p>
+        <p>אם הדפדפן לא נפתח אוטומטית: העתיקו את הקישור שמופיע בטרמינל והדביקו אותו ידנית בדפדפן.</p>
         <pre>gh auth status</pre>
         <p class="success">הצלחה: כתוב שאתה מחובר ל-GitHub.</p>
       </div>
@@ -314,9 +325,13 @@ npm --version</pre>
       <aside>שלב 5</aside>
       <div>
         <h3>התקן Claude Code</h3>
-        <p><a href="https://code.claude.com/docs/en/setup">דוקומנטציה רשמית של Claude Code</a></p>
+        <p><a href="https://code.claude.com/docs/en/setup">דוקומנטציה רשמית של Claude Code</a> &middot; <a href="https://go.brainai.co.il/yt-claude-code-install">סרטון: התקנה ב-Windows ו-Mac תוך פחות מדקה</a></p>
         <p>Windows PowerShell:</p>
         <pre>irm https://claude.ai/install.ps1 | iex</pre>
+        <div class="callout" style="margin: 10px 0;">
+          <strong>מה זה אומר?</strong>
+          <code>irm</code> מוריד קובץ התקנה מהאינטרנט, ו-<code>iex</code> מריץ אותו אוטומטית. זה כמו להוריד קובץ EXE ולהפעיל אותו — רק בשורה אחת.
+        </div>
         <p>Mac:</p>
         <pre>curl -fsSL https://claude.ai/install.sh | bash</pre>
         <p>בדיקה:</p>
@@ -381,7 +396,7 @@ codex logout</pre>
         </ul>
         <p>מצבי פתיחה שימושיים:</p>
         <pre>codex
-codex --model gpt-5.4
+codex --model gpt-4o
 codex --sandbox workspace-write --ask-for-approval on-request
 codex --search</pre>
         <div class="callout">
@@ -415,6 +430,32 @@ codex --search</pre>
           <li><a href="https://docs.netlify.com/api-and-cli-guides/cli-guides/get-started-with-cli/">Netlify CLI</a> לפרסום אתרים.</li>
           <li><a href="https://playwright.dev/docs/intro">Playwright</a> לבדיקות דפדפן.</li>
         </ul>
+      </div>
+    </section>
+
+    <h2>ממשק — כיוונון ראשוני</h2>
+
+    <section class="step">
+      <aside>ערכת נושא</aside>
+      <div>
+        <h3>מצב כהה (Dark Mode)</h3>
+        <p>Claude Code מגיע עם ממשק בהיר כברירת מחדל. להחלפה למצב כהה:</p>
+        <ol>
+          <li>פתחו את Claude Code.</li>
+          <li>לחצו על <code>/</code> ובחרו <strong>Settings</strong> (או <code>/config</code>).</li>
+          <li>תחת Theme בחרו <strong>Dark</strong>.</li>
+        </ol>
+        <p>אפשר גם להגדיר ישירות בקובץ הגדרות:</p>
+        <pre>claude config set --global theme dark</pre>
+      </div>
+    </section>
+
+    <section class="step">
+      <aside>שפת תגובה</aside>
+      <div>
+        <h3>עברית — אין צורך בהגדרה נפרדת</h3>
+        <p>קלוד קוד מגיב בשפה שבה כותבים לו.</p>
+        <p>כתבו לו בעברית — תקבלו תשובה בעברית. אין צורך בהגדרה נפרדת.</p>
       </div>
     </section>
 
