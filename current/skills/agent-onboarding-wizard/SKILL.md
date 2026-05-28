@@ -79,6 +79,7 @@ Default recommendations:
 
 | Repo/tool | Default category | Reason |
 |---|---|---|
+| `cytostack/openwolf` | Global CLI + project init | Context middleware for Claude Code: project map (`anatomy.md`), learning memory (`cerebrum.md`), token ledger, and lifecycle hooks. Install CLI globally, then `openwolf init` per project. See https://github.com/cytostack/openwolf |
 | `obra/superpowers` | Global install | Core workflow guardrails |
 | `affaan-m/everything-claude-code` | Read-only reference, then project install selectively | Large catalog |
 | `addyosmani/agent-skills` | Project install selectively | Engineering quality workflows |
@@ -121,6 +122,23 @@ Please approve, edit, or reject this plan.
 ### 5. Install only approved items
 
 Use official install instructions from the source repository or docs. If you are not sure the command is current, look it up from the official repo/docs first.
+
+**OpenWolf (`cytostack/openwolf`)** — when approved:
+
+```bash
+npm install -g openwolf
+cd your-project
+openwolf init
+```
+
+Verify:
+
+```bash
+openwolf --version
+openwolf status
+```
+
+OpenWolf is Claude Code–oriented (hooks + `.wolf/`). For Codex-only projects, treat it as optional reference unless the user also uses Claude Code on that repo.
 
 After installation, verify with the smallest available check:
 
