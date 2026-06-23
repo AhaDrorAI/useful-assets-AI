@@ -83,6 +83,7 @@
 
 - `agent-onboarding-wizard.skill` (~608 tok)
 - `desktop.ini` (~29 tok)
+- `google-play-publishing.skill` — Packaged skill zip for Google Play Store publishing (~5.1K zip)
 - `new-project-from-prd.skill` (~721 tok)
 
 ## current/skills/agent-onboarding-wizard/
