@@ -1,7 +1,7 @@
 # anatomy.md
 
-> Auto-maintained by OpenWolf. Last scanned: 2026-05-28T22:11:04.950Z
-> Files: 71 tracked | Anatomy hits: 0 | Misses: 0
+> Auto-maintained by OpenWolf. Last scanned: 2026-06-23T16:44:37.443Z
+> Files: 73 tracked | Anatomy hits: 0 | Misses: 0
 
 ## ./
 
@@ -45,8 +45,8 @@
 
 ## archive/context-notes/
 
-- `לאן-להמשיך-מכאן.txt` (~3283 tok)
 - `desktop.ini` (~29 tok)
+- `לאן-להמשיך-מכאן.txt` (~3283 tok)
 
 ## archive/legacy-outputs/
 
@@ -74,6 +74,7 @@
 - `claude-code-why-infrastructure.he.html` — למה Claude Code — כלי פיתוח או תשתית? (~2743 tok)
 - `claude-code-workspace-architecture.he.html` — ארכיטקטורת Workspace — Claude Code (~3047 tok)
 - `desktop.ini` (~29 tok)
+- `google-play-publishing.he.md` — מדריך להעלאת אפליקציה ל-Google Play Store (~2364 tok)
 - `new-machine-claude-code-setup.en.html` — New Computer Setup for Claude Code and Codex (~2739 tok)
 - `new-machine-claude-code-setup.he.html` — מחשב חדש ל-Claude Code ו-Codex (~4599 tok)
 - `new-machine-claude-code-setup.md` — מחשב חדש ל-Claude Code ו-Codex (~2727 tok)
@@ -82,6 +83,7 @@
 
 - `agent-onboarding-wizard.skill` (~608 tok)
 - `desktop.ini` (~29 tok)
+- `google-play-publishing.skill` — Packaged skill zip for Google Play Store publishing
 - `new-project-from-prd.skill` (~721 tok)
 
 ## current/skills/agent-onboarding-wizard/
@@ -104,6 +106,10 @@
 - `agent-and-evidence-checklist.md` — Agent and Evidence Checklist (~688 tok)
 - `desktop.ini` (~29 tok)
 - `top-1-superprompt.md` — Top 1% CV Story Builder Superprompt (~474 tok)
+
+## current/skills/google-play-publishing/
+
+- `SKILL.md` — Google Play Publishing (~2747 tok)
 
 ## current/skills/new-project-from-prd/
 
