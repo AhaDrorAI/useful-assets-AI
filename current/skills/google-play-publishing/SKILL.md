@@ -49,10 +49,12 @@ Map the answer to one of these stages:
 
 **Account type decision:**
 
-| Type | When to use |
-|---|---|
-| Personal | Sole developer, no team, no DUNS |
-| Organization | Company, NGO, or independent developer with DUNS number |
+| Type | When to use | Verification required |
+|---|---|---|
+| Personal | Individual developer or hobbyist | Government-issued ID + physical Android device |
+| Organization | Company, NGO, or independent developer with DUNS | Business documents + D-U-N-S number |
+
+**Personal accounts created after November 2023** face the 20-tester / 14-day Closed Testing requirement before production access.
 
 **Recommendation for independent developers:** Register as Organization using a DUNS number. See Step 3.
 
@@ -110,7 +112,11 @@ Google manages the release key. You keep the upload key. If you lose the upload 
 
 #### API level compliance
 
-Target SDK must meet Google's current requirement (typically `targetSdk = current year's minimum`).
+Target SDK must meet Google's current requirement.
+
+**Current requirement (as of August 31, 2026):** Android 16 (API level 36) or higher.
+Exceptions: Wear OS and Android TV apps have separate deadlines.
+Failure to comply causes the app to become invisible to new users on newer Android versions.
 
 Check the current requirement at:
 https://developer.android.com/google/play/requirements/target-sdk
@@ -119,9 +125,9 @@ In `build.gradle` or `build.gradle.kts`:
 
 ```kotlin
 android {
-    compileSdk = 35
+    compileSdk = 36
     defaultConfig {
-        targetSdk = 35
+        targetSdk = 36
         minSdk = 24
     }
 }
@@ -217,7 +223,7 @@ Add testers: **Release → Internal testing → Testers**
 
 If DUNS Organization status is confirmed, this requirement may be waived — check Play Console for the production release option.
 
-Finding testers: https://www.testerscommunity.com/
+Finding testers: https://www.testerscommunity.com/ — provides 25 professional testers for 14 days.
 
 #### Open Testing (Beta)
 
@@ -240,7 +246,9 @@ Before submitting to production:
 
 Submit: **Release → Production → Create new release**
 
-Review time: typically 2–7 business days for first submission.
+Review time: typically 2–7 business days for first submission. Submit well before your intended release date.
+
+**Warning:** Repeated rejections can lead to app suspension. Fix all flagged issues before resubmission and document every change made.
 
 #### Common rejection reasons and fixes
 
@@ -253,7 +261,9 @@ Review time: typically 2–7 business days for first submission.
 | Data Safety mismatch | Update Data Safety section to include all SDK data practices |
 | Crashes at launch | Fix crash before resubmission |
 | Missing Privacy Policy | Add accessible URL to store listing |
+| Broken Privacy Policy link | Verify URL is live and publicly accessible — a broken link is treated the same as missing |
 | Content rating mismatch | Redo the IARC questionnaire accurately |
+| Inconsistent developer info | Ensure name and address match exactly across Play Console, DUNS, and official ID |
 
 ### 10. Post-launch maintenance
 
@@ -261,6 +271,7 @@ Review time: typically 2–7 business days for first submission.
 - **Respond to reviews:** Reply to 1-star reviews within 48 hours when possible.
 - **Update target SDK:** Google enforces annual SDK updates — missing the deadline causes the app to become unavailable for new downloads.
 - **Check policy emails:** Google sends warnings before enforcement — do not ignore them.
+- **Stay updated:** Google Play policies and requirements change frequently. Check the Play Console Help Center and Android developer blog regularly.
 - **Staged rollout:** For major updates, use staged rollout (10% → 50% → 100%) to catch regressions.
 
 ## Failure Modes
