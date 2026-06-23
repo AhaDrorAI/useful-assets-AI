@@ -2,14 +2,14 @@
   "version": 1,
   "created_at": "2026-05-28T22:11:04.449Z",
   "lifetime": {
-    "total_tokens_estimated": 12096,
-    "total_reads": 4,
-    "total_writes": 2,
+    "total_tokens_estimated": 40453,
+    "total_reads": 14,
+    "total_writes": 20,
     "total_sessions": 1,
-    "anatomy_hits": 4,
-    "anatomy_misses": 0,
-    "repeated_reads_blocked": 0,
-    "estimated_savings_vs_bare_cli": 800
+    "anatomy_hits": 13,
+    "anatomy_misses": 1,
+    "repeated_reads_blocked": 2,
+    "estimated_savings_vs_bare_cli": 8094
   },
   "sessions": [
     {
@@ -61,6 +61,190 @@
         "writes_count": 2,
         "repeated_reads_blocked": 0,
         "anatomy_lookups": 4
+      }
+    },
+    {
+      "id": "session-2026-06-23-1640",
+      "started": "2026-06-23T16:40:51.238Z",
+      "ended": "2026-06-23T16:45:56.049Z",
+      "reads": [
+        {
+          "file": "/home/user/useful-assets-AI/current/skills/agent-onboarding-wizard/SKILL.md",
+          "tokens_estimated": 1283,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "/home/user/useful-assets-AI/current/guides/new-machine-claude-code-setup.md",
+          "tokens_estimated": 2727,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "/home/user/useful-assets-AI/current/skills/new-project-from-prd.skill",
+          "tokens_estimated": 721,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "/home/user/useful-assets-AI/current/skills/new-project-from-prd/SKILL.md",
+          "tokens_estimated": 1524,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        }
+      ],
+      "writes": [
+        {
+          "file": "/home/user/useful-assets-AI/current/skills/google-play-publishing/SKILL.md",
+          "tokens_estimated": 3139,
+          "action": "create"
+        },
+        {
+          "file": "/home/user/useful-assets-AI/current/guides/google-play-publishing.he.md",
+          "tokens_estimated": 2702,
+          "action": "create"
+        }
+      ],
+      "totals": {
+        "input_tokens_estimated": 6255,
+        "output_tokens_estimated": 5841,
+        "reads_count": 4,
+        "writes_count": 2,
+        "repeated_reads_blocked": 0,
+        "anatomy_lookups": 4
+      }
+    },
+    {
+      "id": "session-2026-06-23-1640",
+      "started": "2026-06-23T16:40:51.238Z",
+      "ended": "2026-06-23T16:53:04.697Z",
+      "reads": [
+        {
+          "file": "/home/user/useful-assets-AI/current/skills/agent-onboarding-wizard/SKILL.md",
+          "tokens_estimated": 1283,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "/home/user/useful-assets-AI/current/guides/new-machine-claude-code-setup.md",
+          "tokens_estimated": 2727,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "/home/user/useful-assets-AI/current/skills/new-project-from-prd.skill",
+          "tokens_estimated": 721,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "/home/user/useful-assets-AI/current/skills/new-project-from-prd/SKILL.md",
+          "tokens_estimated": 1524,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "/root/.claude/uploads/03d26fb9-0eb4-5718-93d5-a8785ebf8ffa/7cf3917a-googleplaypublishingguide.pdf",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "/home/user/useful-assets-AI/current/skills/google-play-publishing/SKILL.md",
+          "tokens_estimated": 2747,
+          "was_repeated": true,
+          "anatomy_had_description": false
+        }
+      ],
+      "writes": [
+        {
+          "file": "/home/user/useful-assets-AI/current/skills/google-play-publishing/SKILL.md",
+          "tokens_estimated": 3139,
+          "action": "create"
+        },
+        {
+          "file": "/home/user/useful-assets-AI/current/guides/google-play-publishing.he.md",
+          "tokens_estimated": 2702,
+          "action": "create"
+        },
+        {
+          "file": "/home/user/useful-assets-AI/current/skills/google-play-publishing/SKILL.md",
+          "tokens_estimated": 166,
+          "action": "edit"
+        },
+        {
+          "file": "/home/user/useful-assets-AI/current/skills/google-play-publishing/SKILL.md",
+          "tokens_estimated": 166,
+          "action": "edit"
+        },
+        {
+          "file": "/home/user/useful-assets-AI/current/skills/google-play-publishing/SKILL.md",
+          "tokens_estimated": 28,
+          "action": "edit"
+        },
+        {
+          "file": "/home/user/useful-assets-AI/current/skills/google-play-publishing/SKILL.md",
+          "tokens_estimated": 122,
+          "action": "edit"
+        },
+        {
+          "file": "/home/user/useful-assets-AI/current/skills/google-play-publishing/SKILL.md",
+          "tokens_estimated": 71,
+          "action": "edit"
+        },
+        {
+          "file": "/home/user/useful-assets-AI/current/skills/google-play-publishing/SKILL.md",
+          "tokens_estimated": 98,
+          "action": "edit"
+        },
+        {
+          "file": "/home/user/useful-assets-AI/current/guides/google-play-publishing.he.md",
+          "tokens_estimated": 113,
+          "action": "edit"
+        },
+        {
+          "file": "/home/user/useful-assets-AI/current/guides/google-play-publishing.he.md",
+          "tokens_estimated": 128,
+          "action": "edit"
+        },
+        {
+          "file": "/home/user/useful-assets-AI/current/guides/google-play-publishing.he.md",
+          "tokens_estimated": 60,
+          "action": "edit"
+        },
+        {
+          "file": "/home/user/useful-assets-AI/current/guides/google-play-publishing.he.md",
+          "tokens_estimated": 135,
+          "action": "edit"
+        },
+        {
+          "file": "/home/user/useful-assets-AI/current/guides/google-play-publishing.he.md",
+          "tokens_estimated": 54,
+          "action": "edit"
+        },
+        {
+          "file": "/home/user/useful-assets-AI/current/guides/google-play-publishing.he.md",
+          "tokens_estimated": 82,
+          "action": "edit"
+        },
+        {
+          "file": "/home/user/useful-assets-AI/current/guides/google-play-publishing.he.md",
+          "tokens_estimated": 102,
+          "action": "edit"
+        },
+        {
+          "file": "/home/user/useful-assets-AI/current/guides/google-play-publishing.he.md",
+          "tokens_estimated": 93,
+          "action": "edit"
+        }
+      ],
+      "totals": {
+        "input_tokens_estimated": 9002,
+        "output_tokens_estimated": 7259,
+        "reads_count": 6,
+        "writes_count": 16,
+        "repeated_reads_blocked": 2,
+        "anatomy_lookups": 5
       }
     }
   ],

@@ -1,4 +1,37 @@
 {
   "version": 1,
-  "bugs": []
+  "bugs": [
+    {
+      "id": "bug-001",
+      "timestamp": "2026-06-23T16:50:48.525Z",
+      "error_message": "Significant refactor of ",
+      "file": "current/skills/google-play-publishing/SKILL.md",
+      "root_cause": "4 lines replaced/restructured",
+      "fix": "Rewrote 10→12 lines (4 removed) | Also: Target SDK must meet Google's current requirement ; compileSdk = 35",
+      "tags": [
+        "auto-detected",
+        "refactor",
+        "md"
+      ],
+      "related_bugs": [],
+      "occurrences": 2,
+      "last_seen": "2026-06-23T16:50:56.936Z"
+    },
+    {
+      "id": "bug-002",
+      "timestamp": "2026-06-23T16:51:31.882Z",
+      "error_message": "Significant refactor of ",
+      "file": "current/guides/google-play-publishing.he.md",
+      "root_cause": "4 lines replaced/restructured",
+      "fix": "Rewrote 6→8 lines (4 removed) | Also: בדוק את הדרישה הנוכחית:; compileSdk = 35",
+      "tags": [
+        "auto-detected",
+        "refactor",
+        "md"
+      ],
+      "related_bugs": [],
+      "occurrences": 2,
+      "last_seen": "2026-06-23T16:51:59.261Z"
+    }
+  ]
 }

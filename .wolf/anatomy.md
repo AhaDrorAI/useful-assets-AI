@@ -1,6 +1,6 @@
 # anatomy.md
 
-> Auto-maintained by OpenWolf. Last scanned: 2026-06-23T16:44:37.443Z
+> Auto-maintained by OpenWolf. Last scanned: 2026-06-23T16:52:41.598Z
 > Files: 73 tracked | Anatomy hits: 0 | Misses: 0
 
 ## ./
@@ -74,7 +74,7 @@
 - `claude-code-why-infrastructure.he.html` — למה Claude Code — כלי פיתוח או תשתית? (~2743 tok)
 - `claude-code-workspace-architecture.he.html` — ארכיטקטורת Workspace — Claude Code (~3047 tok)
 - `desktop.ini` (~29 tok)
-- `google-play-publishing.he.md` — מדריך להעלאת אפליקציה ל-Google Play Store (~2364 tok)
+- `google-play-publishing.he.md` — מדריך להעלאת אפליקציה ל-Google Play Store (~2680 tok)
 - `new-machine-claude-code-setup.en.html` — New Computer Setup for Claude Code and Codex (~2739 tok)
 - `new-machine-claude-code-setup.he.html` — מחשב חדש ל-Claude Code ו-Codex (~4599 tok)
 - `new-machine-claude-code-setup.md` — מחשב חדש ל-Claude Code ו-Codex (~2727 tok)
@@ -83,7 +83,6 @@
 
 - `agent-onboarding-wizard.skill` (~608 tok)
 - `desktop.ini` (~29 tok)
-- `google-play-publishing.skill` — Packaged skill zip for Google Play Store publishing
 - `new-project-from-prd.skill` (~721 tok)
 
 ## current/skills/agent-onboarding-wizard/
@@ -109,7 +108,7 @@
 
 ## current/skills/google-play-publishing/
 
-- `SKILL.md` — Google Play Publishing (~2747 tok)
+- `SKILL.md` — Google Play Publishing (~3011 tok)
 
 ## current/skills/new-project-from-prd/
 
