@@ -43,9 +43,14 @@ Guides:
 
 Skills:
 
-- [Agent onboarding wizard](current/skills/agent-onboarding-wizard/SKILL.md)
-- [New project from PRD](current/skills/new-project-from-prd/SKILL.md)
-- [Improve codebase architecture](current/skills/improve-codebase-architecture/SKILL.md)
+- [Agent onboarding wizard](current/skills/agent-onboarding-wizard/SKILL.md) — set up a safe AI coding environment after installing Claude Code or Codex
+- [Avoid AI writing](current/skills/avoid-ai-writing/SKILL.md) — audit and rewrite text to remove AI writing patterns
+- [CV story builder](current/skills/cv-story-builder/SKILL.md) — build a tailored CV from a job post and candidate source files
+- [Google Play publishing](current/skills/google-play-publishing/SKILL.md) — walk through publishing an Android app on Google Play
+- [Improve codebase architecture](current/skills/improve-codebase-architecture/SKILL.md) — survey a codebase for shallow modules and rank deepening candidates
+- [New project from PRD](current/skills/new-project-from-prd/SKILL.md) — turn a PRD or product idea into a project an agent can build
+- [Outside reader audit](current/skills/outside-reader-audit/SKILL.md) — read external-facing text as an outsider with no hidden context
+- [Startup free traffic](current/skills/startup-free-traffic) — organic, zero-budget traffic and launch strategy for early-stage startups
 - Packaged `.skill` files are in [current/skills](current/skills).
 
 ## Safety
