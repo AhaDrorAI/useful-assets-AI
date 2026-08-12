@@ -1,7 +1,7 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
 import * as crypto from "node:crypto";
-import { getWolfDir, ensureWolfDir, readJSON, writeJSON, parseAnatomy, serializeAnatomy, extractDescription, estimateTokens, appendMarkdown, timeShort, readStdin, normalizePath } from "./shared.js";
+import { getWolfDir, ensureWolfDir, readJSON, writeJSON, parseAnatomy, parseAnatomyMeta, serializeAnatomy, extractDescription, estimateTokens, appendMarkdown, timeShort, readStdin, normalizePath, isInsideProject } from "./shared.js";
 async function main() {
     ensureWolfDir();
     const wolfDir = getWolfDir();
@@ -27,6 +27,13 @@ async function main() {
     // Skip processing for .wolf/ internal files to avoid slow self-referential updates
     const relPath = normalizePath(path.relative(projectRoot, absolutePath));
     if (relPath.startsWith(".wolf/")) {
+        process.exit(0);
+        return;
+    }
+    // Files outside the project (scratchpads, /tmp) are not part of this repo's
+    // anatomy. Without this, path.relative() yields "../../../tmp/..." and the
+    // hook creates an anatomy section for a path that is not in the project.
+    if (!isInsideProject(projectRoot, absolutePath)) {
         process.exit(0);
         return;
     }
@@ -69,18 +76,22 @@ async function main() {
         if (!sections.has(sectionKey))
             sections.set(sectionKey, []);
         const entries = sections.get(sectionKey);
+        const entry = { file: fileName, description: desc, tokens, suffix: `~${tokens} tok` };
         const idx = entries.findIndex((e) => e.file === fileName);
         if (idx !== -1) {
-            entries[idx] = { file: fileName, description: desc, tokens };
+            entries[idx] = entry;
         }
         else {
-            entries.push({ file: fileName, description: desc, tokens });
+            entries.push(entry);
         }
         let fileCount = 0;
         for (const [, list] of sections)
             fileCount += list.length;
+        // Updating one file is not a scan. Keep the real scan time so the header
+        // does not claim a coverage the file does not have.
+        const prevScan = parseAnatomyMeta(anatomyContent).lastScanned;
         const serialized = serializeAnatomy(sections, {
-            lastScanned: new Date().toISOString(),
+            lastScanned: prevScan || new Date().toISOString(),
             fileCount,
             hits: 0,
             misses: 0,

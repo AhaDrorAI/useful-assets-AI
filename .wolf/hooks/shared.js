@@ -73,16 +73,46 @@ export function parseAnatomy(content) {
         }
         if (!currentSection)
             continue;
+        // Numeric token entries: "- `f.md` — desc (~123 tok)"
         const em = line.match(/^- `([^`]+)`(?:\s+—\s+(.+?))?\s*\(~(\d+)\s+tok\)$/);
         if (em) {
             sections.get(currentSection).push({
                 file: em[1],
                 description: em[2] || "",
                 tokens: parseInt(em[3], 10),
+                suffix: `~${em[3]} tok`,
+            });
+            continue;
+        }
+        // Any other size label: "- `f.skill` — desc (~5.1K zip)". These used to be
+        // dropped on the next rewrite, silently deleting entries from anatomy.
+        const sm2 = line.match(/^- `([^`]+)`(?:\s+—\s+(.+?))?\s*\((.+)\)$/);
+        if (sm2) {
+            sections.get(currentSection).push({
+                file: sm2[1],
+                description: sm2[2] || "",
+                tokens: 0,
+                suffix: sm2[3],
+            });
+            continue;
+        }
+        // No size label at all — still an entry worth keeping.
+        const nm = line.match(/^- `([^`]+)`(?:\s+—\s+(.+))?$/);
+        if (nm) {
+            sections.get(currentSection).push({
+                file: nm[1],
+                description: nm[2] || "",
+                tokens: 0,
+                suffix: null,
             });
         }
     }
     return sections;
+}
+/** Read the header metadata so a rewrite does not invent a new scan time. */
+export function parseAnatomyMeta(content) {
+    const m = content.match(/Last scanned:\s*(\S+)/);
+    return { lastScanned: m ? m[1] : "" };
 }
 export function serializeAnatomy(sections, metadata) {
     const lines = [
@@ -99,7 +129,10 @@ export function serializeAnatomy(sections, metadata) {
         const entries = sections.get(key).sort((a, b) => a.file.localeCompare(b.file));
         for (const e of entries) {
             const desc = e.description ? ` — ${e.description}` : "";
-            lines.push(`- \`${e.file}\`${desc} (~${e.tokens} tok)`);
+            // Preserve whatever size label the entry came in with; only fall back
+            // to a token count when there is none.
+            const suffix = e.suffix === null ? "" : ` (${e.suffix ?? `~${e.tokens} tok`})`;
+            lines.push(`- \`${e.file}\`${desc}${suffix}`);
         }
         lines.push("");
     }
@@ -610,5 +643,93 @@ export function readStdin() {
 }
 export function normalizePath(p) {
     return p.replace(/\\/g, "/");
+}
+/**
+ * True when absPath lives inside projectRoot. Guards against indexing scratch
+ * files in /tmp, which produced anatomy sections like "## ../../../tmp/...".
+ */
+export function isInsideProject(projectRoot, absPath) {
+    const rel = path.relative(projectRoot, absPath);
+    return rel !== "" && !rel.startsWith("..") && !path.isAbsolute(rel);
+}
+// Directories never worth indexing. Kept deliberately short: gitignored paths
+// such as _private/ are still indexed, matching how anatomy has always worked.
+const SKIP_DIRS = new Set([
+    ".git", "node_modules", ".venv", "venv", "__pycache__", ".wolf",
+    "dist", "build", ".next", "out", "coverage", "target", ".cache",
+    ".pytest_cache", ".mypy_cache", ".turbo", ".parcel-cache",
+]);
+const BINARY_EXTS = new Set([
+    ".skill", ".zip", ".tar", ".gz", ".png", ".jpg", ".jpeg", ".gif", ".webp",
+    ".ico", ".pdf", ".woff", ".woff2", ".ttf", ".otf", ".eot", ".mp4", ".mp3",
+    ".mov", ".wav", ".psd", ".sketch", ".xlsx", ".docx", ".pptx",
+]);
+/**
+ * Walk the project and return repo-relative paths of every indexable file.
+ * Bounded by maxFiles and deadlineMs so it cannot stall the session-start hook.
+ */
+export function walkProject(projectRoot, { maxFiles = 5000, deadlineMs = 3000 } = {}) {
+    const started = Date.now();
+    const found = [];
+    const stack = [projectRoot];
+    while (stack.length) {
+        if (found.length >= maxFiles || Date.now() - started > deadlineMs)
+            break;
+        const dir = stack.pop();
+        let dirents;
+        try {
+            dirents = fs.readdirSync(dir, { withFileTypes: true });
+        }
+        catch {
+            continue;
+        }
+        for (const d of dirents) {
+            const abs = path.join(dir, d.name);
+            if (d.isDirectory()) {
+                if (!SKIP_DIRS.has(d.name))
+                    stack.push(abs);
+                continue;
+            }
+            if (!d.isFile())
+                continue;
+            if (d.name === ".env" || d.name.startsWith(".env."))
+                continue;
+            found.push(normalizePath(path.relative(projectRoot, abs)));
+        }
+    }
+    return found;
+}
+/** Build an anatomy entry for one file, sized by content type. */
+export function buildAnatomyEntry(projectRoot, relPath) {
+    const abs = path.join(projectRoot, relPath);
+    const file = path.basename(relPath);
+    const ext = path.extname(file).toLowerCase();
+    if (BINARY_EXTS.has(ext)) {
+        let kb = 0;
+        try {
+            kb = fs.statSync(abs).size / 1024;
+        }
+        catch { }
+        const label = ext ? ext.slice(1) : "bin";
+        const size = kb >= 10 ? Math.round(kb) : Math.round(kb * 10) / 10;
+        return { file, description: "", tokens: 0, suffix: `~${size}K ${label}` };
+    }
+    let content = "";
+    try {
+        content = fs.readFileSync(abs, "utf-8");
+    }
+    catch {
+        return null;
+    }
+    const codeExts = new Set([".ts", ".js", ".tsx", ".jsx", ".py", ".json", ".yaml", ".yml", ".css"]);
+    const proseExts = new Set([".md", ".txt", ".rst"]);
+    const type = codeExts.has(ext) ? "code" : proseExts.has(ext) ? "prose" : "mixed";
+    const tokens = estimateTokens(content, type);
+    return {
+        file,
+        description: extractDescription(abs).slice(0, 100),
+        tokens,
+        suffix: `~${tokens} tok`,
+    };
 }
 //# sourceMappingURL=shared.js.map

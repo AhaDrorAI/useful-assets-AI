@@ -49,3 +49,6 @@
 | 06:07 | Created ../../../tmp/claude-0/-home-user-useful-assets-AI/60cd6acf-b74f-5f4c-9918-6ca7703929b4/scratchpad/unescape.py | — | ~268 |
 | 06:30 | Removed docx-export escaping (\# \- \*\* and &#x20; fillers) from two reference files | current/skills/startup-free-traffic/references/{geo-aeo,pre-launch}.md | headings/lists/bold now render; prose verified byte-identical | ~1500 |
 | 06:31 | Repaired anatomy after scanner rescan (dropped 2 .skill entries, indexed a /tmp scratchpad path) | .wolf/anatomy.md | restored | ~400 |
+| 06:09 | Session end: 3 writes across 2 files (README.md, unescape.py) | 3 reads | ~3118 tok |
+| 06:40 | Fixed 3 anatomy scanner bugs: lossy parse dropping non-token entries, /tmp paths indexed as sections, no scanner existed | .wolf/hooks/{shared,post-write,session-start}.js | 16 regression tests pass; scan runs in ~90ms | ~7000 |
+| 06:41 | Logged bug-004/005/006 and recorded learnings | .wolf/buglog.json, .wolf/cerebrum.md | updated | ~1200 |
