@@ -108,6 +108,49 @@
       ],
       "occurrences": 1,
       "last_seen": "2026-08-12T06:15:00.000Z"
+    },
+    {
+      "id": "bug-007",
+      "timestamp": "2026-08-12T06:25:00.000Z",
+      "error_message": "After `openwolf update` to 2.0.1, every Write/Edit crashed the post-write hook: ERR_MODULE_NOT_FOUND '.wolf/hooks/symbol-extractor.js'",
+      "file": ".wolf/hooks/symbol-extractor.js",
+      "root_cause": "Upstream bug in openwolf 2.0.1: both init.js and update.js copy a hardcoded 10-file hook list that omits symbol-extractor.js, while post-write.js imports it at module load. Any 2.0.1 install or upgrade leaves post-write dead, so anatomy, memory, session tracking and auto bug detection all stop silently.",
+      "fix": "Copied symbol-extractor.js from the installed package into .wolf/hooks/. Re-run this copy after any future `openwolf update` until upstream fixes the list.",
+      "tags": [
+        "openwolf",
+        "2.0.1",
+        "upgrade",
+        "hooks",
+        "upstream-bug",
+        "module-resolution"
+      ],
+      "related_bugs": [
+        "bug-008"
+      ],
+      "occurrences": 1,
+      "last_seen": "2026-08-12T06:25:00.000Z"
+    },
+    {
+      "id": "bug-008",
+      "timestamp": "2026-08-12T06:25:00.000Z",
+      "error_message": "The 2.0.1 migration imported 87 of 89 anatomy entries; google-play-publishing.skill and startup-free-traffic.skill were dropped from anatomy-index.json",
+      "file": ".wolf/hooks/anatomy-store.js",
+      "root_cause": "Same lossy regex as bug-004, still present upstream in 2.0.1's parseAnatomy. It is now more damaging: anatomy.md is rendered from the store, so an entry missed at import is deleted from the index on the next write rather than merely being skipped.",
+      "fix": "Local patch to parseAnatomy in .wolf/hooks/anatomy-store.js adding a fallback branch for entries whose size label is not '(~N tok)'; re-imported the two lost entries into the store with token counts from a real scan. Marked LOCAL PATCH \u2014 `openwolf update` will overwrite it.",
+      "tags": [
+        "openwolf",
+        "2.0.1",
+        "anatomy",
+        "regex",
+        "data-loss",
+        "upstream-bug"
+      ],
+      "related_bugs": [
+        "bug-004",
+        "bug-007"
+      ],
+      "occurrences": 1,
+      "last_seen": "2026-08-12T06:25:00.000Z"
     }
   ]
 }

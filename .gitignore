@@ -13,3 +13,6 @@ node_modules/
 .venv/
 __pycache__/
 
+
+# OpenWolf local state (backups are recovery snapshots, not source)
+.wolf/backups/

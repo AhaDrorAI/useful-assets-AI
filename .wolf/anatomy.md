@@ -1,7 +1,7 @@
 # anatomy.md
 
-> Auto-maintained by OpenWolf. Last scanned: 2026-08-12T06:07:57.920Z
-> Files: 88 tracked | Anatomy hits: 0 | Misses: 0
+> Auto-maintained by OpenWolf. Last scanned: 2026-08-12T06:18:46.291Z
+> Files: 89 tracked | Anatomy hits: 0 | Misses: 0
 
 ## ./
 
@@ -83,7 +83,7 @@
 
 - `agent-onboarding-wizard.skill` (~608 tok)
 - `desktop.ini` (~29 tok)
-- `google-play-publishing.skill` — Packaged skill zip for Google Play Store publishing (~5.1K zip)
+- `google-play-publishing.skill` — Packaged skill zip for Google Play Store publishing (~1304 tok)
 - `new-project-from-prd.skill` (~721 tok)
 
 ## current/skills/agent-onboarding-wizard/
@@ -146,7 +146,7 @@
 
 ## current/skills/startup-free-traffic/
 
-- `startup-free-traffic.skill` — Packaged skill zip for the free-traffic framework. No unpacked SKILL.md exists in this directory (~15K zip)
+- `startup-free-traffic.skill` — Packaged skill zip for the free-traffic framework. No unpacked SKILL.md exists in this directory (~3934 tok)
 
 ## current/skills/startup-free-traffic/references/
 

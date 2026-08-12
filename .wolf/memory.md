@@ -52,3 +52,7 @@
 | 06:09 | Session end: 3 writes across 2 files (README.md, unescape.py) | 3 reads | ~3118 tok |
 | 06:40 | Fixed 3 anatomy scanner bugs: lossy parse dropping non-token entries, /tmp paths indexed as sections, no scanner existed | .wolf/hooks/{shared,post-write,session-start}.js | 16 regression tests pass; scan runs in ~90ms | ~7000 |
 | 06:41 | Logged bug-004/005/006 and recorded learnings | .wolf/buglog.json, .wolf/cerebrum.md | updated | ~1200 |
+| 06:15 | Session end: 3 writes across 2 files (README.md, unescape.py) | 3 reads | ~3118 tok |
+| 06:45 | Upgraded OpenWolf 1.0.4 -> 2.0.1 via `openwolf update` (backup in .wolf/backups/, user data preserved) | .wolf/hooks/*, .claude/settings.json, OPENWOLF.md | hooks replaced; PreCompact hook added; anatomy migrated to anatomy-index.json | ~9000 |
+| 06:46 | Fixed 2.0.1 shipping bug: symbol-extractor.js not copied by update, post-write crashed on every write | .wolf/hooks/symbol-extractor.js | copied from package; post-write verified working | ~800 |
+| 06:47 | Re-applied the lossy-parse fix (still unfixed upstream) and recovered 2 entries lost in migration | .wolf/hooks/anatomy-store.js, .wolf/anatomy-index.json | A/B tested patched vs upstream parser | ~2500 |
