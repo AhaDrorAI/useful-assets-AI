@@ -43,3 +43,5 @@
 | 06:03 | Session end: 1 writes across 1 files (README.md) | 1 reads | ~485 tok |
 | 06:04 | Edited README.md | 4→9 lines | ~311 |
 | 06:12 | Backfilled all 8 skills into the README skills list with one-line descriptors | README.md | updated, all links verified | ~700 |
+| 06:04 | Session end: 2 writes across 1 files (README.md) | 1 reads | ~840 tok |
+| 06:20 | Added avoid-ai-writing and startup-free-traffic sections to anatomy; restored dropped google-play-publishing.skill entry | .wolf/anatomy.md | all tracked skill files now indexed | ~900 |
