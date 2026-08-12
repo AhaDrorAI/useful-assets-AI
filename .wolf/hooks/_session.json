@@ -1,10 +1,25 @@
 {
-  "session_id": "session-2026-06-23-1714",
-  "started": "2026-06-23T17:14:34.089Z",
-  "files_read": {},
-  "files_written": [],
-  "edit_counts": {},
-  "anatomy_hits": 0,
+  "session_id": "session-2026-08-12-0600",
+  "started": "2026-08-12T06:00:58.803Z",
+  "files_read": {
+    "/home/user/useful-assets-AI/README.md": {
+      "count": 1,
+      "tokens": 439,
+      "first_read": "2026-08-12T06:02:27.254Z"
+    }
+  },
+  "files_written": [
+    {
+      "file": "/home/user/useful-assets-AI/README.md",
+      "action": "edit",
+      "tokens": 46,
+      "at": "2026-08-12T06:02:39.355Z"
+    }
+  ],
+  "edit_counts": {
+    "README.md": 1
+  },
+  "anatomy_hits": 1,
   "anatomy_misses": 0,
   "repeated_reads_warned": 0,
   "cerebrum_warnings": 0,
