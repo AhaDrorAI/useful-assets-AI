@@ -19,7 +19,8 @@
 - **The `.wolf/hooks/*.js` files are vendored build output** (they carry `//# sourceMappingURL=` comments but no `.map` files) and are tracked in git. Local fixes to them are real, but reinstalling or upgrading the `openwolf` CLI may overwrite them.
 - **OpenWolf is at 2.0.1 here** (upgraded from 1.0.4 via `openwolf update`, which backs up to `.wolf/backups/` and preserves cerebrum/memory/anatomy/buglog/config). The CLI is not bundled with the repo — `npm i -g openwolf` is needed on each machine to run `openwolf scan`, `status`, `update`.
 - **2.0.1 changed the anatomy architecture**: `.wolf/anatomy-index.json` is now the source of truth and `anatomy.md` is *rendered* from it, with symbol sub-entries for large code files. Hand-editing anatomy.md still works — the store re-imports it when the file's hash changes — but the store wins on the next write.
-- **One local patch rides on top of 2.0.1**, marked `LOCAL PATCH` in `.wolf/hooks/anatomy-store.js` (see bug-008). `openwolf update` will overwrite it; re-apply it and re-copy `symbol-extractor.js` (bug-007) after any upgrade.
+- **Two local patches ride on top of 2.0.1**, both marked `LOCAL PATCH`: `.wolf/hooks/anatomy-store.js` (bug-008) and `.wolf/hooks/shared.js` (bug-009). `openwolf update` overwrites both; re-apply them and re-copy `symbol-extractor.js` (bug-007) after any upgrade.
+- **memory.md rows are `| HH:MM | ... |`**, per OPENWOLF.md and what the hooks append — not date-prefixed. A hook that wants to detect them must key off the `## Session: YYYY-MM-DD` header for the date.
 - **anatomy.md round-trips through `parseAnatomy`/`serializeAnatomy` on every write.** Any line those functions cannot parse is deleted. Adding a new line format to anatomy means teaching the parser about it first.
 - **Several reference files came from a docx/Notion export** and carried escaped markdown (`\#`, `\-`, `\*\*`) plus `&#x20;` spacer paragraphs. Worth checking new imports for the same.
 

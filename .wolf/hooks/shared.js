@@ -619,8 +619,24 @@ export function countSemanticEntries(wolfDir) {
         const today = new Date().toISOString().slice(0, 10);
         const todayPrefix = `| ${today}`;
         let count = 0;
+        // LOCAL PATCH (not upstream as of 2.0.1): rows are written as
+        // "| HH:MM | ... |" — the format OPENWOLF.md documents and the hooks
+        // themselves append — so matching on a "| YYYY-MM-DD" prefix counted
+        // zero however many summaries were written, and the Stop hook asked for
+        // one on every turn forever. Count today's rows by the session header
+        // they sit under, and keep the date-prefixed form working too.
+        let inToday = false;
         for (const line of content.split("\n")) {
-            if (line.startsWith(todayPrefix) && !mechanical.test(line))
+            const header = line.match(/^##\s+Session:\s*(\d{4}-\d{2}-\d{2})/);
+            if (header) {
+                inToday = header[1] === today;
+                continue;
+            }
+            if (line.startsWith(todayPrefix) && !mechanical.test(line)) {
+                count++;
+                continue;
+            }
+            if (inToday && /^\|\s*\d{1,2}:\d{2}\s*\|/.test(line) && !mechanical.test(line))
                 count++;
         }
         return count;

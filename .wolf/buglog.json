@@ -151,6 +151,28 @@
       ],
       "occurrences": 1,
       "last_seen": "2026-08-12T06:25:00.000Z"
+    },
+    {
+      "id": "bug-009",
+      "timestamp": "2026-08-12T06:55:00.000Z",
+      "error_message": "Stop hook repeated 'ACTION REQUIRED: N files were modified this session but no semantic summary was written to memory.md' on every turn, immediately after summaries were written",
+      "file": ".wolf/hooks/shared.js",
+      "root_cause": "countSemanticEntries() matched rows by a '| YYYY-MM-DD' prefix, but memory.md rows are '| HH:MM | ... |' \u2014 the format OPENWOLF.md documents and the hooks themselves append. The count was therefore always 0 and the reminder was unsatisfiable: writing the requested summary could never clear it. Present in 1.0.4 and unchanged in 2.0.1.",
+      "fix": "LOCAL PATCH in countSemanticEntries: track the '## Session: YYYY-MM-DD' header and count today's non-mechanical '| HH:MM |' rows, keeping the date-prefixed form working. Verified 12 entries counted vs 0 upstream, and the Stop hook now stays quiet.",
+      "tags": [
+        "openwolf",
+        "hooks",
+        "stop-hook",
+        "memory",
+        "false-positive",
+        "upstream-bug"
+      ],
+      "related_bugs": [
+        "bug-007",
+        "bug-008"
+      ],
+      "occurrences": 3,
+      "last_seen": "2026-08-12T06:55:00.000Z"
     }
   ]
 }
