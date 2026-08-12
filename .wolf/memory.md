@@ -60,3 +60,4 @@
 | 06:50 | Session summary: added improve-codebase-architecture skill; completed README + anatomy skill indexes; de-escaped 2 docx-export reference files; fixed 3 anatomy scanner defects then upgraded OpenWolf 1.0.4→2.0.1, re-applying the one fix still unfixed upstream and repairing the broken 2.0.1 hook install | current/skills/improve-codebase-architecture/*, README.md, .wolf/* | 6 commits pushed to claude/add-new-skill-kwapod; skill audit 45/45, hook tests 16/16 | ~95000 |
 | 06:23 | Session end: 3 writes across 2 files (README.md, unescape.py) | 3 reads | ~3118 tok |
 | 06:56 | Fixed unsatisfiable Stop-hook nag: countSemanticEntries matched a date prefix against time-prefixed rows, so it always counted 0 | .wolf/hooks/shared.js | patched + verified (12 counted vs 0 upstream); logged bug-009 | ~2000 |
+| 06:25 | Session end: 3 writes across 2 files (README.md, unescape.py) | 3 reads | ~3118 tok |
