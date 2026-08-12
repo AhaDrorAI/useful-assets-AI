@@ -31,3 +31,11 @@
 
 | Time | Action | File(s) | Outcome | ~Tokens |
 |------|--------|---------|---------|--------|
+
+## Session: 2026-08-12 06:00
+
+| Time | Action | File(s) | Outcome | ~Tokens |
+|------|--------|---------|---------|--------|
+| 06:02 | Edited README.md | 1→2 lines | ~43 |
+| 06:05 | Added improve-codebase-architecture skill (SKILL.md + 3 references + ATTRIBUTION + audit script + evals) | current/skills/improve-codebase-architecture/* | created, audit 45/45 pass | ~9000 |
+| 06:06 | Indexed the new skill | .wolf/anatomy.md, README.md | updated | ~600 |

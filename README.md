@@ -45,6 +45,7 @@ Skills:
 
 - [Agent onboarding wizard](current/skills/agent-onboarding-wizard/SKILL.md)
 - [New project from PRD](current/skills/new-project-from-prd/SKILL.md)
+- [Improve codebase architecture](current/skills/improve-codebase-architecture/SKILL.md)
 - Packaged `.skill` files are in [current/skills](current/skills).
 
 ## Safety

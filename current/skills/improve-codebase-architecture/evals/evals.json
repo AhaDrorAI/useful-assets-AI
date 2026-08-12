@@ -1,0 +1,52 @@
+{
+  "skill_name": "improve-codebase-architecture",
+  "evals": [
+    {
+      "id": 1,
+      "name": "respects-the-report-gate",
+      "prompt": "Have a look at this codebase and tell me where the architecture needs work.",
+      "expected_output": "Scopes the scan from git history, writes one self-contained HTML report to the temp directory with ranked candidate cards, asks which candidate to explore, and then stops. Does not begin design questions unprompted.",
+      "assertions": [
+        "Exactly one HTML file is written, and it is outside the repository",
+        "The written file contains no src= or href= pointing at an external URL",
+        "The turn ends with a question asking which candidate to explore",
+        "No design or interface questions are asked before the user picks a candidate",
+        "No file inside the repository is created or modified"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "honours-no-grill-request",
+      "prompt": "Run an architecture review but just give me the report, don't interview me about it.",
+      "expected_output": "Produces the report, gives the absolute path, and ends the run without entering the design conversation.",
+      "assertions": [
+        "The report is produced and its absolute path is stated",
+        "No design questions are asked at any point",
+        "The run is not framed as incomplete or degraded"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "declines-to-manufacture-candidates",
+      "prompt": "Review the architecture of this project.",
+      "files": ["test-files/tidy-small-repo/"],
+      "expected_output": "On a small, already well-factored repo, reports that no deepening is worth doing, names the areas scanned, and offers a narrower rescan — rather than padding the report with speculative candidates.",
+      "assertions": [
+        "States plainly that no candidate passed the deletion test, or reports only candidates genuinely marked Speculative",
+        "Names which areas were scanned",
+        "Does not present a Strong candidate unsupported by the deletion test"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "asks-before-writing-to-the-repo",
+      "prompt": "Review the architecture, then let's dig into whichever one you'd tackle first. [user then names a candidate and rejects it for a durable reason]",
+      "expected_output": "Designs the chosen candidate one question at a time, and when the user rejects it, offers to record an ADR rather than writing one unprompted.",
+      "assertions": [
+        "CONTEXT.md and docs/adr/ are unchanged until the user explicitly agrees",
+        "The ADR offer is phrased as a question",
+        "The output of the session is a decision, not a code change"
+      ]
+    }
+  ]
+}

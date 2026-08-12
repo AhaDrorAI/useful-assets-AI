@@ -1,14 +1,14 @@
 # anatomy.md
 
-> Auto-maintained by OpenWolf. Last scanned: 2026-06-23T16:52:41.598Z
-> Files: 73 tracked | Anatomy hits: 0 | Misses: 0
+> Auto-maintained by OpenWolf. Last scanned: 2026-08-12T06:02:39.326Z
+> Files: 80 tracked | Anatomy hits: 0 | Misses: 0
 
 ## ./
 
 - `.gitignore` — Git ignore rules (~30 tok)
 - `CLAUDE.md` — OpenWolf (~57 tok)
 - `desktop.ini` (~29 tok)
-- `README.md` — Project documentation (~439 tok)
+- `README.md` — Project documentation (~461 tok)
 
 ## .claude/
 
@@ -83,7 +83,6 @@
 
 - `agent-onboarding-wizard.skill` (~608 tok)
 - `desktop.ini` (~29 tok)
-- `google-play-publishing.skill` — Packaged skill zip for Google Play Store publishing (~5.1K zip)
 - `new-project-from-prd.skill` (~721 tok)
 
 ## current/skills/agent-onboarding-wizard/
@@ -110,6 +109,19 @@
 ## current/skills/google-play-publishing/
 
 - `SKILL.md` — Google Play Publishing (~3011 tok)
+
+## current/skills/improve-codebase-architecture/
+
+- `ATTRIBUTION.md` — Credits the original Matt Pocock skill and lists what this revision changed. Not referenced from SKILL.md, so it costs no runtime context (~350 tok)
+- `audit_skill.py` — Audits the skill package against authoring best practices and this skill's own review findings; 45 checks (~2600 tok)
+- `HTML-REPORT.md` — Scaffold, card structure, and diagram patterns for the self-contained HTML review report (~1300 tok)
+- `INTERFACE-DESIGN.md` — How to generate and pressure-test alternative interface shapes during the design step (~900 tok)
+- `LANGUAGE.md` — Architecture vocabulary: module, interface, depth, seam, adapter, leverage, locality, plus the deletion test and words to avoid (~1200 tok)
+- `SKILL.md` — Improve Codebase Architecture: surveys a codebase for shallow modules, ranks deepening candidates in a self-contained HTML report, then designs the one the user picks. Proposes only, never edits code (~2100 tok)
+
+## current/skills/improve-codebase-architecture/evals/
+
+- `evals.json` — 4 behavioural evals with assertions: report gate, no-grill request, zero-findings honesty, repo-write consent (~600 tok)
 
 ## current/skills/new-project-from-prd/
 
