@@ -45,3 +45,7 @@
 | 06:12 | Backfilled all 8 skills into the README skills list with one-line descriptors | README.md | updated, all links verified | ~700 |
 | 06:04 | Session end: 2 writes across 1 files (README.md) | 1 reads | ~840 tok |
 | 06:20 | Added avoid-ai-writing and startup-free-traffic sections to anatomy; restored dropped google-play-publishing.skill entry | .wolf/anatomy.md | all tracked skill files now indexed | ~900 |
+| 06:06 | Session end: 2 writes across 1 files (README.md) | 1 reads | ~840 tok |
+| 06:07 | Created ../../../tmp/claude-0/-home-user-useful-assets-AI/60cd6acf-b74f-5f4c-9918-6ca7703929b4/scratchpad/unescape.py | — | ~268 |
+| 06:30 | Removed docx-export escaping (\# \- \*\* and &#x20; fillers) from two reference files | current/skills/startup-free-traffic/references/{geo-aeo,pre-launch}.md | headings/lists/bold now render; prose verified byte-identical | ~1500 |
+| 06:31 | Repaired anatomy after scanner rescan (dropped 2 .skill entries, indexed a /tmp scratchpad path) | .wolf/anatomy.md | restored | ~400 |
