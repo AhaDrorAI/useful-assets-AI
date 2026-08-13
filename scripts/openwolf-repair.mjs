@@ -156,6 +156,27 @@ const SOURCE_PATCHES = [
         }
         return count;`,
     },
+    {
+        bug: "bug-012",
+        file: "stop.js",
+        what: "the buglog reminder fix (Stop hook demanded a buglog entry that had already been written)",
+        upstream: `    const buglogWritten = session.files_written.some(w => w.file.includes("buglog.json"));
+    if (!buglogWritten) {`,
+        patched: `    // ${PATCH_MARKER} (not upstream as of 2.0.1): post-write.js exits early for
+    // every .wolf/ path, so a write to .wolf/buglog.json never reaches
+    // session.files_written and this check could never observe one — the
+    // reminder fired on every turn no matter how many bugs were logged.
+    // Compare the file's mtime against the session start instead, which is
+    // what the STATUS.md check below already does.
+    const sessionStartMs = session.started ? Date.parse(session.started) : 0;
+    let buglogWritten = !sessionStartMs; // unknown session start: stay quiet
+    try {
+        buglogWritten = buglogWritten
+            || fs.statSync(path.join(wolfDir, "buglog.json")).mtimeMs >= sessionStartMs;
+    }
+    catch { }
+    if (!buglogWritten) {`,
+    },
 ];
 
 function applySourcePatches() {

@@ -73,3 +73,5 @@
 | 11:55 | Added scripts/openwolf-repair.mjs + own SessionStart entry so openwolf upgrades cannot silently revert the 3 local patches | scripts/openwolf-repair.mjs, .claude/settings.json, .wolf/patches/ | all 3 auto-restore; idempotent; tested vs simulated upgrade | ~8000 |
 | 11:57 | Found and fixed a real defect in the earlier bug-009 fix: date-scoped counting failed across midnight | .wolf/hooks/shared.js | now session-scoped; count 15 vs 0 before | ~2000 |
 | 11:58 | Wrote filing-ready upstream reports for the two openwolf 2.0.1 defects | .wolf/patches/UPSTREAM-REPORT.md | ready to submit; this session cannot reach cytostack/openwolf | ~2000 |
+| 11:52 | Session end: 9 writes across 4 files (README.md, unescape.py, openwolf-repair.mjs, settings.json) | 4 reads | ~7093 tok |
+| 12:05 | Fixed a third unsatisfiable Stop-hook reminder: buglog check read session.files_written, which never contains .wolf/ paths | .wolf/hooks/stop.js, scripts/openwolf-repair.mjs | now mtime-based; added to repair table; all 4 patches auto-restore | ~3000 |

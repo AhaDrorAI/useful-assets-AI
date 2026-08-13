@@ -246,6 +246,27 @@
       ],
       "occurrences": 1,
       "last_seen": "2026-08-13T11:58:00.000Z"
+    },
+    {
+      "id": "bug-012",
+      "timestamp": "2026-08-13T12:05:00.000Z",
+      "error_message": "Stop hook: 'ACTION REQUIRED: Files edited 3+ times this session (openwolf-repair.mjs) but buglog.json was not updated' \u2014 fired after buglog.json had already been updated twice that session",
+      "file": ".wolf/hooks/stop.js",
+      "root_cause": "checkForMissingBugLogs looked for buglog.json in session.files_written, but post-write.js exits early for every .wolf/ path, so writes to .wolf/buglog.json are never recorded there. The check could never observe a buglog write, making the reminder unsatisfiable \u2014 the same failure shape as bug-009 and bug-011.",
+      "fix": "Compare buglog.json's mtime against session.started, the technique the adjacent STATUS.md check already uses. Stays quiet when the session start is unknown. Added to the scripts/openwolf-repair.mjs patch table so an upgrade cannot revert it.",
+      "tags": [
+        "openwolf",
+        "hooks",
+        "stop-hook",
+        "unsatisfiable-reminder",
+        "upstream-bug"
+      ],
+      "related_bugs": [
+        "bug-009",
+        "bug-011"
+      ],
+      "occurrences": 1,
+      "last_seen": "2026-08-13T12:05:00.000Z"
     }
   ]
 }

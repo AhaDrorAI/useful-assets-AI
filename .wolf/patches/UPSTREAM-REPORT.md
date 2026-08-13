@@ -1,6 +1,6 @@
 # Upstream bug reports for openwolf 2.0.1
 
-Two defects found while upgrading this project from 1.0.4 to 2.0.1. Both are
+Three defects found while upgrading this project from 1.0.4 to 2.0.1. All are
 reproducible from a clean install of the published package. Ready to file at
 https://github.com/cytostack/openwolf/issues — paste each section as its own
 issue.
@@ -103,7 +103,43 @@ on `^- `.
 
 ---
 
-## Note on a third finding (not a bug, worth documenting)
+## Issue 3 — two Stop-hook reminders are unsatisfiable by construction
+
+**Version:** 2.0.1
+
+**Impact:** Both reminders fire on every turn regardless of what the session
+does, because the state they check can never show the work as done. Agents
+either comply repeatedly with work already finished, or learn to ignore Stop
+reminders generally — which defeats the ones that are real.
+
+**3a. `countSemanticEntries` (dist/hooks/shared.js)** counts memory.md rows by a
+`| YYYY-MM-DD` prefix, but every row — in `OPENWOLF.md`'s documented format and
+in what the hooks themselves append — is `| HH:MM | ... |`. The count is always
+zero, so "no semantic summary was written to memory.md" fires forever.
+
+Scoping to the session rather than the date also matters: a session that runs
+past midnight, or is resumed the next day, appends no new `## Session:` header,
+so a date-based check is wrong even once the row format is handled.
+
+**3b. `checkForMissingBugLogs` (dist/hooks/stop.js)** looks for `buglog.json` in
+`session.files_written`:
+
+```js
+const buglogWritten = session.files_written.some(w => w.file.includes("buglog.json"));
+```
+
+but `post-write.js` exits early for every path under `.wolf/`, so writes to
+`.wolf/buglog.json` are never recorded there. The reminder cannot be satisfied
+by logging a bug.
+
+**Suggested fix:** for 3b, compare `buglog.json`'s mtime against
+`session.started` — exactly what `checkStatusFreshness` does a few lines below
+in the same file. For 3a, count non-mechanical rows after the last
+`## Session:` header.
+
+---
+
+## Note on a fourth finding (not a bug, worth documenting)
 
 `openwolf scan` prunes entries whose files are absent from disk. That is correct
 for a working copy but destructive in a fresh clone or CI checkout, where
