@@ -75,3 +75,18 @@
 | 11:58 | Wrote filing-ready upstream reports for the two openwolf 2.0.1 defects | .wolf/patches/UPSTREAM-REPORT.md | ready to submit; this session cannot reach cytostack/openwolf | ~2000 |
 | 11:52 | Session end: 9 writes across 4 files (README.md, unescape.py, openwolf-repair.mjs, settings.json) | 4 reads | ~7093 tok |
 | 12:05 | Fixed a third unsatisfiable Stop-hook reminder: buglog check read session.files_written, which never contains .wolf/ paths | .wolf/hooks/stop.js, scripts/openwolf-repair.mjs | now mtime-based; added to repair table; all 4 patches auto-restore | ~3000 |
+| 11:54 | Session end: 9 writes across 4 files (README.md, unescape.py, openwolf-repair.mjs, settings.json) | 4 reads | ~7093 tok |
+| 11:58 | Edited current/skills/avoid-ai-writing/SKILL.md | 7→8 lines | ~243 |
+| 11:58 | Edited current/skills/avoid-ai-writing/SKILL.md | expanded (+9 lines) | ~271 |
+| 11:58 | Edited current/skills/avoid-ai-writing/SKILL.md | inline fix | ~131 |
+| 11:58 | Edited current/skills/avoid-ai-writing/SKILL.md | modified at() | ~699 |
+| 11:58 | Edited current/skills/avoid-ai-writing/SKILL.md | 1→4 lines | ~80 |
+| 11:59 | Edited current/skills/avoid-ai-writing/SKILL.md | expanded (+36 lines) | ~798 |
+| 11:59 | Edited current/skills/avoid-ai-writing/SKILL.md | 4→8 lines | ~104 |
+| 11:59 | Edited current/skills/avoid-ai-writing/SKILL.md | 3→5 lines | ~66 |
+| 11:59 | Edited current/skills/avoid-ai-writing/SKILL.md | expanded (+8 lines) | ~163 |
+| 11:59 | Edited current/skills/avoid-ai-writing/README.md | expanded (+6 lines) | ~166 |
+| 12:00 | Edited current/skills/avoid-ai-writing/SKILL.md | 7→11 lines | ~556 |
+| 12:01 | Created current/skills/avoid-ai-writing/forbidden-patterns.template.md | — | ~407 |
+| 12:01 | Edited current/skills/avoid-ai-writing/SKILL.md | 1→3 lines | ~142 |
+| 12:20 | Upgraded avoid-ai-writing to 3.5.0: 5 post-em-dash tells, generation-time prevention (ASD-STE100 + Zinsser humanity), forbidden-list workflow, credits | current/skills/avoid-ai-writing/{SKILL.md,README.md,forbidden-patterns.template.md} | self-audited against its own rules | ~7000 |

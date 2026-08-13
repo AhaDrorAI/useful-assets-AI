@@ -8,6 +8,12 @@ This is a fork of Conor Bronsdon's MIT-licensed skill, with added rules for
 overgeneralized "Most people..." openers, adverb crutches, fake profundity, and
 the "after careful consideration" / "here's the thing" stalls.
 
+Version 3.5.0 adds the tells that outlived the em dash — paired fragments, two-image
+contrasts, self-applause tags, X-of-Y analogies, and hedged numeric ranges — plus a
+section on preventing the patterns at generation time with ASD-STE100, Zinsser's
+fourth principle, and a project-local forbidden-patterns file. Adapted from Ruben
+Hassid's nine tells ([ste.rubenhassid.ai](http://ste.rubenhassid.ai)).
+
 ## Install
 
 The skill is one `SKILL.md` following the [agentskills.io](https://agentskills.io)

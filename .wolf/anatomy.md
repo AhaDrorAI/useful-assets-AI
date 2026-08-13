@@ -1,7 +1,7 @@
 # anatomy.md
 
-> Auto-maintained by OpenWolf. Last scanned: 2026-08-13T11:49:56.206Z
-> Files: 90 tracked | Anatomy hits: 0 | Misses: 0
+> Auto-maintained by OpenWolf. Last scanned: 2026-08-13T12:01:38.174Z
+> Files: 91 tracked | Anatomy hits: 0 | Misses: 0
 
 ## ./
 
@@ -93,8 +93,9 @@
 
 ## current/skills/avoid-ai-writing/
 
-- `README.md` — Standalone readme for the skill: what an "AI-ism" is, the tiered flagging model, and detect-only vs rewrite mode (~490 tok)
-- `SKILL.md` — Avoid AI Writing: audits and rewrites text to strip AI writing tells. Large file — read the section you need, not the whole thing (~9000 tok)
+- `forbidden-patterns.template.md` — Forbidden patterns (~382 tok)
+- `README.md` — Project documentation (~591 tok)
+- `SKILL.md` — Avoid AI Writing — Audit & Rewrite (~11381 tok)
 
 ## current/skills/cv-story-builder/
 

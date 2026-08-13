@@ -2,19 +2,19 @@
   "version": 1,
   "created_at": "2026-05-28T22:11:04.449Z",
   "lifetime": {
-    "total_tokens_estimated": 44712,
-    "total_reads": 32,
-    "total_writes": 49,
+    "total_tokens_estimated": 51805,
+    "total_reads": 36,
+    "total_writes": 58,
     "total_sessions": 6,
-    "anatomy_hits": 26,
+    "anatomy_hits": 30,
     "anatomy_misses": 6,
-    "repeated_reads_blocked": 11,
-    "estimated_savings_vs_bare_cli": 9349,
-    "real_input_tokens": 2091,
-    "real_output_tokens": 412826,
-    "real_cache_read_tokens": 110886434,
-    "real_cache_creation_tokens": 2006340,
-    "real_api_calls": 767
+    "repeated_reads_blocked": 12,
+    "estimated_savings_vs_bare_cli": 10610,
+    "real_input_tokens": 2612,
+    "real_output_tokens": 535609,
+    "real_cache_read_tokens": 146198142,
+    "real_cache_creation_tokens": 3169258,
+    "real_api_calls": 975
   },
   "sessions": [
     {
@@ -696,6 +696,100 @@
         "cache_read_input_tokens": 32128622,
         "cache_creation_input_tokens": 1146669,
         "api_calls": 197
+      }
+    },
+    {
+      "id": "session-2026-08-12-0600",
+      "agent": "claude",
+      "started": "2026-08-12T06:00:58.803Z",
+      "ended": "2026-08-13T11:54:55.646Z",
+      "reads": [
+        {
+          "file": "/home/user/useful-assets-AI/README.md",
+          "tokens_estimated": 461,
+          "was_repeated": true,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "/home/user/useful-assets-AI/current/skills/startup-free-traffic/references/geo-aeo.md",
+          "tokens_estimated": 1090,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "/home/user/useful-assets-AI/current/skills/startup-free-traffic/references/pre-launch.md",
+          "tokens_estimated": 920,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "/home/user/useful-assets-AI/.claude/settings.json",
+          "tokens_estimated": 441,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        }
+      ],
+      "writes": [
+        {
+          "file": "/home/user/useful-assets-AI/README.md",
+          "tokens_estimated": 46,
+          "action": "edit"
+        },
+        {
+          "file": "/home/user/useful-assets-AI/README.md",
+          "tokens_estimated": 333,
+          "action": "edit"
+        },
+        {
+          "file": "/tmp/claude-0/-home-user-useful-assets-AI/60cd6acf-b74f-5f4c-9918-6ca7703929b4/scratchpad/unescape.py",
+          "tokens_estimated": 268,
+          "action": "create"
+        },
+        {
+          "file": "/home/user/useful-assets-AI/scripts/openwolf-repair.mjs",
+          "tokens_estimated": 1811,
+          "action": "create"
+        },
+        {
+          "file": "/home/user/useful-assets-AI/.claude/settings.json",
+          "tokens_estimated": 122,
+          "action": "edit"
+        },
+        {
+          "file": "/home/user/useful-assets-AI/.claude/settings.json",
+          "tokens_estimated": 141,
+          "action": "edit"
+        },
+        {
+          "file": "/home/user/useful-assets-AI/scripts/openwolf-repair.mjs",
+          "tokens_estimated": 1252,
+          "action": "edit"
+        },
+        {
+          "file": "/home/user/useful-assets-AI/scripts/openwolf-repair.mjs",
+          "tokens_estimated": 22,
+          "action": "edit"
+        },
+        {
+          "file": "/home/user/useful-assets-AI/scripts/openwolf-repair.mjs",
+          "tokens_estimated": 186,
+          "action": "edit"
+        }
+      ],
+      "totals": {
+        "input_tokens_estimated": 2912,
+        "output_tokens_estimated": 4181,
+        "reads_count": 4,
+        "writes_count": 9,
+        "repeated_reads_blocked": 1,
+        "anatomy_lookups": 4
+      },
+      "real_usage": {
+        "input_tokens": 521,
+        "output_tokens": 122783,
+        "cache_read_input_tokens": 35311708,
+        "cache_creation_input_tokens": 1162918,
+        "api_calls": 208
       }
     }
   ],

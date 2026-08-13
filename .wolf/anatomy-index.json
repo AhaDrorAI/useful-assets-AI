@@ -1,12 +1,12 @@
 {
   "version": 1,
   "meta": {
-    "lastScanned": "2026-08-13T11:49:56.206Z",
-    "fileCount": 90,
+    "lastScanned": "2026-08-13T12:01:38.174Z",
+    "fileCount": 91,
     "hits": 0,
     "misses": 0,
-    "renderedHash": "1a5ebb4f650fbc38b829f3118245db90abc8e21549aa692fdc06ad8d64b806db",
-    "storeUpdatedAt": "2026-08-13T11:49:56.220Z"
+    "renderedHash": "7de789ad3cb2be805cf06346d00434b687d0c691590ddb70b3fb99dcdaf347ff",
+    "storeUpdatedAt": "2026-08-13T12:01:38.185Z"
   },
   "files": {
     ".gitignore": {
@@ -283,16 +283,22 @@
       "source": "md-import"
     },
     "current/skills/avoid-ai-writing/README.md": {
-      "description": "Standalone readme for the skill: what an \"AI-ism\" is, the tiered flagging model, and detect-only vs rewrite mode",
-      "tokens": 490,
-      "updatedAt": "2026-08-12T06:18:46.293Z",
-      "source": "md-import"
+      "description": "Project documentation",
+      "tokens": 591,
+      "hash": "4bb3ee705fd49a9a",
+      "size": 2367,
+      "mtimeMs": 1786622387563.1753,
+      "updatedAt": "2026-08-13T11:59:47.651Z",
+      "source": "hook"
     },
     "current/skills/avoid-ai-writing/SKILL.md": {
-      "description": "Avoid AI Writing: audits and rewrites text to strip AI writing tells. Large file — read the section you need, not the whole thing",
-      "tokens": 9000,
-      "updatedAt": "2026-08-12T06:18:46.293Z",
-      "source": "md-import"
+      "description": "Avoid AI Writing — Audit & Rewrite",
+      "tokens": 11381,
+      "hash": "0f19ec5b8015ad33",
+      "size": 45699,
+      "mtimeMs": 1786622498087.1729,
+      "updatedAt": "2026-08-13T12:01:38.174Z",
+      "source": "hook"
     },
     "current/skills/cv-story-builder/desktop.ini": {
       "description": "",
@@ -581,6 +587,15 @@
           "tokens": 290
         }
       ]
+    },
+    "current/skills/avoid-ai-writing/forbidden-patterns.template.md": {
+      "description": "Forbidden patterns",
+      "tokens": 382,
+      "hash": "c7fcdee6ff1f5ce9",
+      "size": 1528,
+      "mtimeMs": 1786622491783.1729,
+      "updatedAt": "2026-08-13T12:01:31.865Z",
+      "source": "hook"
     }
   }
 }

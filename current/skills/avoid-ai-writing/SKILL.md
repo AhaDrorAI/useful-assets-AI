@@ -1,13 +1,14 @@
 ---
 name: avoid-ai-writing
 description: Audit and rewrite content to remove AI writing patterns ("AI-isms"). Use this skill when asked to "remove AI-isms," "clean up AI writing," "edit writing for AI patterns," "audit writing for AI tells," or "make this sound less like AI." Supports a detection-only mode that flags patterns without rewriting.
-version: 3.4.0
+version: 3.5.0
 license: MIT
 compatibility: Any AI coding assistant that supports the agentskills.io SKILL.md format (Claude Code, Codex CLI, Grok Build, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required.
 metadata:
   author: Conor Bronsdon
   fork_maintainer: Dror Moshe Aharoni
-  fork_changes: "Added rules for overgeneralized 'Most people...' openers, adverb crutches, fake profundity, and the 'after careful consideration' / 'here's the thing' stalls."
+  fork_changes: "Added rules for overgeneralized 'Most people...' openers, adverb crutches, fake profundity, and the 'after careful consideration' / 'here's the thing' stalls. 3.5.0 adds the post-em-dash tells (paired fragments, two-image contrasts, self-applause tags, X-of-Y analogies, hedged numeric ranges), a generation-time prevention section built on ASD-STE100 and Zinsser's fourth principle, and guidance on keeping a project-local forbidden-patterns file."
+  additional_sources: "Post-em-dash pattern list adapted from Ruben Hassid's nine tells (ste.rubenhassid.ai)."
   tags: writing editing voice quality
   agentskills_spec: "1.0"
   openclaw:
@@ -17,6 +18,15 @@ metadata:
 # Avoid AI Writing — Audit & Rewrite
 
 You are editing content to remove AI writing patterns ("AI-isms") that make text sound machine-generated.
+
+## The tells move
+
+Every tell on this list eventually gets trained out, and then the *absence* of it becomes the tell. The em dash is the worked example: it was the single most reliable signal, everyone learned it, models stopped producing it, and now a piece with no em dashes and flawless parallel structure reads as machine-written to anyone paying attention.
+
+Two consequences for how you audit:
+
+- **Sentence shape outranks vocabulary.** A writer who scrubs every word on the Tier 1 list but keeps the two-beat rhythm and the symmetrical constructions has not fixed anything. The patterns under "Post-em-dash tells" and "Rhythm and uniformity" are where the signal lives now.
+- **Perfect structure is itself suspicious.** Don't drive a piece toward uniform polish. Over-editing pushes human writing *into* the AI profile, which is why "Over-polishing" is a flagged pattern rather than a goal.
 
 ## Modes
 
@@ -56,7 +66,7 @@ In **detect** mode, your job is to:
 - **Excessive bullet lists**: Convert bullet-heavy sections into prose paragraphs. Bullets only for genuinely list-like content (feature comparisons, step-by-step instructions, API parameters).
 
 ### Sentence structure
-- **"It's not X — it's Y" / "This isn't about X, it's about Y"**: Rewrite as a direct positive statement. Max one per piece, and only if it serves the argument.
+- **"It's not X — it's Y" / "This isn't about X, it's about Y"**: Rewrite as a direct positive statement. Max one per piece, and only if it serves the argument. Now that em dashes are rarer, this pattern usually arrives as two sentences: "That's not compliance. That's stalling." Same construction, same fix, and the fix is mechanical: keep the second half, drop the first. "They're stalling." The negated half almost never carries information; it exists to give the real claim a run-up.
 - **Hollow intensifiers**: Cut `genuine`, `real` (as in "a real improvement"), `truly`, `quite frankly`, `to be honest`, `let's be clear`, `it's worth noting that`. Just state the fact.
 - **Vague endorsement ("worth [verb]ing")**: Cut or replace `worth reading`, `worth paying attention to`, `worth a look`, `worth exploring`, `worth checking out`, `worth your time`. These substitute a generic thumbs-up for a specific reason. Say *why* something matters instead.
 - **Hedging**: Cut `perhaps`, `could potentially`, `it's important to note that`, `to be clear`. Make the point directly.
@@ -132,6 +142,9 @@ Words are organized into three tiers based on how reliably they signal AI-genera
 | keen (as intensifier) | interested, eager, enthusiastic (or cut — just state the interest) |
 | after careful consideration | (cut — claims deliberation that didn't happen; just give the decision) |
 | here's the thing | (cut — a stall before the point; just make the point) |
+| let me be clear | (cut — a warm-up; start one sentence later) |
+| the truth is | (cut — same warm-up; the claim that follows is the sentence) |
+| what's wild is | (cut — pre-announces a reaction the reader should have) |
 | symphony (metaphor) | (describe the actual coordination or combination) |
 | embrace (metaphor) | adopt, accept, use, switch to |
 
@@ -339,6 +352,30 @@ These slot-fill constructions signal that a sentence was generated, not written.
 - Inflating a mundane fact into a grand statement: "It's not just a budget, it's a statement of intent," "This isn't a feature, it's a philosophy," "That number tells a story." AI reaches for false depth to make the ordinary sound momentous.
 - Note this overlaps the "it's not X, it's Y" structure but the tell is the reach for cosmic significance, not the sentence shape. Either back the claim with what specifically makes it meaningful, or state the plain fact and let the reader weigh it.
 
+### Post-em-dash tells
+
+These five survive the em-dash purge because they are shapes, not characters. A piece can pass a find-and-replace sweep and still trip every one.
+
+**Paired fragments.** Two clipped phrases set side by side for emphasis: "Fast. Simple." "No fluff. Just answers." "Built for scale. Priced for startups." The rhythm is the tell. A human writing quickly produces one fragment, not a matched pair.
+- The fix: keep one, or write the full sentence. "It's fast" beats "Fast. Simple."
+- This does **not** contradict the advice to use fragments. A single fragment breaks rhythm, which is the point. A *pair* restores symmetry, which is the problem. Flag the pairing, not the fragment.
+
+**Two-image contrast with no instruction.** "Less a hammer, more a scalpel." "Not a map, a compass." "Think less library, more workshop." The reader now holds two pictures and no idea what to do.
+- The fix: say the action. "Use it on one function at a time" instead of "less hammer, more scalpel."
+- Related to fake profundity, but the tell here is the missing instruction rather than the reach for depth.
+
+**Self-applause tags.** A sentence that stops to tell the reader the preceding sentence landed: "And that matters." "That's the part everyone misses." "Which is exactly the point." "And that changes everything."
+- These are always deletable. Cut the tag and the paragraph loses nothing, which is the test: if deleting a sentence costs no information, it was applause.
+- Distinct from significance inflation, which inflates the *event*. This inflates the writer's own last line.
+
+**X-of-Y shorthand.** "It's the Excel of AI agents." "The Stripe for logistics." "Basically Git for designers."
+- The construction only works when the reader knows both halves well enough to compute the ratio, and usually they know one. Replace with what the thing does: "It runs scheduled jobs and shows the results in a grid."
+- Allow it only when the left-hand term is genuinely universal in the audience's world, and never more than once per piece.
+
+**Hedged numeric ranges.** "Takes 5 to 10 minutes." "Expect 20-30% savings." "Somewhere between 3 and 7 steps."
+- A range on a number the writer could have measured means the writer never measured it. Give the number you actually got: "Took 7 minutes." If the value genuinely varies, say what it depends on: "About 7 minutes, longer if the repo has more than 500 files."
+- Distinct from **False ranges** below, which is about sweeping *topic* pairs ("from the Big Bang to dark matter"). This one is about numeric estimates standing in for measurement.
+
 ### Rhythm and uniformity
 
 These aren't individual word or phrase problems — they're patterns in how the text flows as a whole. AI text is metronomic; human text has varied rhythm.
@@ -371,6 +408,10 @@ Not all AI-isms are equal. When doing a quick pass or triaging a large document,
 ### P1 � Obvious AI smell (fix before publishing)
 - Word-list violations (delve, leverage, harness, robust, etc.)
 - Template phrases and slot-fill constructions
+- Self-applause tags ("And that matters")
+- Paired fragments ("Fast. Simple.")
+- "That's not X. That's Y." in either the dash or two-sentence form
+- Hedged numeric ranges standing in for a measurement
 - "Let's" transition openers
 - Synonym cycling within a paragraph
 - Formulaic openings ("In the rapidly evolving world of...")
@@ -379,6 +420,8 @@ Not all AI-isms are equal. When doing a quick pass or triaging a large document,
 
 ### P2 � Stylistic polish (fix when time allows)
 - Generic conclusions ("The future looks bright")
+- Two-image contrasts with no instruction ("less a hammer, more a scalpel")
+- X-of-Y shorthand ("the Excel of AI agents")
 - Compulsive rule of three
 - Uniform paragraph length
 - Copula avoidance (serves as, features, boasts)
@@ -387,6 +430,48 @@ Not all AI-isms are equal. When doing a quick pass or triaging a large document,
 Use P0+P1 for quick passes. Full audit covers all three tiers.
 
 ---
+
+## Preventing it at generation time
+
+Everything above is a cure. These are the controls that stop the patterns being written in the first place, which is cheaper than editing them out.
+
+### Write to ASD-STE100
+
+ASD-STE100 (Simplified Technical English) is the controlled-language standard for aircraft maintenance manuals: approved words used in one sense, short sentences, active voice, one instruction per sentence. It exists because an ambiguous sentence in that context can get somebody killed. Its constraints overlap heavily with this document's, so writing to it prevents most Tier 1 vocabulary and most of the longer constructions before they reach the page.
+
+Two ways to apply it, in order of preference:
+
+**A dedicated STE skill.** A separate skill that encodes the rules (sentence limits of 20 words procedural and 25 descriptive, allowed verb forms, a substitution dictionary, warning and caution structure) does the job properly and is invoked explicitly, usually as `/ste`. Ruben Hassid distributes a free one at [ste.rubenhassid.ai](http://ste.rubenhassid.ai). Keep it as its own skill rather than folding it in here: STE governs how prose is *generated*, this file governs how prose is *audited*, and the two want different trigger conditions.
+
+**The one-line fallback.** With no skill installed, putting `Use ASD-STE100.` in the prompt still removes a large share of the problem, because the standard is well enough documented that models approximate it. Less reliable than the skill, and worth nothing on text that is already written. For that, use this file.
+
+Scope it deliberately. STE suits guides, steps, explanations, API docs, release notes, emails, and internal documents. It flattens anything that depends on voice: narrative, humour, persuasion, a poem, a personal post. Turn it off for those and rely on the audit rules instead.
+
+One caveat worth passing on. The official ASD-STE100 specification and its dictionary are copyright ASD. Any skill of this kind encodes paraphrased rules and a publicly sourced word list, which is fine for ordinary writing and not the same thing as compliance. For certified aerospace or defence deliverables, the free official specification at asd-ste100.org plus human sign-off is the requirement. Never describe output as certified.
+
+### Keep Zinsser's fourth principle
+
+STE delivers simplicity, brevity, and clarity. It has no opinion about humanity, and text optimised only for the first three reads like a manual regardless of subject. Zinsser's four principles are simplicity, brevity, clarity, and humanity. The fourth is the one that keeps a person audible in the prose.
+
+For a project that generates a lot of prose, put the reminder where the model reads it every session, in `CLAUDE.md` or the equivalent:
+
+> Follow Zinsser's four principles of quality writing: 1. Simplicity 2. Brevity 3. Clarity 4. Humanity.
+
+This skill's "Missing first-person perspective" and "Over-polishing" rules exist for the same reason. If STE is on and the output has gone flat, humanity is the principle that went missing.
+
+### Keep a project-local forbidden list
+
+This file is general. The patterns that actually recur in one project, publication, or writer are narrower, and they change faster than a shared skill can be updated.
+
+Keep a short `forbidden-patterns.md` next to the work, and tell the model to check every draft against both it and this skill. Add a line each time a new tell gets past you, with a one-line fix beside it. The file compounds: after a few weeks it catches more of your specific problems than any general list will, and it's the right home for house style that would be wrong to impose on everyone.
+
+`forbidden-patterns.template.md` in this skill's folder is a starter, seeded with the patterns above and an empty house-style section.
+
+### Start a fresh chat when quality drops
+
+Long conversations degrade writing quality. The model drifts back toward the polished register, repeats phrasings it already used, and re-introduces patterns it removed earlier in the same session. This is a context problem, not a prompting problem, and no amount of re-instructing fixes it.
+
+When a draft starts sounding like the thing you have been editing away from, open a new chat and paste back the source material and the forbidden list. Roughly halfway through a long session is usually early enough.
 
 ## Self-reference escape hatch
 
@@ -495,3 +580,11 @@ Five principles for human-sounding rewrites:
 If the original writing is already strong, say so and make only the necessary cuts. Don't over-edit for the sake of it.
 
 The replacement table provides defaults, not mandates. If a flagged word is clearly the right choice in context, preserve it.
+
+---
+
+## Credits
+
+Original skill by Conor Bronsdon, MIT licensed. The tiered vocabulary list adapts vocabulary research from [brandonwise/humanizer](https://github.com/brandonwise/humanizer).
+
+The "Post-em-dash tells" section and the ASD-STE100 prevention approach adapt Ruben Hassid's nine tells, published at [ste.rubenhassid.ai](http://ste.rubenhassid.ai). ASD-STE100 itself is the AeroSpace and Defence Industries Association of Europe's Simplified Technical English specification.
