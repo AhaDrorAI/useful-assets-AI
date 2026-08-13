@@ -1,14 +1,14 @@
 ---
 name: avoid-ai-writing
 description: Audit and rewrite content to remove AI writing patterns ("AI-isms"). Use this skill when asked to "remove AI-isms," "clean up AI writing," "edit writing for AI patterns," "audit writing for AI tells," or "make this sound less like AI." Supports a detection-only mode that flags patterns without rewriting.
-version: 3.5.0
+version: 3.6.0
 license: MIT
 compatibility: Any AI coding assistant that supports the agentskills.io SKILL.md format (Claude Code, Codex CLI, Grok Build, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required.
 metadata:
   author: Conor Bronsdon
   fork_maintainer: Dror Moshe Aharoni
-  fork_changes: "Added rules for overgeneralized 'Most people...' openers, adverb crutches, fake profundity, and the 'after careful consideration' / 'here's the thing' stalls. 3.5.0 adds the post-em-dash tells (paired fragments, two-image contrasts, self-applause tags, X-of-Y analogies, hedged numeric ranges), a generation-time prevention section built on ASD-STE100 and Zinsser's fourth principle, and guidance on keeping a project-local forbidden-patterns file."
-  additional_sources: "Post-em-dash pattern list adapted from Ruben Hassid's nine tells (ste.rubenhassid.ai)."
+  fork_changes: "Added rules for overgeneralized 'Most people...' openers, adverb crutches, fake profundity, and the 'after careful consideration' / 'here's the thing' stalls. 3.5.0 adds the post-em-dash tells (paired fragments, two-image contrasts, self-applause tags, X-of-Y analogies, hedged numeric ranges), a generation-time prevention section built on ASD-STE100 and Zinsser's fourth principle, and guidance on keeping a project-local forbidden-patterns file. 3.6.0 absorbs the transferable grammar rules from Simplified Technical English (nominalisations, actorless passive, tense bloat, empty-subject openers, noun stacks), adds 22 controlled-language substitutions across Tiers 1 and 2, and states explicitly which STE rules to reject because they flatten voice."
+  additional_sources: "Post-em-dash pattern list and the Simplified Technical English rules adapted from Ruben Hassid's nine tells and his /ste skill (ste.rubenhassid.ai). ASD-STE100 is an ASD specification; the rules here are paraphrased from public secondary sources and are not a compliance claim."
   tags: writing editing voice quality
   agentskills_spec: "1.0"
   openclaw:
@@ -145,6 +145,14 @@ Words are organized into three tiers based on how reliably they signal AI-genera
 | let me be clear | (cut — a warm-up; start one sentence later) |
 | the truth is | (cut — same warm-up; the claim that follows is the sentence) |
 | what's wild is | (cut — pre-announces a reaction the reader should have) |
+| ensure / verify / validate | make sure, check, confirm it works |
+| utilise (any spelling) | use |
+| initiate | start |
+| terminate / cease | stop, end |
+| in the event that | if |
+| prior to | before |
+| subsequent to | after |
+| by means of / via (non-route sense) | through, with, by |
 | symphony (metaphor) | (describe the actual coordination or combination) |
 | embrace (metaphor) | adopt, accept, use, switch to |
 
@@ -178,6 +186,18 @@ These words are legitimate on their own. When two or more show up together, the 
 | reimagine | rethink, redesign, rebuild |
 | galvanize | motivate, rally, push |
 | augment | add to, expand, supplement |
+| perform / conduct / execute (an action) | do, run |
+| obtain / acquire / procure | get |
+| sufficient / adequate | enough |
+| accomplish | do, finish |
+| necessitate / require | need, must |
+| demonstrate | show |
+| modify / alter | change |
+| retain | keep |
+| indicate | show, point to |
+| additional / supplementary | more |
+| approximately | about (or the measured number) |
+| remainder | rest |
 | cultivate | build, develop, grow |
 | illuminate | clarify, explain, show |
 | elucidate | explain, clarify, spell out |
@@ -376,6 +396,38 @@ These five survive the em-dash purge because they are shapes, not characters. A 
 - A range on a number the writer could have measured means the writer never measured it. Give the number you actually got: "Took 7 minutes." If the value genuinely varies, say what it depends on: "About 7 minutes, longer if the repo has more than 500 files."
 - Distinct from **False ranges** below, which is about sweeping *topic* pairs ("from the Big Bang to dark matter"). This one is about numeric estimates standing in for measurement.
 
+### Grammar patterns borrowed from Simplified Technical English
+
+Controlled-language standards were built to stop ambiguity, not to defeat AI detectors, but four of their rules catch constructions this list otherwise misses. Models reach for all four constantly, because each one lets a sentence sound complete while committing to less.
+
+**Nominalisations.** An action turned into a noun, propped up by an empty verb: "perform a compression of the log files," "conduct an analysis," "provide assistance," "make a determination," "do an evaluation of."
+- The fix is always the same: the noun already contains the verb. "Compress the log files." "Analyse it." "Help." "Decide."
+- Fastest single edit in this document. Look for *perform / conduct / provide / make / do / carry out* followed by a noun ending in -tion, -ment, -ance, or -ing.
+
+**Passive voice with no actor.** "The files are processed," "mistakes were made," "the decision was reached," "it is recommended that."
+- Passive is legitimate when the actor is genuinely unknown or irrelevant ("the server was rebooted overnight"). It is an AI tell when it hides who acted, because the model often does not know and the passive lets it avoid saying.
+- The fix: name the actor. "The pipeline processes the files." If naming the actor is impossible, that is worth noticing, not smoothing over.
+
+**Tense bloat.** "We have received your request," "the system is currently running," "this has been being tested since March."
+- Present perfect and continuous forms pad a sentence without adding information. Simple past or present nearly always carries the same meaning in fewer words: "We got your request." "The system runs diagnostics now." "We started testing in March."
+
+**Empty-subject openers.** "There is a problem with the parser," "There are three bolts on the panel," "It is important that."
+- These delay the real subject by one clause. Rewrite with the actual subject in front: "The parser drops trailing commas." "The panel has three bolts."
+- Related: noun stacks of four or more words ("runway light connection resistance calibration"). Break them with prepositions: "calibration of the resistance in the runway light connection." Three words is the practical ceiling.
+
+Two smaller ones, worth a scan rather than a rule: Latin abbreviations (`e.g.` → "for example", `i.e.` → "that is", `etc.` → finish the list or cut it), and semicolons joining two independent clauses, which almost always read better as two sentences.
+
+### Where Simplified Technical English is wrong for this skill
+
+STE optimises for a non-native reader parsing a maintenance manual under time pressure. That is not the goal here, and importing it wholesale produces text that fails this skill's own tests. Four rules to *not* carry over:
+
+- **It bans contractions.** Contractions are one of the strongest human signals in ordinary prose. Keep "it's," "don't," "you're." Drop contractions only in formal documents where the register genuinely calls for it.
+- **It bans phrasal verbs**, replacing "set up" with "install" and "go down" with "decrease." That trade runs backwards for everything except technical procedures: the Latinate word is the one that sounds machine-written. Prefer the phrasal verb in prose.
+- **It caps sentence length** at 20 words for procedures and 25 for description. A whole piece written to that cap is uniformly short, and uniformity is the top structural detection signal. Use the caps as an upper bound on individual sentences in documentation, never as a target, and keep the length variance that "Rhythm and uniformity" calls for.
+- **Its one-meaning rulings are aviation jargon.** "Do a test" instead of "test the system," "obey the steps" instead of "follow the steps," "check" banned as a verb. Correct in a manual, strange anywhere else. Ignore them outside certified technical writing.
+
+The general principle: take STE's rules about *padding* and leave its rules about *register*. Padding is padding in any genre. Register is what makes writing sound like a person.
+
 ### Rhythm and uniformity
 
 These aren't individual word or phrase problems — they're patterns in how the text flows as a whole. AI text is metronomic; human text has varied rhythm.
@@ -408,6 +460,8 @@ Not all AI-isms are equal. When doing a quick pass or triaging a large document,
 ### P1 � Obvious AI smell (fix before publishing)
 - Word-list violations (delve, leverage, harness, robust, etc.)
 - Template phrases and slot-fill constructions
+- Nominalisations ("perform a compression of")
+- Actorless passive ("mistakes were made")
 - Self-applause tags ("And that matters")
 - Paired fragments ("Fast. Simple.")
 - "That's not X. That's Y." in either the dash or two-sentence form
@@ -420,6 +474,9 @@ Not all AI-isms are equal. When doing a quick pass or triaging a large document,
 
 ### P2 � Stylistic polish (fix when time allows)
 - Generic conclusions ("The future looks bright")
+- Empty-subject openers ("There is a problem with")
+- Tense bloat ("has been being tested")
+- Noun stacks of four or more words
 - Two-image contrasts with no instruction ("less a hammer, more a scalpel")
 - X-of-Y shorthand ("the Excel of AI agents")
 - Compulsive rule of three
@@ -444,6 +501,8 @@ Two ways to apply it, in order of preference:
 **A dedicated STE skill.** A separate skill that encodes the rules (sentence limits of 20 words procedural and 25 descriptive, allowed verb forms, a substitution dictionary, warning and caution structure) does the job properly and is invoked explicitly, usually as `/ste`. Ruben Hassid distributes a free one at [ste.rubenhassid.ai](http://ste.rubenhassid.ai). Keep it as its own skill rather than folding it in here: STE governs how prose is *generated*, this file governs how prose is *audited*, and the two want different trigger conditions.
 
 **The one-line fallback.** With no skill installed, putting `Use ASD-STE100.` in the prompt still removes a large share of the problem, because the standard is well enough documented that models approximate it. Less reliable than the skill, and worth nothing on text that is already written. For that, use this file.
+
+Either way, read "Where Simplified Technical English is wrong for this skill" above before turning it on for prose. The rules that catch padding are in this file already, under "Grammar patterns borrowed from Simplified Technical English"; the rules that flatten voice are the reason STE should not run over a personal post.
 
 Scope it deliberately. STE suits guides, steps, explanations, API docs, release notes, emails, and internal documents. It flattens anything that depends on voice: narrative, humour, persuasion, a poem, a personal post. Turn it off for those and rely on the audit rules instead.
 
@@ -587,4 +646,8 @@ The replacement table provides defaults, not mandates. If a flagged word is clea
 
 Original skill by Conor Bronsdon, MIT licensed. The tiered vocabulary list adapts vocabulary research from [brandonwise/humanizer](https://github.com/brandonwise/humanizer).
 
-The "Post-em-dash tells" section and the ASD-STE100 prevention approach adapt Ruben Hassid's nine tells, published at [ste.rubenhassid.ai](http://ste.rubenhassid.ai). ASD-STE100 itself is the AeroSpace and Defence Industries Association of Europe's Simplified Technical English specification.
+The "Post-em-dash tells" section adapts Ruben Hassid's nine tells. The "Grammar patterns borrowed from Simplified Technical English" section and the controlled-language substitutions in Tiers 1 and 2 are drawn from his `/ste` skill, which encodes ASD-STE100 for drafting. Both are published at [ste.rubenhassid.ai](http://ste.rubenhassid.ai).
+
+The reconciliation is this skill's own: STE was designed for maintenance manuals read by non-native speakers, so its rules on padding transfer and its rules on register do not. See "Where Simplified Technical English is wrong for this skill" for the four that are deliberately rejected.
+
+ASD-STE100 is a specification of the AeroSpace and Defence Industries Association of Europe. The rules restated here are paraphrased from public secondary sources, not the official dictionary, and nothing in this file constitutes a compliance claim. Certified technical writing needs the official specification at asd-ste100.org and human sign-off.

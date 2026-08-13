@@ -1,6 +1,6 @@
 # anatomy.md
 
-> Auto-maintained by OpenWolf. Last scanned: 2026-08-13T12:01:38.174Z
+> Auto-maintained by OpenWolf. Last scanned: 2026-08-13T12:11:05.206Z
 > Files: 91 tracked | Anatomy hits: 0 | Misses: 0
 
 ## ./
@@ -95,7 +95,7 @@
 
 - `forbidden-patterns.template.md` — Forbidden patterns (~382 tok)
 - `README.md` — Project documentation (~591 tok)
-- `SKILL.md` — Avoid AI Writing — Audit & Rewrite (~11381 tok)
+- `SKILL.md` — Avoid AI Writing — Audit & Rewrite (~12719 tok)
 
 ## current/skills/cv-story-builder/
 

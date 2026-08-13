@@ -90,3 +90,9 @@
 | 12:01 | Created current/skills/avoid-ai-writing/forbidden-patterns.template.md | — | ~407 |
 | 12:01 | Edited current/skills/avoid-ai-writing/SKILL.md | 1→3 lines | ~142 |
 | 12:20 | Upgraded avoid-ai-writing to 3.5.0: 5 post-em-dash tells, generation-time prevention (ASD-STE100 + Zinsser humanity), forbidden-list workflow, credits | current/skills/avoid-ai-writing/{SKILL.md,README.md,forbidden-patterns.template.md} | self-audited against its own rules | ~7000 |
+| 12:02 | Session end: 22 writes across 6 files (README.md, unescape.py, openwolf-repair.mjs, settings.json, SKILL.md) | 4 reads | ~11192 tok |
+| 12:10 | Edited current/skills/avoid-ai-writing/SKILL.md | expanded (+32 lines) | ~1085 |
+| 12:10 | Edited current/skills/avoid-ai-writing/SKILL.md | 4→6 lines | ~78 |
+| 12:10 | Edited current/skills/avoid-ai-writing/SKILL.md | 2→5 lines | ~61 |
+| 12:11 | Edited current/skills/avoid-ai-writing/SKILL.md | 1→3 lines | ~172 |
+| 12:35 | Absorbed STE skill rules into avoid-ai-writing 3.6.0: 4 grammar patterns, 22 substitutions, and an explicit reject-list for STE rules that flatten voice | current/skills/avoid-ai-writing/{SKILL.md,README.md} | 3 duplicate table rows caught and resolved | ~9000 |

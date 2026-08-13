@@ -1,12 +1,12 @@
 {
   "version": 1,
   "meta": {
-    "lastScanned": "2026-08-13T12:01:38.174Z",
+    "lastScanned": "2026-08-13T12:11:05.206Z",
     "fileCount": 91,
     "hits": 0,
     "misses": 0,
-    "renderedHash": "7de789ad3cb2be805cf06346d00434b687d0c691590ddb70b3fb99dcdaf347ff",
-    "storeUpdatedAt": "2026-08-13T12:01:38.185Z"
+    "renderedHash": "c30274f691afc1256be158ebae00c6b0b486dd5d4a991f4b95cfbbd4906526e7",
+    "storeUpdatedAt": "2026-08-13T12:11:05.215Z"
   },
   "files": {
     ".gitignore": {
@@ -293,11 +293,11 @@
     },
     "current/skills/avoid-ai-writing/SKILL.md": {
       "description": "Avoid AI Writing — Audit & Rewrite",
-      "tokens": 11381,
-      "hash": "0f19ec5b8015ad33",
-      "size": 45699,
-      "mtimeMs": 1786622498087.1729,
-      "updatedAt": "2026-08-13T12:01:38.174Z",
+      "tokens": 12719,
+      "hash": "18ff3a366a5f1300",
+      "size": 51057,
+      "mtimeMs": 1786623065119.1597,
+      "updatedAt": "2026-08-13T12:11:05.206Z",
       "source": "hook"
     },
     "current/skills/cv-story-builder/desktop.ini": {
