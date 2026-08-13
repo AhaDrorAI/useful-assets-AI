@@ -96,3 +96,5 @@
 | 12:10 | Edited current/skills/avoid-ai-writing/SKILL.md | 2→5 lines | ~61 |
 | 12:11 | Edited current/skills/avoid-ai-writing/SKILL.md | 1→3 lines | ~172 |
 | 12:35 | Absorbed STE skill rules into avoid-ai-writing 3.6.0: 4 grammar patterns, 22 substitutions, and an explicit reject-list for STE rules that flatten voice | current/skills/avoid-ai-writing/{SKILL.md,README.md} | 3 duplicate table rows caught and resolved | ~9000 |
+| 12:12 | Session end: 26 writes across 6 files (README.md, unescape.py, openwolf-repair.mjs, settings.json, SKILL.md) | 4 reads | ~12687 tok |
+| 13:36 | Session end: 26 writes across 6 files (README.md, unescape.py, openwolf-repair.mjs, settings.json, SKILL.md) | 4 reads | ~12687 tok |
