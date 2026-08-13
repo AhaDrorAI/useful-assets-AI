@@ -1,12 +1,12 @@
 {
   "version": 1,
   "meta": {
-    "lastScanned": "2026-08-12T06:18:46.291Z",
-    "fileCount": 89,
+    "lastScanned": "2026-08-13T11:49:56.206Z",
+    "fileCount": 90,
     "hits": 0,
     "misses": 0,
-    "renderedHash": "ef47db6d79c9d319e3e7082186d9156d190c63c65e11ca0bc35dc132a6d2e7cc",
-    "storeUpdatedAt": "2026-08-12T06:20:41.299Z"
+    "renderedHash": "1a5ebb4f650fbc38b829f3118245db90abc8e21549aa692fdc06ad8d64b806db",
+    "storeUpdatedAt": "2026-08-13T11:49:56.220Z"
   },
   "files": {
     ".gitignore": {
@@ -35,9 +35,12 @@
     },
     ".claude/settings.json": {
       "description": "",
-      "tokens": 441,
-      "updatedAt": "2026-08-12T06:18:46.292Z",
-      "source": "md-import"
+      "tokens": 581,
+      "hash": "21789c8dd8dc294e",
+      "size": 2032,
+      "mtimeMs": 1786621674175.1917,
+      "updatedAt": "2026-08-13T11:47:54.267Z",
+      "source": "hook"
     },
     ".claude/rules/openwolf.md": {
       "description": "",
@@ -546,6 +549,38 @@
       "source": "md-import",
       "size": 15551,
       "hash": "fcc29f424753a6df"
+    },
+    "scripts/openwolf-repair.mjs": {
+      "description": "Re-apply this project's OpenWolf patches after an upgrade.",
+      "tokens": 2312,
+      "hash": "ebad0c2aae9c239d",
+      "size": 8853,
+      "mtimeMs": 1786621796115.1887,
+      "updatedAt": "2026-08-13T11:49:56.206Z",
+      "source": "hook",
+      "symbols": [
+        {
+          "name": "restoreSymbolExtractor",
+          "kind": "fn",
+          "startLine": 48,
+          "endLine": 154,
+          "tokens": 1298
+        },
+        {
+          "name": "applySourcePatches",
+          "kind": "fn",
+          "startLine": 155,
+          "endLine": 174,
+          "tokens": 264
+        },
+        {
+          "name": "verifyHooksImport",
+          "kind": "fn",
+          "startLine": 175,
+          "endLine": 203,
+          "tokens": 290
+        }
+      ]
     }
   }
 }

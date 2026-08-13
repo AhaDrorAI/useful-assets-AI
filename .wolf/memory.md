@@ -61,3 +61,15 @@
 | 06:23 | Session end: 3 writes across 2 files (README.md, unescape.py) | 3 reads | ~3118 tok |
 | 06:56 | Fixed unsatisfiable Stop-hook nag: countSemanticEntries matched a date prefix against time-prefixed rows, so it always counted 0 | .wolf/hooks/shared.js | patched + verified (12 counted vs 0 upstream); logged bug-009 | ~2000 |
 | 06:25 | Session end: 3 writes across 2 files (README.md, unescape.py) | 3 reads | ~3118 tok |
+| 06:27 | Session end: 3 writes across 2 files (README.md, unescape.py) | 3 reads | ~3118 tok |
+| 06:49 | Created scripts/openwolf-repair.mjs | — | ~1691 |
+| 11:17 | Edited .claude/settings.json | 12→17 lines | ~122 |
+| 11:47 | Edited .claude/settings.json | 17→22 lines | ~141 |
+| 11:50 | Added self-healing repair hook so openwolf upgrades cannot silently revert the two local patches | scripts/openwolf-repair.mjs, .claude/settings.json, .wolf/patches/ | tested against simulated upgrade: both patches auto-restored | ~6000 |
+| 11:52 | Wrote filing-ready upstream bug reports for both openwolf 2.0.1 defects | .wolf/patches/UPSTREAM-REPORT.md | ready to submit; session cannot reach cytostack/openwolf | ~2000 |
+| 11:49 | Edited scripts/openwolf-repair.mjs | added 4 condition(s) | ~1168 |
+| 11:49 | Edited scripts/openwolf-repair.mjs | patchAnatomyParser() → applySourcePatches() | ~20 |
+| 11:49 | Edited scripts/openwolf-repair.mjs | 6→11 lines | ~174 |
+| 11:55 | Added scripts/openwolf-repair.mjs + own SessionStart entry so openwolf upgrades cannot silently revert the 3 local patches | scripts/openwolf-repair.mjs, .claude/settings.json, .wolf/patches/ | all 3 auto-restore; idempotent; tested vs simulated upgrade | ~8000 |
+| 11:57 | Found and fixed a real defect in the earlier bug-009 fix: date-scoped counting failed across midnight | .wolf/hooks/shared.js | now session-scoped; count 15 vs 0 before | ~2000 |
+| 11:58 | Wrote filing-ready upstream reports for the two openwolf 2.0.1 defects | .wolf/patches/UPSTREAM-REPORT.md | ready to submit; this session cannot reach cytostack/openwolf | ~2000 |

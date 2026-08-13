@@ -623,20 +623,26 @@ export function countSemanticEntries(wolfDir) {
         // "| HH:MM | ... |" — the format OPENWOLF.md documents and the hooks
         // themselves append — so matching on a "| YYYY-MM-DD" prefix counted
         // zero however many summaries were written, and the Stop hook asked for
-        // one on every turn forever. Count today's rows by the session header
-        // they sit under, and keep the date-prefixed form working too.
-        let inToday = false;
-        for (const line of content.split("\n")) {
-            const header = line.match(/^##\s+Session:\s*(\d{4}-\d{2}-\d{2})/);
-            if (header) {
-                inToday = header[1] === today;
+        // one on every turn forever.
+        //
+        // Scope to the current session rather than to today's date: a session
+        // that runs past midnight, or one resumed the next day, keeps appending
+        // under the header it opened with, so "is the header dated today" is
+        // false while summaries are being written. The question the Stop hook
+        // is really asking is "did this session write one".
+        const lines = content.split("\n");
+        let sessionStart = 0;
+        for (let i = 0; i < lines.length; i++) {
+            if (/^##\s+Session:/.test(lines[i]))
+                sessionStart = i + 1;
+        }
+        for (let i = 0; i < lines.length; i++) {
+            const line = lines[i];
+            if (mechanical.test(line))
                 continue;
-            }
-            if (line.startsWith(todayPrefix) && !mechanical.test(line)) {
+            if (line.startsWith(todayPrefix))
                 count++;
-                continue;
-            }
-            if (inToday && /^\|\s*\d{1,2}:\d{2}\s*\|/.test(line) && !mechanical.test(line))
+            else if (i >= sessionStart && /^\|\s*\d{1,2}:\d{2}\s*\|/.test(line))
                 count++;
         }
         return count;

@@ -1,7 +1,7 @@
 # anatomy.md
 
-> Auto-maintained by OpenWolf. Last scanned: 2026-08-12T06:18:46.291Z
-> Files: 89 tracked | Anatomy hits: 0 | Misses: 0
+> Auto-maintained by OpenWolf. Last scanned: 2026-08-13T11:49:56.206Z
+> Files: 90 tracked | Anatomy hits: 0 | Misses: 0
 
 ## ./
 
@@ -12,7 +12,7 @@
 
 ## .claude/
 
-- `settings.json` (~441 tok)
+- `settings.json` (~581 tok)
 
 ## .claude/rules/
 
@@ -185,6 +185,13 @@
 
 - `desktop.ini` (~29 tok)
 - `youtube-links.md` — YouTube Links (~46 tok)
+
+## scripts/
+
+- `openwolf-repair.mjs` — Re-apply this project's OpenWolf patches after an upgrade. (~2312 tok)
+  - fn `restoreSymbolExtractor` L48-154 (~1298 tok)
+  - fn `applySourcePatches` L155-174 (~264 tok)
+  - fn `verifyHooksImport` L175-203 (~290 tok)
 
 ## start-here/
 

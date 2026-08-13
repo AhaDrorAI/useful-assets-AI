@@ -115,7 +115,7 @@
       "error_message": "After `openwolf update` to 2.0.1, every Write/Edit crashed the post-write hook: ERR_MODULE_NOT_FOUND '.wolf/hooks/symbol-extractor.js'",
       "file": ".wolf/hooks/symbol-extractor.js",
       "root_cause": "Upstream bug in openwolf 2.0.1: both init.js and update.js copy a hardcoded 10-file hook list that omits symbol-extractor.js, while post-write.js imports it at module load. Any 2.0.1 install or upgrade leaves post-write dead, so anatomy, memory, session tracking and auto bug detection all stop silently.",
-      "fix": "Copied symbol-extractor.js from the installed package into .wolf/hooks/. Re-run this copy after any future `openwolf update` until upstream fixes the list.",
+      "fix": "Copied symbol-extractor.js from the installed package into .wolf/hooks/. Re-run this copy after any future `openwolf update` until upstream fixes the list. Re-applied automatically by scripts/openwolf-repair.mjs (SessionStart hook), so an upgrade cannot silently revert it.",
       "tags": [
         "openwolf",
         "2.0.1",
@@ -128,7 +128,7 @@
         "bug-008"
       ],
       "occurrences": 1,
-      "last_seen": "2026-08-12T06:25:00.000Z"
+      "last_seen": "2026-08-13T11:58:00.000Z"
     },
     {
       "id": "bug-008",
@@ -136,7 +136,7 @@
       "error_message": "The 2.0.1 migration imported 87 of 89 anatomy entries; google-play-publishing.skill and startup-free-traffic.skill were dropped from anatomy-index.json",
       "file": ".wolf/hooks/anatomy-store.js",
       "root_cause": "Same lossy regex as bug-004, still present upstream in 2.0.1's parseAnatomy. It is now more damaging: anatomy.md is rendered from the store, so an entry missed at import is deleted from the index on the next write rather than merely being skipped.",
-      "fix": "Local patch to parseAnatomy in .wolf/hooks/anatomy-store.js adding a fallback branch for entries whose size label is not '(~N tok)'; re-imported the two lost entries into the store with token counts from a real scan. Marked LOCAL PATCH \u2014 `openwolf update` will overwrite it.",
+      "fix": "Local patch to parseAnatomy in .wolf/hooks/anatomy-store.js adding a fallback branch for entries whose size label is not '(~N tok)'; re-imported the two lost entries into the store with token counts from a real scan. Marked LOCAL PATCH \u2014 `openwolf update` will overwrite it. Re-applied automatically by scripts/openwolf-repair.mjs (SessionStart hook), so an upgrade cannot silently revert it.",
       "tags": [
         "openwolf",
         "2.0.1",
@@ -150,7 +150,7 @@
         "bug-007"
       ],
       "occurrences": 1,
-      "last_seen": "2026-08-12T06:25:00.000Z"
+      "last_seen": "2026-08-13T11:58:00.000Z"
     },
     {
       "id": "bug-009",
@@ -158,7 +158,7 @@
       "error_message": "Stop hook repeated 'ACTION REQUIRED: N files were modified this session but no semantic summary was written to memory.md' on every turn, immediately after summaries were written",
       "file": ".wolf/hooks/shared.js",
       "root_cause": "countSemanticEntries() matched rows by a '| YYYY-MM-DD' prefix, but memory.md rows are '| HH:MM | ... |' \u2014 the format OPENWOLF.md documents and the hooks themselves append. The count was therefore always 0 and the reminder was unsatisfiable: writing the requested summary could never clear it. Present in 1.0.4 and unchanged in 2.0.1.",
-      "fix": "LOCAL PATCH in countSemanticEntries: track the '## Session: YYYY-MM-DD' header and count today's non-mechanical '| HH:MM |' rows, keeping the date-prefixed form working. Verified 12 entries counted vs 0 upstream, and the Stop hook now stays quiet.",
+      "fix": "LOCAL PATCH in countSemanticEntries: track the '## Session: YYYY-MM-DD' header and count today's non-mechanical '| HH:MM |' rows, keeping the date-prefixed form working. Verified 12 entries counted vs 0 upstream, and the Stop hook now stays quiet. Re-applied automatically by scripts/openwolf-repair.mjs (SessionStart hook), so an upgrade cannot silently revert it.",
       "tags": [
         "openwolf",
         "hooks",
@@ -172,7 +172,80 @@
         "bug-008"
       ],
       "occurrences": 3,
-      "last_seen": "2026-08-12T06:55:00.000Z"
+      "last_seen": "2026-08-13T11:58:00.000Z"
+    },
+    {
+      "id": "bug-010",
+      "timestamp": "2026-08-13T11:49:44.822Z",
+      "error_message": "Significant refactor of ",
+      "file": "scripts/openwolf-repair.mjs",
+      "root_cause": "16 lines replaced/restructured",
+      "fix": "Rewrote 57\u2192104 lines (16 removed)",
+      "tags": [
+        "auto-detected",
+        "refactor",
+        "mjs"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-08-13T11:49:44.822Z"
+    },
+    {
+      "id": "bug-011",
+      "timestamp": "2026-08-13T11:49:49.321Z",
+      "error_message": "Wrong reference: patchAnatomyParser should be applySourcePatches",
+      "file": "scripts/openwolf-repair.mjs",
+      "root_cause": "Used \"patchAnatomyParser\" instead of \"applySourcePatches\"",
+      "fix": "Changed patchAnatomyParser \u2192 applySourcePatches",
+      "tags": [
+        "auto-detected",
+        "wrong-reference",
+        "mjs"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-08-13T11:49:49.321Z"
+    },
+    {
+      "id": "bug-010",
+      "timestamp": "2026-08-13T11:58:00.000Z",
+      "error_message": "Repair hook was stripped from settings.json by a simulated `openwolf update`, despite living outside .wolf/hooks/",
+      "file": ".claude/settings.json",
+      "root_cause": "replaceOpenWolfHooks filters at the matcher-entry level: it removes any entry whose hooks array contains ANY command mentioning .wolf/hooks/. The repair command had been placed in the same entry as session-start.js, so both were removed.",
+      "fix": "Moved the repair command into its own SessionStart matcher entry. Verified against a local reimplementation of replaceOpenWolfHooks: the entry survives and still runs first.",
+      "tags": [
+        "openwolf",
+        "hooks",
+        "settings",
+        "claude-code"
+      ],
+      "related_bugs": [
+        "bug-007",
+        "bug-008",
+        "bug-009"
+      ],
+      "occurrences": 1,
+      "last_seen": "2026-08-13T11:58:00.000Z"
+    },
+    {
+      "id": "bug-011",
+      "timestamp": "2026-08-13T11:58:00.000Z",
+      "error_message": "The bug-009 fix did not work: countSemanticEntries still returned 0 while the Stop hook kept demanding a memory.md summary",
+      "file": ".wolf/hooks/shared.js",
+      "root_cause": "The fix scoped counting to session headers dated today. This session opened on 2026-08-12 and ran into 2026-08-13, and a resumed session does not append a new header \u2014 so every row sat under a header dated 'yesterday' and inToday was never true. Testing the fix only on the day it was written hid this.",
+      "fix": "Scoped to the current session instead of to the calendar date: count non-mechanical rows after the last `## Session:` header, keeping the date-prefixed form working. Verified 15 entries counted, and still 0 when only mechanical rows exist.",
+      "tags": [
+        "openwolf",
+        "hooks",
+        "stop-hook",
+        "date-handling",
+        "off-by-one-day"
+      ],
+      "related_bugs": [
+        "bug-009"
+      ],
+      "occurrences": 1,
+      "last_seen": "2026-08-13T11:58:00.000Z"
     }
   ]
 }
