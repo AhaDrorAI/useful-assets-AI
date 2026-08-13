@@ -1,12 +1,12 @@
 {
   "version": 1,
   "meta": {
-    "lastScanned": "2026-08-13T12:11:05.206Z",
-    "fileCount": 91,
+    "lastScanned": "2026-08-13T16:36:02.693Z",
+    "fileCount": 93,
     "hits": 0,
     "misses": 0,
-    "renderedHash": "c30274f691afc1256be158ebae00c6b0b486dd5d4a991f4b95cfbbd4906526e7",
-    "storeUpdatedAt": "2026-08-13T12:11:05.215Z"
+    "renderedHash": "bce4a092b577dd7b6264e2ad889cab522074526d8379dda5a3eb09d9ff443478",
+    "storeUpdatedAt": "2026-08-13T16:36:02.708Z"
   },
   "files": {
     ".gitignore": {
@@ -29,9 +29,12 @@
     },
     "README.md": {
       "description": "Project documentation",
-      "tokens": 677,
-      "updatedAt": "2026-08-12T06:18:46.292Z",
-      "source": "md-import"
+      "tokens": 679,
+      "hash": "0bb2da798d91bc5c",
+      "size": 2730,
+      "mtimeMs": 1786638924066.9578,
+      "updatedAt": "2026-08-13T16:35:24.172Z",
+      "source": "hook"
     },
     ".claude/settings.json": {
       "description": "",
@@ -426,34 +429,16 @@
       "updatedAt": "2026-08-12T06:18:46.293Z",
       "source": "md-import"
     },
-    "current/skills/startup-free-traffic/references/Channel_Playbooks.md": {
-      "description": "Per-channel playbooks (lead magnets, Product Hunt, LinkedIn, cold outreach, referrals, SEO, short-form). Has a Contents list — read only the chosen channels",
-      "tokens": 2400,
-      "updatedAt": "2026-08-12T06:18:46.293Z",
-      "source": "md-import"
-    },
-    "current/skills/startup-free-traffic/references/Deliverable-Templates.md": {
-      "description": "Output templates, starting with the 30-day traction plan",
-      "tokens": 780,
-      "updatedAt": "2026-08-12T06:18:46.293Z",
-      "source": "md-import"
-    },
-    "current/skills/startup-free-traffic/references/Founder-Profile-Template.md": {
-      "description": "Template for capturing founder context before recommending channels",
-      "tokens": 590,
-      "updatedAt": "2026-08-12T06:18:46.293Z",
-      "source": "md-import"
-    },
     "current/skills/startup-free-traffic/references/geo-aeo.md": {
       "description": "Generative Engine Optimization: getting the startup cited in AI-generated answers. Read when content, SEO, or AI-search visibility is a chosen channel",
-      "tokens": 1090,
-      "updatedAt": "2026-08-12T06:18:46.293Z",
+      "tokens": 1240,
+      "updatedAt": "2026-08-13T16:36:02.693Z",
       "source": "md-import"
     },
     "current/skills/startup-free-traffic/references/pre-launch.md": {
       "description": "Pre-launch distribution: read when the user is pre-launch or within ~4 weeks of launching",
-      "tokens": 920,
-      "updatedAt": "2026-08-12T06:18:46.293Z",
+      "tokens": 870,
+      "updatedAt": "2026-08-13T16:36:02.693Z",
       "source": "md-import"
     },
     "docs/desktop.ini": {
@@ -549,9 +534,9 @@
       "hash": "518eedf2adb9a8fd"
     },
     "current/skills/startup-free-traffic/startup-free-traffic.skill": {
-      "description": "Packaged skill zip for the free-traffic framework. No unpacked SKILL.md exists in this directory",
+      "description": "Packaged zip of this directory, kept as the distributable",
       "tokens": 3934,
-      "updatedAt": "2026-08-12T06:20:41.285Z",
+      "updatedAt": "2026-08-13T16:36:02.693Z",
       "source": "md-import",
       "size": 15551,
       "hash": "fcc29f424753a6df"
@@ -595,6 +580,39 @@
       "size": 1528,
       "mtimeMs": 1786622491783.1729,
       "updatedAt": "2026-08-13T12:01:31.865Z",
+      "source": "hook"
+    },
+    "current/skills/startup-free-traffic/SKILL.md": {
+      "description": "Startup Free Traffic: diagnose-then-execute framework for organic traffic with no budget. Unpacked from the .skill zip",
+      "tokens": 1730,
+      "updatedAt": "2026-08-13T16:36:02.693Z",
+      "source": "md-import"
+    },
+    "current/skills/startup-free-traffic/references/channel-playbooks.md": {
+      "description": "Per-channel playbooks (lead magnets, Product Hunt, LinkedIn, cold outreach, referrals, SEO, short-form). Has a Contents list — read only the chosen channels",
+      "tokens": 2400,
+      "updatedAt": "2026-08-13T16:36:02.693Z",
+      "source": "md-import"
+    },
+    "current/skills/startup-free-traffic/references/deliverable-templates.md": {
+      "description": "Output structures for the execute phase, starting with the 30-day traction plan",
+      "tokens": 750,
+      "updatedAt": "2026-08-13T16:36:02.693Z",
+      "source": "md-import"
+    },
+    "current/skills/startup-free-traffic/references/founder-profile-template.md": {
+      "description": "Persistent founder-context file that replaces repeated diagnosis",
+      "tokens": 575,
+      "updatedAt": "2026-08-13T16:36:02.693Z",
+      "source": "md-import"
+    },
+    "docs/local-machine-tasks.md": {
+      "description": "Tasks for a coding agent running on the local machine",
+      "tokens": 1015,
+      "hash": "184b16e882936f6b",
+      "size": 4058,
+      "mtimeMs": 1786638962594.9573,
+      "updatedAt": "2026-08-13T16:36:02.693Z",
       "source": "hook"
     }
   }

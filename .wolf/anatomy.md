@@ -1,14 +1,14 @@
 # anatomy.md
 
-> Auto-maintained by OpenWolf. Last scanned: 2026-08-13T12:11:05.206Z
-> Files: 91 tracked | Anatomy hits: 0 | Misses: 0
+> Auto-maintained by OpenWolf. Last scanned: 2026-08-13T16:36:02.693Z
+> Files: 93 tracked | Anatomy hits: 0 | Misses: 0
 
 ## ./
 
 - `.gitignore` — Git ignore rules (~30 tok)
 - `CLAUDE.md` — OpenWolf (~57 tok)
 - `desktop.ini` (~29 tok)
-- `README.md` — Project documentation (~677 tok)
+- `README.md` — Project documentation (~679 tok)
 
 ## .claude/
 
@@ -147,19 +147,21 @@
 
 ## current/skills/startup-free-traffic/
 
-- `startup-free-traffic.skill` — Packaged skill zip for the free-traffic framework. No unpacked SKILL.md exists in this directory (~3934 tok)
+- `SKILL.md` — Startup Free Traffic: diagnose-then-execute framework for organic traffic with no budget. Unpacked from the .skill zip (~1730 tok)
+- `startup-free-traffic.skill` — Packaged zip of this directory, kept as the distributable (~3934 tok)
 
 ## current/skills/startup-free-traffic/references/
 
-- `Channel_Playbooks.md` — Per-channel playbooks (lead magnets, Product Hunt, LinkedIn, cold outreach, referrals, SEO, short-form). Has a Contents list — read only the chosen channels (~2400 tok)
-- `Deliverable-Templates.md` — Output templates, starting with the 30-day traction plan (~780 tok)
-- `Founder-Profile-Template.md` — Template for capturing founder context before recommending channels (~590 tok)
-- `geo-aeo.md` — Generative Engine Optimization: getting the startup cited in AI-generated answers. Read when content, SEO, or AI-search visibility is a chosen channel (~1090 tok)
-- `pre-launch.md` — Pre-launch distribution: read when the user is pre-launch or within ~4 weeks of launching (~920 tok)
+- `channel-playbooks.md` — Per-channel playbooks (lead magnets, Product Hunt, LinkedIn, cold outreach, referrals, SEO, short-form). Has a Contents list — read only the chosen channels (~2400 tok)
+- `deliverable-templates.md` — Output structures for the execute phase, starting with the 30-day traction plan (~750 tok)
+- `founder-profile-template.md` — Persistent founder-context file that replaces repeated diagnosis (~575 tok)
+- `geo-aeo.md` — Generative Engine Optimization: getting the startup cited in AI-generated answers. Read when content, SEO, or AI-search visibility is a chosen channel (~1240 tok)
+- `pre-launch.md` — Pre-launch distribution: read when the user is pre-launch or within ~4 weeks of launching (~870 tok)
 
 ## docs/
 
 - `desktop.ini` (~29 tok)
+- `local-machine-tasks.md` — Tasks for a coding agent running on the local machine (~1015 tok)
 - `publishing-recommendation.md` — Publishing Recommendation (~762 tok)
 
 ## examples/

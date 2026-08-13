@@ -98,3 +98,8 @@
 | 12:35 | Absorbed STE skill rules into avoid-ai-writing 3.6.0: 4 grammar patterns, 22 substitutions, and an explicit reject-list for STE rules that flatten voice | current/skills/avoid-ai-writing/{SKILL.md,README.md} | 3 duplicate table rows caught and resolved | ~9000 |
 | 12:12 | Session end: 26 writes across 6 files (README.md, unescape.py, openwolf-repair.mjs, settings.json, SKILL.md) | 4 reads | ~12687 tok |
 | 13:36 | Session end: 26 writes across 6 files (README.md, unescape.py, openwolf-repair.mjs, settings.json, SKILL.md) | 4 reads | ~12687 tok |
+| 13:37 | Session end: 26 writes across 6 files (README.md, unescape.py, openwolf-repair.mjs, settings.json, SKILL.md) | 4 reads | ~12687 tok |
+| 16:35 | Edited README.md | inline fix | ~39 |
+| 16:36 | Created docs/local-machine-tasks.md | — | ~1083 |
+| 16:40 | Unpacked startup-free-traffic.skill as canonical; zip was the better copy (restored 2 lost geo-aeo sections, fixed broken lowercase cross-references) | current/skills/startup-free-traffic/ | 5 refs renamed, SKILL.md added | ~3000 |
+| 16:42 | Wrote local-machine handoff instructions and filled STATUS.md (no active quest) | docs/local-machine-tasks.md, .wolf/STATUS.md | ready for the local agent | ~3500 |

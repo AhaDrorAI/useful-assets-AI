@@ -50,7 +50,7 @@ Skills:
 - [Improve codebase architecture](current/skills/improve-codebase-architecture/SKILL.md) — survey a codebase for shallow modules and rank deepening candidates
 - [New project from PRD](current/skills/new-project-from-prd/SKILL.md) — turn a PRD or product idea into a project an agent can build
 - [Outside reader audit](current/skills/outside-reader-audit/SKILL.md) — read external-facing text as an outsider with no hidden context
-- [Startup free traffic](current/skills/startup-free-traffic) — organic, zero-budget traffic and launch strategy for early-stage startups
+- [Startup free traffic](current/skills/startup-free-traffic/SKILL.md) — organic, zero-budget traffic and launch strategy for early-stage startups
 - Packaged `.skill` files are in [current/skills](current/skills).
 
 ## Safety
