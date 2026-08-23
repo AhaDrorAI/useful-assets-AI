@@ -8,7 +8,11 @@
   "plugins": [
     {
       "name": "useful-assets-ai",
-      "source": "./current",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/AhaDrorAI/useful-assets-AI.git",
+        "path": "current"
+      },
       "description": "Writing gates and working skills, with Hebrew and Israeli-reader modules.",
       "author": {
         "name": "Dror Moshe Aharoni"

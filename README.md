@@ -24,7 +24,7 @@ If the install reports `Run /reload-plugins to activate.`, run that too.
 
 ### Claude Desktop and Cowork
 
-`Customize` → `Plugins` → under **Personal plugins**, `+` → `Add marketplace` → `Add from a repository` → enter `AhaDrorAI/useful-assets-AI`. Then install `useful-assets-ai` from the marketplace that appears.
+`Customize` → `Plugins` → under **Personal plugins**, `+` → `Add marketplace` → `Add from a repository` → enter `AhaDrorAI/useful-assets-AI` (the repo root, not a `/tree/.../current` path). Then install `useful-assets-ai` from the marketplace that appears.
 
 Same catalog as Claude Code. One source, three surfaces.
 
