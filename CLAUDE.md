@@ -1,5 +1,10 @@
-# OpenWolf
+# useful-assets-AI
 
-@.wolf/OPENWOLF.md
+Claude plugin of writing gates and working skills. Hebrew and English.
 
-This project uses OpenWolf for context management. Read and follow .wolf/OPENWOLF.md every session. Check .wolf/cerebrum.md before generating code. Check .wolf/anatomy.md before reading files.
+- Plugin root: `current/` (`.claude-plugin/` + `skills/` only)
+- Guides: `guides/`
+- Course path: `start-here/`
+- Human entry: `README.md`
+
+Do not commit `.wolf/`, `.claude/`, or other local working state. `.gitignore` is the publish boundary.

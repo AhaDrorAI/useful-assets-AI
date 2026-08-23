@@ -1,20 +1,10 @@
-# Current
+# useful-assets-ai plugin
 
-Current publishable assets.
+This directory is the Claude plugin. It contains only what the plugin loader reads:
 
-## Guides
+- `.claude-plugin/plugin.json`
+- `skills/`
 
-- `guides/new-machine-claude-code-setup.en.html`
-- `guides/new-machine-claude-code-setup.he.html`
-- `guides/ai-agent-repo-advisor.en.html`
-- `guides/ai-agent-repo-advisor.he.html`
-- `guides/ai-agent-repo-operating-guide.md`
-- `guides/new-machine-claude-code-setup.md`
+Guides live in [`../guides`](../guides). Install from the [repository README](../README.md).
 
-## Skills
-
-- `skills/agent-onboarding-wizard.skill`
-- `skills/new-project-from-prd.skill`
-- `skills/agent-onboarding-wizard/SKILL.md`
-- `skills/new-project-from-prd/SKILL.md`
-
+A second plugin, if one is added later, is a sibling of this directory. Do not put content here.

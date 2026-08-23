@@ -1,4 +1,16 @@
+# Publish boundary. Tracked files are public. Everything below stays on the machine.
+
+.wolf/
+.claude/
+
+docs/local-machine-tasks.md
+archive/context-notes/
+
+scripts/openwolf-repair.mjs
+
 _private/
+
+dist/
 
 .DS_Store
 Thumbs.db
@@ -12,7 +24,3 @@ desktop.ini
 node_modules/
 .venv/
 __pycache__/
-
-
-# OpenWolf local state (backups are recovery snapshots, not source)
-.wolf/backups/

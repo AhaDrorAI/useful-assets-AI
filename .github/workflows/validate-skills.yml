@@ -12,6 +12,27 @@ on:
   workflow_dispatch:
 
 jobs:
+  publish-boundary:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fail if an ignored path is tracked
+        run: |
+          leaked="$(git ls-files -ci --exclude-standard)"
+          if [ -n "$leaked" ]; then
+            echo "Tracked files that .gitignore says must stay local:"
+            echo "$leaked"
+            exit 1
+          fi
+
+      - name: Fail if the plugin root still holds content
+        run: |
+          if [ -d current/guides ]; then
+            echo "current/guides must not exist. Guides live in guides/."
+            exit 1
+          fi
+
   validate:
     runs-on: ubuntu-latest
     steps:

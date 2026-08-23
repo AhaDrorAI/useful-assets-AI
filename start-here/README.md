@@ -6,8 +6,8 @@ Use this sequence for course participants and non-developers.
 
 Open one of these:
 
-- [English setup guide](../current/guides/new-machine-claude-code-setup.en.html)
-- [Hebrew setup guide](../current/guides/new-machine-claude-code-setup.he.html)
+- [English setup guide](../guides/new-machine-claude-code-setup.en.html)
+- [Hebrew setup guide](../guides/new-machine-claude-code-setup.he.html)
 
 Goal: install and sign in to GitHub CLI, Claude Code, Codex, Node, Bun, and the basic project tools.
 
@@ -15,8 +15,8 @@ Goal: install and sign in to GitHub CLI, Claude Code, Codex, Node, Bun, and the 
 
 Open one of these:
 
-- [English repo advisor](../current/guides/ai-agent-repo-advisor.en.html)
-- [Hebrew repo advisor](../current/guides/ai-agent-repo-advisor.he.html)
+- [English repo advisor](../guides/ai-agent-repo-advisor.en.html)
+- [Hebrew repo advisor](../guides/ai-agent-repo-advisor.he.html)
 
 Goal: avoid installing everything. Choose the smallest useful workflow layer for the current task.
 
@@ -25,7 +25,8 @@ Goal: avoid installing everything. Choose the smallest useful workflow layer for
 Use the `new-project-from-prd` skill:
 
 - [Skill source](../current/skills/new-project-from-prd/SKILL.md)
-- [Packaged skill](../current/skills/new-project-from-prd.skill)
+
+Install the whole plugin from the [repository README](../README.md), or download a packaged zip from [GitHub Releases](https://github.com/AhaDrorAI/useful-assets-AI/releases) after a version is tagged.
 
 Goal: turn a PRD, SPEC, or early idea into a repo with `CLAUDE.md`, `AGENTS.md`, `planning.md`, `tasks.md`, `decisions.md`, and `project_state.md`.
 
@@ -34,7 +35,7 @@ Goal: turn a PRD, SPEC, or early idea into a repo with `CLAUDE.md`, `AGENTS.md`,
 Use the `agent-onboarding-wizard` skill:
 
 - [Skill source](../current/skills/agent-onboarding-wizard/SKILL.md)
-- [Packaged skill](../current/skills/agent-onboarding-wizard.skill)
+
+Same install path as step 3.
 
 Goal: decide what belongs globally, what belongs inside one project, what is only a reference, and what should be skipped.
-
