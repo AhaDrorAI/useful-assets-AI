@@ -1,0 +1,56 @@
+# Runs the packaging validator on every push. This is the answer to "where do I run the
+# Python script": you do not. GitHub runs it, and tells you if a skill is broken.
+#
+# Path in the repo: .github/workflows/validate-skills.yml
+
+name: skills
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # ubuntu is case-sensitive, which is the whole point. A reference file named
+      # Patterns.md while SKILL.md links patterns.md fails here and passes on Windows.
+      - name: Validate and package skills
+        run: python scripts/package_skills.py
+
+      - name: Upload built ZIPs
+        uses: actions/upload-artifact@v4
+        with:
+          name: skill-zips
+          path: dist/*.zip
+          retention-days: 14
+
+  release:
+    # Only on a version tag: git tag v1.2.0 && git push --tags
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Build ZIPs
+        run: python scripts/package_skills.py
+
+      - name: Attach ZIPs to the release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*.zip
+          generate_release_notes: true
