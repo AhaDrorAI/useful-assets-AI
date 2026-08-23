@@ -1,6 +1,6 @@
 ---
 name: avoid-ai-writing
-description: Audit and rewrite content to remove AI writing patterns ("AI-isms"). Use this skill when asked to "remove AI-isms," "clean up AI writing," "edit writing for AI patterns," "audit writing for AI tells," or "make this sound less like AI." Supports a detection-only mode that flags patterns without rewriting.
+description: Audit and rewrite content to remove AI writing patterns ("AI-isms"). Use this skill when asked to "remove AI-isms," "clean up AI writing," "edit writing for AI patterns," "audit writing for AI tells," or "make this sound less like AI." Supports a detection-only mode that flags patterns without rewriting. Works on Hebrew text as well; loads references/hebrew.md for Hebrew-specific patterns.
 version: 3.6.0
 license: MIT
 compatibility: Any AI coding assistant that supports the agentskills.io SKILL.md format (Claude Code, Codex CLI, Grok Build, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required.
@@ -54,6 +54,23 @@ In **detect** mode, your job is to:
 
 1. **Audit it**: identify every AI-ism present, citing the specific text
 2. **Assess it**: note which flags are clear problems vs. patterns that may be intentional or effective in context
+
+---
+
+## Language routing
+
+The pattern tables in this file are English. They do not fire on Hebrew.
+
+**If the audited text is in Hebrew, read `references/hebrew.md` before auditing.** That file
+carries the Hebrew pattern tables in two layers: English AI-isms as they land in Hebrew
+(calques), and failures that exist only in Hebrew (register inflation, gender defaults,
+translated syntax, RTL typography). Method, modes, severity tiers and output format stay
+governed by this file.
+
+Mixed Hebrew and English text: audit each language with its own tables.
+
+Other languages: say so instead of auditing. Running the English tables on a language they
+were not written for produces a clean bill of health that means nothing.
 
 ---
 
