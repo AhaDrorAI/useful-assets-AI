@@ -26,7 +26,7 @@ If the install reports `Run /reload-plugins to activate.`, run that too.
 
 `Customize` → `Plugins` → under **Personal plugins**, `+` → `Add marketplace` → `Add from a repository` → enter `AhaDrorAI/useful-assets-AI` (the repo root, not a `/tree/.../current` path). Then install `useful-assets-ai` from the marketplace that appears.
 
-Same catalog as Claude Code. One source, three surfaces.
+If marketplace sync still fails, that is a Claude Desktop server-side limit on some third-party catalogs. Upload the plugin folder instead: zip the contents of `current/` (so the zip has `.claude-plugin/` and `skills/` at its root) and use **Add plugin** → upload file.
 
 ### Codex and ChatGPT desktop
 

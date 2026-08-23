@@ -9,11 +9,11 @@
     {
       "name": "useful-assets-ai",
       "source": {
-        "source": "git-subdir",
-        "url": "https://github.com/AhaDrorAI/useful-assets-AI.git",
-        "path": "current"
+        "source": "github",
+        "repo": "AhaDrorAI/useful-assets-AI"
       },
       "description": "Writing gates and working skills, with Hebrew and Israeli-reader modules.",
+      "version": "1.1.4",
       "author": {
         "name": "Dror Moshe Aharoni"
       },
@@ -24,7 +24,8 @@
         "hebrew",
         "audit",
         "architecture"
-      ]
+      ],
+      "skills": ["./current/skills"]
     }
   ]
 }

@@ -12,8 +12,9 @@ CI fails the build if a tracked file matches `.gitignore`.
 
 | Path | Role |
 |---|---|
-| `current/` | Claude plugin root. Only `.claude-plugin/` and `skills/`. |
-| `.claude-plugin/marketplace.json` | Marketplace catalog. Points at `./current`. |
+| `current/` | Plugin files (`skills/`). LinkedIn URLs stay here. |
+| `.claude-plugin/marketplace.json` | Marketplace catalog. Desktop sync needs a `github` object source, not a relative string or `git-subdir`. |
+| `.claude-plugin/plugin.json` | Plugin manifest at the repo root. Skills path is `./current/skills`. |
 | `guides/` | Human-readable guides. Invisible to the plugin loader. |
 | `start-here/` | Course sequence. |
 | `docs/` | Maintainer notes. |
