@@ -1,0 +1,21 @@
+{
+  "name": "aha-dror-ai",
+  "owner": {
+    "name": "Dror Moshe Aharoni",
+    "url": "https://github.com/AhaDrorAI"
+  },
+  "description": "Writing gates and working skills. Language-aware: English and Hebrew.",
+  "plugins": [
+    {
+      "name": "useful-assets-ai",
+      "source": "./current",
+      "description": "Writing gates and working skills, with Hebrew and Israeli-reader modules.",
+      "version": "1.1.0",
+      "author": {
+        "name": "Dror Moshe Aharoni"
+      },
+      "category": "writing",
+      "tags": ["writing", "editing", "hebrew", "audit", "architecture"]
+    }
+  ]
+}
