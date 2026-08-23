@@ -10,12 +10,17 @@
       "name": "useful-assets-ai",
       "source": "./current",
       "description": "Writing gates and working skills, with Hebrew and Israeli-reader modules.",
-      "version": "1.1.0",
       "author": {
         "name": "Dror Moshe Aharoni"
       },
       "category": "writing",
-      "tags": ["writing", "editing", "hebrew", "audit", "architecture"]
+      "tags": [
+        "writing",
+        "editing",
+        "hebrew",
+        "audit",
+        "architecture"
+      ]
     }
   ]
 }
