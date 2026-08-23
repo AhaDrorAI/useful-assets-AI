@@ -1,6 +1,6 @@
 ---
 name: outside-reader-audit
-description: Audit external-facing text, documents, CVs, cover letters, proposals, emails, posts, reports, or LLM-generated drafts from the perspective of a real outside reader with no hidden context. Use when the user asks for an outside reader, clarity audit, audience audit, context audit, brutal/neutral reader review, or wants to detect text that is too literal, naive, internal, irrelevant, or insufficiently transformed from raw user notes into audience-ready communication.
+description: Audit external-facing text, documents, CVs, cover letters, proposals, emails, posts, reports, or LLM-generated drafts from the perspective of a real outside reader with no hidden context. Use when the user asks for an outside reader, clarity audit, audience audit, context audit, brutal/neutral reader review, or wants to detect text that is too literal, naive, internal, irrelevant, or insufficiently transformed from raw user notes into audience-ready communication. Loads references/israeli-reader.md when the reader is Israeli.
 ---
 
 # Outside Reader Audit
@@ -32,6 +32,20 @@ Examples:
 - Email: recipient with limited patience and limited context
 - LinkedIn/post: public professional reader
 - Bureaucratic document: official reviewer looking for facts and eligibility
+
+### Reader locale
+
+The default reader model in this file is an Anglo-American professional. That model is wrong
+for some audiences, and a wrong reader model produces a confident audit of the wrong thing.
+
+**If the text is in Hebrew, or is aimed at a reader in Israel, read
+`references/israeli-reader.md` before auditing.** It swaps the reader model: directness as a
+trust signal, marketing register as a negative signal, shared context that must not be
+explained, and internal shorthand that must be. Core Rule and Output Format stay governed by
+this file.
+
+For any other locale with no reference file, state which reader you assumed at the top of the
+audit. An unstated reader model is the failure this routing exists to prevent.
 
 ## Output Format
 
