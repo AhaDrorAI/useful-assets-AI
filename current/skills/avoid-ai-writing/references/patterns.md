@@ -140,3 +140,21 @@ These slot-fill constructions signal that a sentence was generated, not written.
 # Fake profundity
 - Inflating a mundane fact into a grand statement: "It's not just a budget, it's a statement of intent," "This isn't a feature, it's a philosophy," "That number tells a story." AI reaches for false depth to make the ordinary sound momentous.
 - Note this overlaps the "it's not X, it's Y" structure but the tell is the reach for cosmic significance, not the sentence shape. Either back the claim with what specifically makes it meaningful, or state the plain fact and let the reader weigh it.
+
+# Fake-depth participles
+- A participle clause tacked onto a fact to make it sound analysed: "highlighting its importance," "underscoring its significance," "reflecting broader industry trends," "paving the way for wider adoption," "opening the door to new use cases," "signalling a shift in priorities."
+- The clause always ends the sentence and never survives a "so what specifically?" question. It performs analysis instead of doing any.
+- The fix: if the analysis matters, give it a real sentence with a specific claim. "Three competitors shipped the same feature within a month" beats "reflecting broader industry trends." If it doesn't matter, cut the clause and keep the fact.
+- Related to Superficial -ing analyses above. That entry covers strings of three or more; this one fires on a single clause, which is the more common case.
+
+# Meta commentary
+- Text that announces itself instead of getting on with it: "In this section we'll look at," "This article will cover," "Let me walk you through," "Before we get into that," "As mentioned above," "We'll return to this later."
+- The reader can see the headings. Navigation aids in a piece short enough to scroll are filler.
+- The fix: delete the announcement and start with the content. If a section genuinely needs framing, one specific sentence about what changed does the job better than a table of contents in prose.
+- Distinct from Reasoning chain artifacts in that this narrates the document's structure rather than the model's thinking, and from Acknowledgment loops in that nothing is being restated back.
+
+# Engagement bait
+- Instructions to the reader about how impressed to be: "Let that sink in," "Read that again," "Full stop," "Period.", "This changes everything," "Are you paying attention?", "You're not ready for this," "I'll wait."
+- These are LinkedIn and X conventions that AI reproduces because the training data is full of them. They demand a reaction the sentence hasn't earned.
+- Always deletable. The test is the same as for self-applause tags in SKILL.md: cut the line, and if the paragraph loses no information, it was bait.
+- Overlaps Novelty inflation above, which covers the scarcity framings ("the failure mode nobody's naming"). This entry covers the pure attention grabs. Flag once, under whichever fits.

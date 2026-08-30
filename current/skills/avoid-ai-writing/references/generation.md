@@ -15,7 +15,7 @@ Two ways to apply it, in order of preference:
 
 **The one-line fallback.** With no skill installed, putting `Use ASD-STE100.` in the prompt still removes a large share of the problem, because the standard is well enough documented that models approximate it. Less reliable than the skill, and worth nothing on text that is already written. For that, use this file.
 
-Either way, read "Where Simplified Technical English is wrong for this skill" above before turning it on for prose. The rules that catch padding are in this file already, under "Grammar patterns borrowed from Simplified Technical English"; the rules that flatten voice are the reason STE should not run over a personal post.
+Either way, read "Where Simplified Technical English is wrong for this skill" in `references/ste.md` before turning it on for prose. The rules that catch padding are in this file already, under "Grammar patterns borrowed from Simplified Technical English"; the rules that flatten voice are the reason STE should not run over a personal post.
 
 Scope it deliberately. STE suits guides, steps, explanations, API docs, release notes, emails, and internal documents. It flattens anything that depends on voice: narrative, humour, persuasion, a poem, a personal post. Turn it off for those and rely on the audit rules instead.
 
