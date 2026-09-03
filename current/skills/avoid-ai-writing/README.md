@@ -2,11 +2,22 @@
 
 Audit and rewrite content to strip AI writing tells ("AI-isms"). Flags a tiered
 vocabulary list, formatting habits, and structural patterns; runs in `rewrite`
-(default) or `detect` mode.
+(default), `quick` (clean text only) or `detect` (flag, do not rewrite) mode.
 
 This is a fork of Conor Bronsdon's MIT-licensed skill, with added rules for
 overgeneralized "Most people..." openers, adverb crutches, fake profundity, and
 the "after careful consideration" / "here's the thing" stalls.
+
+Version 3.8.0 adds analogy and metaphor control (`references/metaphor.md`): banned
+setups, the exhausted image families, the metaphor-verb list that survives every
+other sweep, a length-based frequency budget, and a five-point permission test.
+It also generalises the old single "it's not X, it's Y" bullet into a full Reframes
+section covering the soft variants that never use the word "not", the pivot-word
+watchlist, reframe headings, and the rhetorical-question form. Smaller additions: a
+rule-priority ladder for when two rules disagree, a `quick` output mode, targeting
+the assistant's own last draft on "audit your text", and fake-depth participles,
+meta commentary, engagement bait and a digits rule. The project-local
+`forbidden-patterns.md` now loads on the audit path, not only when drafting.
 
 Version 3.6.0 absorbs the transferable rules from ASD-STE100 Simplified Technical
 English: nominalisations, actorless passive, tense bloat, empty-subject openers,
