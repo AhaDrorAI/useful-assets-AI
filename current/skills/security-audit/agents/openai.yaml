@@ -1,0 +1,4 @@
+interface:
+  display_name: "Security Audit"
+  short_description: "Prove-then-fix audit for AI-built web apps and Supabase"
+  default_prompt: "Run a security audit of this app. Ask the scoping questions first, stay read-only until I approve changes, map the attack surface, check the live database (RLS, grants, SECURITY DEFINER functions, signup metadata, storage), secrets, endpoints and dependencies, prove each hole without changing data, then report by severity with fixes."

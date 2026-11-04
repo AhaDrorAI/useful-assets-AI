@@ -59,6 +59,7 @@ In Claude Desktop and Cowork, refresh the marketplace from the same Plugins scre
 | [new-project-from-prd](current/skills/new-project-from-prd/SKILL.md) | Turns a PRD or product idea into a project an agent can build. |
 | [startup-free-traffic](current/skills/startup-free-traffic/SKILL.md) | Organic, zero-budget traffic and launch strategy for early-stage startups. |
 | [google-play-publishing](current/skills/google-play-publishing/SKILL.md) | Walks through publishing an Android app on Google Play. |
+| [security-audit](current/skills/security-audit/SKILL.md) | Security audit for AI-built web apps (Next.js, Netlify, Supabase): maps the attack surface, checks live RLS, grants and functions, proves each hole without changing data, then fixes and re-verifies. |
 
 Claude Code, Desktop, and Cowork load these through the plugin. Codex and ChatGPT use the same folders from `current/skills`. Packaged `.zip` files are built by CI and attached to [GitHub Releases](https://github.com/AhaDrorAI/useful-assets-AI/releases) when a version is tagged.
 
