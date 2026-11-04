@@ -13,7 +13,7 @@
         "repo": "AhaDrorAI/useful-assets-AI"
       },
       "description": "Writing gates and working skills, with Hebrew and Israeli-reader modules.",
-      "version": "1.1.6",
+      "version": "1.2.0",
       "author": {
         "name": "Dror Moshe Aharoni"
       },
@@ -23,7 +23,8 @@
         "editing",
         "hebrew",
         "audit",
-        "architecture"
+        "architecture",
+        "security"
       ],
       "skills": ["./current/skills"]
     }
