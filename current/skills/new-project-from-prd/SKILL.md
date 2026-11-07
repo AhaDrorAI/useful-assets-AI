@@ -1,6 +1,6 @@
 ---
 name: new-project-from-prd
-description: Start a new software project from a PRD, optional SPEC, or a clear product idea. Use when the user says they want to open, init, bootstrap, scaffold, or kickstart a project with Claude Code, Codex, GitHub, PRD/SPEC, repo setup, CLAUDE.md, AGENTS.md, planning, tasks, decisions, project state, and first working slice. Upgrades project-init behavior by supporting PRD-only, PRD+SPEC, or guided PRD creation, selecting relevant skills/subagents safely, creating GitHub repo flow, and stopping before risky installs or broad implementation.
+description: Bootstrap a software project from a PRD, SPEC, or idea. Check framing and acceptance criteria, prepare scoped project guidance, select relevant tooling, and verify a first working slice.
 ---
 
 # New Project From PRD
@@ -85,6 +85,13 @@ For idea-only mode, ask at most seven questions:
 6. Any preferred stack or services?
 7. What counts as a visible success in the first session?
 
+Before scaffolding, check the problem framing:
+
+- Separate the desired user outcome from the proposed product or technology. Consider an existing tool or simpler workflow if it could meet the same goal, while preserving explicit user requirements.
+- Preserve the supplied PRD and SPEC. Record suspected assumptions or proposed changes separately; do not silently rewrite scope. Surface material conflicts for a decision.
+- Define observable acceptance criteria for the first slice, grounded in a representative input and expected result. Label any thresholds you propose as proposals.
+- If the goal or approach remains materially unclear and `expert-problem-solving` is available, use it to resolve the uncertainty. Otherwise perform these checks directly. Do not add a second interview when the supplied documents already answer the questions.
+
 ### 3. Choose starter or full structure
 
 Use starter structure for small tools, landing pages, demos, or one-flow apps:
@@ -129,6 +136,7 @@ Do not install a fixed bundle. Classify each candidate:
 | `VoltAgent/awesome-claude-code-subagents` | Need specialist subagents |
 | `trailofbits/skills` | Auth, payments, secrets, security, sensitive data |
 | `promptfoo/promptfoo` | AI behavior must be regression-tested |
+| `expert-problem-solving` | The underlying need, simplest approach, or acceptance criteria remain materially unclear; reuse if already available |
 | `millionco/react-doctor` | React/Next project after first UI exists |
 | `browser-use/browser-use` | Product needs real browser automation |
 | `codegraph` | Repo is large enough that structure discovery is costly |
@@ -176,6 +184,8 @@ Bad first slices:
 - design all screens
 - install every tool
 - create a full database before any user-visible flow exists
+
+For the selected slice, demonstrate the intended behavior on a representative input. An app starting or a file existing proves only that limited milestone; distinguish it from evidence that the user's problem is solved. State an observable failure condition and a practical check the user can perform. Report proposed checks separately from those actually run, including failures or blocked checks.
 
 ### 8. Final report
 

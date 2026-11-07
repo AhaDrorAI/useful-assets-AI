@@ -1,6 +1,6 @@
 ---
 name: agent-onboarding-wizard
-description: Guide a user through safe onboarding after installing Claude Code or Codex. Use when the user asks what plugins, skills, subagents, repos, MCP servers, or workflow tools to install on a new machine or for a specific project. The skill inventories the local setup, classifies tools as global/project/reference/skip, explains tradeoffs in plain English, asks for approval before installing anything, and produces a small verified AI coding setup rather than bulk-installing catalogs.
+description: Set up Claude Code or Codex for a new machine or project. Inventory existing tools, recommend only needed additions, obtain install approval, and verify discovery and useful behavior.
 ---
 
 # Agent Onboarding Wizard
@@ -28,6 +28,10 @@ Ask only if not obvious:
 1. Is this for a new machine, a specific project, or both?
 2. Which agent tools are installed: Claude Code, Codex, Cursor, other?
 3. What kind of projects will this machine mostly build?
+
+Before selecting tools, identify a concrete task the user wants to complete and the current obstacle. Distinguish a missing capability from a workflow problem that existing tools can solve. Preserve explicit platform and project choices; do not require the user to justify decisions that are already settled.
+
+If the user is unsure what they need and `expert-problem-solving` is available, use it to clarify the outcome and smallest capability gap. Otherwise apply those checks directly; this wizard has no dependency on that skill. Ask only questions that change the setup recommendation.
 
 ### 2. Inventory the current environment
 
@@ -58,6 +62,8 @@ For Claude Code, also inspect these folders when they exist:
 For Codex, inspect local project guidance files:
 
 ```text
+~/.agents/skills/
+.agents/skills/
 AGENTS.md
 CLAUDE.md
 project_state.md
@@ -75,7 +81,7 @@ For every candidate repo/tool, assign one category:
 | Read-only reference | Good to learn from, not install now |
 | Skip for now | No immediate task benefits from it |
 
-Default recommendations:
+Candidate starting points, not a mandatory bundle. Reclassify each against the actual task and current inventory:
 
 | Repo/tool | Default category | Reason |
 |---|---|---|
@@ -140,12 +146,14 @@ openwolf status
 
 OpenWolf is Claude Code–oriented (hooks + `.wolf/`). For Codex-only projects, treat it as optional reference unless the user also uses Claude Code on that repo.
 
-After installation, verify with the smallest available check:
+After installation, first check discovery, then verify the intended capability with a small representative task:
 
 - CLI installed: run `--version` or help command.
-- Skill installed: list skills or check folder exists.
+- Skill installed: confirm the host discovers it, then try a representative request and inspect whether it produces the intended result. Folder existence alone is not a behavior check.
 - Agent installed: list agent files.
-- Project tool installed: run help command inside a disposable or project-safe context.
+- Project tool installed: run help, then a small project-safe example that exercises the capability the user needed.
+
+Report discovery checks separately from functional checks. State which checks ran, what happened, and what remains untested. Give the user one simple way to recognize whether the setup solves the original obstacle; avoid declaring onboarding complete when an essential capability remains blocked.
 
 ### 6. Create a handoff summary
 

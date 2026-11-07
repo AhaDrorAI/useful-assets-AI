@@ -51,6 +51,7 @@ In Claude Desktop and Cowork, refresh the marketplace from the same Plugins scre
 
 | Skill | What it does |
 |---|---|
+| [expert-problem-solving](current/skills/expert-problem-solving/README.md) | Frames unfamiliar problems, checks assumptions and evidence, and delivers simple solutions with practical validation. Includes English and Hebrew custom instructions. |
 | [avoid-ai-writing](current/skills/avoid-ai-writing/SKILL.md) | Audits and rewrites text to remove AI writing patterns. English and Hebrew. |
 | [outside-reader-audit](current/skills/outside-reader-audit/SKILL.md) | Reads external-facing text as an outsider with no hidden context. Has an Israeli-reader module. |
 | [improve-codebase-architecture](current/skills/improve-codebase-architecture/SKILL.md) | Surveys a codebase for shallow modules and ranks deepening candidates. Proposes only, never edits. |
