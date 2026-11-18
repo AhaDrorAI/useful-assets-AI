@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: tailor-cv-from-folder
+expected_outcome: |
+  Reads the job first, builds a Fit Mirror, separates hard/soft/unsupported claims, asks only high-leverage questions, and runs an outside-reader audit (isolated if possible) before delivery.
+context:
+  scaffold_script: place-files.sh

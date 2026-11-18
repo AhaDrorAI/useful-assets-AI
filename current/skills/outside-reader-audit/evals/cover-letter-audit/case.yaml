@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: cover-letter-audit
+expected_outcome: |
+  Follows the fixed Output Format; flags hidden context (Dana, Notion doc, TLX, Hydra, Q3 migration) as must-add or transform; does not rewrite the full letter.

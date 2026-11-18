@@ -1,6 +1,9 @@
 ---
 name: new-project-from-prd
-description: Bootstrap a software project from a PRD, SPEC, or idea. Check framing and acceptance criteria, prepare scoped project guidance, select relevant tooling, and verify a first working slice.
+description: Start a new software project from a PRD, a PRD plus SPEC, or a clear product idea. Check the framing and acceptance criteria, write project guidance files (CLAUDE.md, AGENTS.md, tasks.md, project_state.md and more), propose agent tooling for approval, set up git and GitHub safely, and prove one working slice. Use when the user wants to open, init, bootstrap, scaffold or kickstart a project, says "I have a PRD, what's next", "set up this repo for Claude Code / Codex", or describes an empty folder that needs structure. Not for installing tools on a new machine; use agent-onboarding-wizard for that.
+metadata:
+  last_reviewed: "2026-11-18"
+  review_every_days: "180"
 ---
 
 # New Project From PRD
@@ -29,16 +32,17 @@ The output is not just files. The output is a project operating system:
 - If the user has a SPEC, use it to constrain implementation.
 - If PRD and SPEC conflict, stop and list the conflict.
 - Never overwrite existing project files. Write `*.proposed.md` when a file exists.
-- Initialize git if missing, but do not commit unless the user asks.
+- If git is missing, initialize it. Do not commit unless the user asks.
 - Ask before creating a GitHub repo.
 - Ask before installing project skills, subagents, hooks, or MCP servers.
 - Prefer one vertical slice over broad scaffolding.
+- Never print, store or commit secrets. Put only variable names in `.env.example`.
 
 ## Flow
 
 ### 1. Confirm project root
 
-Verify the current working directory is the intended project root.
+Verify the current working directory is the intended project root. If the directory is the user's home folder, a system folder, or a folder that already holds unrelated projects, stop and ask which folder to use.
 
 Read root-level files:
 
@@ -72,10 +76,10 @@ Use one of three modes:
 | Mode | Condition | Action |
 |---|---|---|
 | PRD + SPEC | Both files exist | Treat PRD as product intent and SPEC as build contract |
-| PRD only | PRD exists, SPEC missing | Create a proposed SPEC if implementation details are needed |
+| PRD only | PRD exists, SPEC missing | If the PRD leaves the stack, data model or integrations open, write `SPEC.proposed.md`. Otherwise skip the SPEC. |
 | Idea only | No PRD exists | Run a short PRD interview and create `PRD.md` |
 
-For idea-only mode, ask at most seven questions:
+For idea-only mode, ask the questions below in one message, not one per turn. Skip any question the conversation already answers. Ask at most seven:
 
 1. Who is this for?
 2. What problem should it solve?
@@ -139,7 +143,7 @@ Do not install a fixed bundle. Classify each candidate:
 | `expert-problem-solving` | The underlying need, simplest approach, or acceptance criteria remain materially unclear; reuse if already available |
 | `millionco/react-doctor` | React/Next project after first UI exists |
 | `browser-use/browser-use` | Product needs real browser automation |
-| `codegraph` | Repo is large enough that structure discovery is costly |
+| A code-graph or repo-map tool | The repo has more than about 200 source files and structure discovery is slow. Name the specific tool and its source before you propose it. |
 
 Show the project-specific recommendation and ask before installing/copying anything into `.claude/`.
 
@@ -189,10 +193,10 @@ For the selected slice, demonstrate the intended behavior on a representative in
 
 ### 8. Final report
 
-End with:
+If the first slice passed its check, start the report with "Project bootstrap complete." If the slice failed or was not run, start with "Project bootstrap partly complete" and name what is missing.
 
 ```text
-Project bootstrap complete.
+Project bootstrap complete. | Project bootstrap partly complete — missing: [item]
 
 Input mode:
 - PRD + SPEC / PRD only / Idea only
@@ -223,6 +227,6 @@ If the user says they are stuck during project start:
 1. Stop adding files.
 2. Read `project_state.md`, `tasks.md`, and git status.
 3. Identify the smallest blocker.
-4. Propose three next steps.
-5. Execute only the first approved step.
+4. Propose at most three next steps, smallest first.
+5. Execute only the step the user approves.
 

@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: wants-all-channels
+expected_outcome: |
+  Pushes back on spreading across all channels, explains focus, and proposes 1-2 based on fit while asking the missing diagnostic facts.

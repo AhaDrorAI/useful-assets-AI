@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: hebrew-quick-fix
+expected_outcome: |
+  Uses Hebrew rules (references/hebrew.md); quick mode returns only the rewritten Hebrew text.

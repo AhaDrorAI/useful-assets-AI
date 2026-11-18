@@ -1,41 +1,44 @@
 ---
 name: agent-onboarding-wizard
-description: Set up Claude Code or Codex for a new machine or project. Inventory existing tools, recommend only needed additions, obtain install approval, and verify discovery and useful behavior.
+description: Set up Claude Code or Codex on a new machine or for a new project. Inventory the tools already installed, recommend only the additions a concrete task needs, install nothing without approval, and verify that each install works. Use when the user asks what plugins, skills, subagents, hooks, MCP servers or repos to install, says they just installed Claude Code or Codex, has a new laptop, wants a "starter setup", or asks to review a list of agent tools before installing them. Not for bootstrapping a project's files from a PRD; use new-project-from-prd for that.
+metadata:
+  last_reviewed: "2026-11-18"
+  review_every_days: "90"
 ---
 
 # Agent Onboarding Wizard
 
-Use this skill to help a non-developer set up an AI coding environment after Claude Code or Codex is installed.
+Help a non-developer set up an AI coding environment after Claude Code or Codex is installed.
 
-The goal is not "install everything." The goal is a small, understandable, verified setup.
+The goal is a small, understandable, verified setup. The goal is not "install everything".
 
 ## Core Rules
 
-- Explain every recommended install in plain English.
-- Never bulk-install a repo or catalog.
-- Prefer project-level install before global install unless the item is useful in almost every project.
-- Ask for approval before running any install command.
-- Treat unknown third-party skills, hooks, and MCP servers as code that needs review.
-- Do not request or print secrets, API keys, tokens, or Supabase `service_role` keys.
-- Stop if a command asks for unexpected elevated permissions.
+- Explain every recommended install in plain English: what it does, why this user needs it, and what it can change on the machine.
+- Never bulk-install a repo, catalog or marketplace.
+- If an item is useful in almost every project, propose a global install. Otherwise, propose a project install.
+- Ask for approval before you run any install command. Show the exact command first.
+- Treat every third-party skill, hook, plugin and MCP server as code. Review it before you propose it (see "Review a third-party item" below).
+- Do not request, print or store secrets: API keys, tokens, passwords, or Supabase `service_role` keys. If a tool needs one, tell the user where to enter it.
+- If a command asks for elevated permissions you did not predict (`sudo`, an admin prompt, a write outside the project or home folder), stop. Explain the request and wait for the user.
 
 ## Workflow
 
 ### 1. Identify the setup target
 
-Ask only if not obvious:
+Before you ask anything, check whether the conversation or the current folder already answers these questions. Ask only the questions that are still open, in one message:
 
 1. Is this for a new machine, a specific project, or both?
 2. Which agent tools are installed: Claude Code, Codex, Cursor, other?
 3. What kind of projects will this machine mostly build?
 
-Before selecting tools, identify a concrete task the user wants to complete and the current obstacle. Distinguish a missing capability from a workflow problem that existing tools can solve. Preserve explicit platform and project choices; do not require the user to justify decisions that are already settled.
+Then identify one concrete task the user wants to complete and the obstacle that blocks it. A tool is only worth installing if it removes that obstacle. Distinguish a missing capability from a workflow problem that existing tools already solve. Keep the user's stated platform and project choices; do not ask the user to justify them.
 
-If the user is unsure what they need and `expert-problem-solving` is available, use it to clarify the outcome and smallest capability gap. Otherwise apply those checks directly; this wizard has no dependency on that skill. Ask only questions that change the setup recommendation.
+If the user cannot name the outcome they want and `expert-problem-solving` is installed, use it to find the outcome and the smallest capability gap. If it is not installed, apply the same check directly.
 
 ### 2. Inventory the current environment
 
-Check what exists before recommending additions:
+Run these checks before you recommend anything. A missing command is a finding, not an error:
 
 ```bash
 git --version
@@ -48,60 +51,72 @@ claude --version
 codex --version
 ```
 
-If a command is missing, explain whether it is required now or optional later.
+For each missing command, say whether the user needs it now or can add it later.
 
-For Claude Code, also inspect these folders when they exist:
+For Claude Code, list these folders if they exist:
 
 ```text
 ~/.claude/skills/
 ~/.claude/agents/
 ~/.claude/rules/
 ~/.claude/commands/
+~/.claude/plugins/
 ```
 
-For Codex, inspect local project guidance files:
+For Codex, check these locations if they exist:
 
 ```text
+~/.codex/
 ~/.agents/skills/
 .agents/skills/
 AGENTS.md
-CLAUDE.md
-project_state.md
-tasks.md
 ```
+
+For the current project, check `CLAUDE.md`, `project_state.md` and `tasks.md`.
 
 ### 3. Classify recommendations
 
-For every candidate repo/tool, assign one category:
+Assign every candidate one category:
 
 | Category | Meaning |
 |---|---|
 | Global install | Useful in almost every project |
 | Project install | Useful for this project only |
-| Read-only reference | Good to learn from, not install now |
-| Skip for now | No immediate task benefits from it |
+| Read-only reference | Good to learn from; do not install now |
+| Skip for now | No current task benefits from it |
 
-Candidate starting points, not a mandatory bundle. Reclassify each against the actual task and current inventory:
+The table below is a starting list, not a bundle. Reclassify each item against the user's task and inventory. The defaults were last checked on the `last_reviewed` date in this file's frontmatter. If you can browse, check that a repo still exists and is maintained before you recommend it.
 
 | Repo/tool | Default category | Reason |
 |---|---|---|
-| `cytostack/openwolf` | Global CLI + project init | Context middleware for Claude Code: project map (`anatomy.md`), learning memory (`cerebrum.md`), token ledger, and lifecycle hooks. Install CLI globally, then `openwolf init` per project. See https://github.com/cytostack/openwolf |
+| `cytostack/openwolf` | Global CLI + project init | Context middleware for Claude Code: project map (`anatomy.md`), learning memory (`cerebrum.md`), token ledger, lifecycle hooks. See https://github.com/cytostack/openwolf |
 | `obra/superpowers` | Global install | Core workflow guardrails |
-| `affaan-m/everything-claude-code` | Read-only reference, then project install selectively | Large catalog |
-| `addyosmani/agent-skills` | Project install selectively | Engineering quality workflows |
-| `garrytan/gstack` | Read-only reference | Role/team inspiration |
-| `VoltAgent/awesome-claude-code-subagents` | Project install selectively | Specialist agents |
-| `promptfoo/promptfoo` | Project install later | Evals for AI behavior |
+| `affaan-m/everything-claude-code` | Read-only reference, then selective project install | Large catalog |
+| `addyosmani/agent-skills` | Selective project install | Engineering quality workflows |
+| `garrytan/gstack` | Read-only reference | Role and team inspiration |
+| `VoltAgent/awesome-claude-code-subagents` | Selective project install | Specialist agents |
+| `promptfoo/promptfoo` | Project install later | Evals for AI behaviour |
 | `trailofbits/skills` | Project install for security-sensitive work | Security review |
 | `millionco/react-doctor` | Project tool for React | React quality checks |
 | `browser-use/browser-use` | Project tool only when browser automation is needed | Fragile and permission-sensitive |
 | `OpenHands/OpenHands` | Skip for beginners | Full agent platform |
 | `VoltAgent/voltagent` | Skip unless building agent apps | Agent application framework |
-| `langchain-ai/open-swe` | Read-only reference for advanced users | Async SWE agent platform |
+| `langchain-ai/open-swe` | Read-only reference for advanced users | Async software-engineering agent platform |
+
+#### Review a third-party item
+
+Before you propose a third-party skill, plugin, hook or MCP server, check and report:
+
+1. **Source**: the repo URL and who maintains it.
+2. **What runs**: any scripts, hooks or binaries it adds, and when they run. A hook that runs on every tool call or every prompt is a high-impact item; say so.
+3. **What it can reach**: files outside the project, network hosts, secrets or environment variables.
+4. **Activity**: if you can browse, the date of the last commit. If the last commit is older than 12 months, say the item may be unmaintained.
+
+If you cannot read the item's files, classify it as "Read-only reference" and say why.
 
 ### 4. Present a small install plan
 
-Before installing, show:
+Before you install anything, show this plan:
 
 ```text
 Recommended setup:
@@ -125,11 +140,13 @@ Commands I propose to run:
 Please approve, edit, or reject this plan.
 ```
 
+If the plan has more than 5 installs, split it into stages. Install the first stage, verify it, then propose the next stage.
+
 ### 5. Install only approved items
 
-Use official install instructions from the source repository or docs. If you are not sure the command is current, look it up from the official repo/docs first.
+Use the install instructions from the item's official repo or docs. If you cannot confirm that a command is current, look it up in the official source first. If you cannot look it up, show the command and say it is unverified.
 
-**OpenWolf (`cytostack/openwolf`)** — when approved:
+**OpenWolf (`cytostack/openwolf`)**, when approved:
 
 ```bash
 npm install -g openwolf
@@ -144,23 +161,21 @@ openwolf --version
 openwolf status
 ```
 
-OpenWolf is Claude Code–oriented (hooks + `.wolf/`). For Codex-only projects, treat it as optional reference unless the user also uses Claude Code on that repo.
+OpenWolf works through Claude Code hooks and a `.wolf/` folder. For a Codex-only project, classify it as optional reference.
 
-After installation, first check discovery, then verify the intended capability with a small representative task:
+After each install, run two kinds of check:
 
-- CLI installed: run `--version` or help command.
-- Skill installed: confirm the host discovers it, then try a representative request and inspect whether it produces the intended result. Folder existence alone is not a behavior check.
-- Agent installed: list agent files.
-- Project tool installed: run help, then a small project-safe example that exercises the capability the user needed.
+- **Discovery check**: the tool is found. Examples: `--version` works; the host lists the skill; the agent file exists.
+- **Functional check**: the tool does the job the user needed. Run one small, project-safe task that uses the capability. A folder that exists proves only discovery.
 
-Report discovery checks separately from functional checks. State which checks ran, what happened, and what remains untested. Give the user one simple way to recognize whether the setup solves the original obstacle; avoid declaring onboarding complete when an essential capability remains blocked.
+Report discovery checks and functional checks separately. For each check, state whether it ran, what happened, and what remains untested.
 
 ### 6. Create a handoff summary
 
-End with:
+If every essential capability passed its functional check, start the summary with "Onboarding complete." If any essential capability is still blocked or untested, start it with "Onboarding partly complete" and name the blocker first.
 
 ```text
-Onboarding complete.
+Onboarding complete. | Onboarding partly complete — blocked: [item]
 
 Installed globally:
 - ...
@@ -175,19 +190,20 @@ Skipped for now:
 - ...
 
 How to use this setup:
-- Start new project: ...
-- Continue project: ...
-- Rescue stuck session: ...
-- Before publish: ...
+- Start a new project: ...
+- Continue a project: ...
+- Rescue a stuck session: ...
+- Before you publish: ...
 
 Verification:
-- ...
+- Discovery: ...
+- Functional: ...
+- Not tested: ...
 ```
 
 ## Failure Modes
 
-- If the user wants to install everything, recommend a staged setup and explain that too much context makes agents harder to steer.
-- If a repo has unclear installation instructions, use it as reference only.
-- If a tool requests broad permissions, stop and explain the risk.
-- If the machine is not ready, fix base tools before adding agent tooling.
-
+- If the user wants to install everything, recommend a staged setup. Explain that too many skills and hooks make an agent harder to steer and use more context.
+- If a repo has unclear install instructions, classify it as reference only.
+- If a tool requests broad permissions, stop and explain the risk. Broad means: `sudo` or admin rights, write access outside the project and home folder, a hook on every tool call, or access to secrets.
+- If base tools are missing (git, node, the agent CLI itself), fix those before you add agent tooling.

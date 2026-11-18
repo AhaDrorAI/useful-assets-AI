@@ -1,6 +1,9 @@
 ---
 name: cv-story-builder
 description: Create or improve a tailored CV/resume from a job post and candidate source files using evidence-first storytelling, job-fit mirroring, multi-agent auditing, clarifying questions, and professional output formatting. Use when the user asks to write, rewrite, tailor, optimize, or generate a CV/resume for a specific role, especially from folders like "about me/" or "about [name]/", job screenshots/photos, PDFs, DOCX files, LinkedIn exports, portfolios, or mixed source material.
+metadata:
+  last_reviewed: "2026-11-18"
+  review_every_days: "180"
 ---
 
 # CV Story Builder
@@ -19,7 +22,9 @@ Use only accurate information from:
 - Existing CVs, LinkedIn exports, portfolios, certificates, project files, screenshots, and user answers
 - The job post, job photo, or role description supplied by the user
 
-Do not invent. Separate every claim into:
+Do not invent. Do not upload candidate files or CV text to any external service the user did not name; CVs hold personal data.
+
+Separate every claim into:
 
 - `Hard claim`: directly supported by files or user answers
 - `Soft claim`: reasonable but requires careful wording
@@ -40,7 +45,8 @@ When evidence conflicts, ask or use conservative wording. Prefer "academic Java 
    - Gather: contact details, role history, dates, education, certificates, technical skills, projects, metrics, citizenship/work authorization, language ability, and portfolio links.
 
 3. **Use subagents when available**
-   - Use parallel agents if the user asks for agents or if the task is substantial.
+   - If the user asks for agents, use them. Otherwise, use them only when the task is substantial: more than 5 source files, or sources longer than about 30 pages in total.
+   - If no subagent tool exists, do the same checks in sequence and say so in the delivery note.
    - Assign fixed roles from [agent-and-evidence-checklist.md](references/agent-and-evidence-checklist.md).
    - Do not let agents draft the final CV independently. Use them to audit facts, surface proof, and reduce questions.
 
@@ -56,20 +62,21 @@ When evidence conflicts, ask or use conservative wording. Prefer "academic Java 
 
 6. **Choose format by role and location**
    - Do not assume a fixed CV length or format.
-   - Ask the user when needed, or use best practices for the relevant country, seniority, and job type.
-   - For DOCX, use the Documents skill when available: create, render, visually inspect, and iterate.
+   - If the job post or the user states a length or format, follow it. If not, apply the norm for the country, seniority and job type, and state your choice in one line so the user can override it.
+   - For DOCX, use the `docx` skill if it is installed: create, render, visually inspect, and iterate. If it is not installed, produce Markdown and say that layout was not checked.
    - Save generated files under `generated-cvs/` unless the user requests another location.
 
 7. **Run the Outside Reader audit**
    - Before final delivery, perform an outside-reader audit on the final CV text/document output.
    - The outside reader must receive only the CV draft/output, with no prior context, no source files, and no explanation of intent.
-   - Use the `outside-reader-audit` skill when available.
+   - If the `outside-reader-audit` skill is installed, use it. If a subagent tool exists, run the audit in a fresh subagent that receives only the CV text; that is what makes "no prior context" true.
+   - If neither exists, run the audit yourself and state in the delivery note that the audit was not isolated from the source files.
    - Apply the audit findings that improve clarity, audience fit, relevance, and truthful proof.
 
 8. **Finalize with verification**
    - Check every claim against evidence or user answers.
    - Confirm page count, readability, links, contact details, work authorization, and gap wording.
-   - For `.docx`, render to PDF/PNG when possible and inspect for layout defects before delivery.
+   - For `.docx`, render to PDF or PNG and inspect for layout defects before delivery. If rendering is not available, say that layout was not inspected.
 
 ## Gap Handling
 
@@ -82,7 +89,7 @@ Pattern:
 3. Explain the ramp mechanism.
 4. Bring it back to the job.
 
-Example:
+Example (from a real case; reuse the pattern, not the wording):
 
 > Java: academic foundation and practical code-reading/writing capability; recent delivery is mainly Python, JavaScript, Next.js, Google Apps Script, SQL, bots, automations, and integrations. I ramp quickly across languages using AI-assisted workflows because the core asset is logical thinking, architecture, problem solving, and orchestration of code agents toward a high-quality product.
 

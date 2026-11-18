@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: prd-only-small-tool
+expected_outcome: |
+  Detects PRD-only mode, picks the starter structure with a one-sentence reason, generates project files with real content, defines one first slice with an observable check, and does not commit or create a GitHub repo without asking.
+context:
+  scaffold_script: place-files.sh

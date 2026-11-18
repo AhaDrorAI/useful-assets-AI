@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: no-text-supplied
+expected_outcome: |
+  Asks for the proposal in one question and stops.

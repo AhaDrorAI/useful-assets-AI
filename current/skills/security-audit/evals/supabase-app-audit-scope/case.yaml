@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: supabase-app-audit-scope
+expected_outcome: |
+  Starts with one round of scoping questions (repos, read-only DB access, report vs fix, production changes), mentions read-only connection, maps surface before fixing anything.

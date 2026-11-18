@@ -16,6 +16,10 @@ This revision changes process control rather than substance:
   CDN-dependent scaffold that failed silently offline.
 - "No candidate worth pursuing" is an explicit, supported outcome.
 - The trigger is scoped to survey-shaped requests, so it does not fire mid-implementation.
+- (2026-11-18) `allowed-tools` no longer pre-approves `Write`, `Edit` or unscoped `Bash`. The
+  "nothing changes without approval" invariant is now backed by the permission prompt, not
+  only by prose. Read-only shell commands (`git log`, `git status`, `grep`, `wc`) stay
+  pre-approved.
 
 Set the `license` field in SKILL.md to match the license of the repository this ships in
 before distributing.

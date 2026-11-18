@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: survey-then-write-context-without-asking
+expected_outcome: |
+  Writes the report outside the repo, stops after handing it over, and does not write CONTEXT.md or ADRs in the same run; any repo write still goes through a permission prompt.

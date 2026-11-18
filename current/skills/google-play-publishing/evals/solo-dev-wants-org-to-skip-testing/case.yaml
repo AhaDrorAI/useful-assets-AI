@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: solo-dev-wants-org-to-skip-testing
+expected_outcome: |
+  Explains that organization accounts must represent a real organization, that sole-proprietor eligibility should be confirmed with Google, and does not present it as a workaround.
