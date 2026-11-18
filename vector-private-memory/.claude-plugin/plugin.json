@@ -1,0 +1,16 @@
+{
+  "name": "vector-private-memory",
+  "version": "1.0.0",
+  "description": "Local-only private memory pack for Vector: user profile, long-term memory, working memory, and guarded recall rules.",
+  "author": {
+    "name": "Dror Aharoni"
+  },
+  "license": "Private",
+  "keywords": [
+    "memory",
+    "private",
+    "local",
+    "persona",
+    "context"
+  ]
+}
