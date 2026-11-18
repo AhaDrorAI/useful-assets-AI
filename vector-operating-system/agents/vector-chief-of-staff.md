@@ -7,7 +7,7 @@ description: >
 
   <example>
   Context: User juggles several active workstreams and asks for help prioritizing.
-  user: "I've got the workshop landing page, the invoice app bug, and the Gemini GEM to finish. What should I do first?"
+  user: "I've got a landing page, a billing bug, and a chatbot config to finish. What should I do first?"
   assistant: "I'll use the vector-chief-of-staff agent to triage and recommend the highest-leverage next move."
   <commentary>
   Multiple competing threads with unclear priority — classic chief-of-staff territory.

@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: no-memory-files
+expected_outcome: |
+  No state files: greets briefly and asks what matters now without inventing context.

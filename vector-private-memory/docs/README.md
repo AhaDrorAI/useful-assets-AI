@@ -1,5 +1,7 @@
 # Vector Private Memory Plugin
 
+> **In this public repository, only the skill and the manifest are tracked.** `USER.md`, `MEMORY.md`, `BRAIN.md` and `memory/` are listed in the root `.gitignore`, and CI fails if one is ever committed. Add them locally before you build the ZIP for your own machine.
+
 This is the **local-only personal memory layer** for Vector.
 
 ## Included

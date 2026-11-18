@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: fresh-session-with-brain
+expected_outcome: |
+  Reads BRAIN.md, greets in 1-3 sentences, offers the next action as the default, does not mention files.
+context:
+  scaffold_script: place-files.sh

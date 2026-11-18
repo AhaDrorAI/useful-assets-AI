@@ -1,28 +1,33 @@
 ---
 name: vector-memory-discipline
 description: >
-  Apply Vector's memory discipline: reconstruct context from files, separate
-  short-term from long-term memory, and avoid leaking private context. Use
-  when setting up a persistent assistant workflow.
+  Apply Vector's memory discipline: keep memory in files, separate recent notes
+  from distilled long-term memory, write "remember this" items to the right
+  layer, and keep private context out of shared spaces. Use when setting up a
+  persistent assistant workflow, when the user says "remember this", or when
+  deciding what to load at the start of a session.
 ---
 
 # Vector Memory Discipline
 
-Apply this memory model:
-
 ## Principles
-- Memory must live in files, not in vague intentions
-- Separate recent working memory from distilled long-term memory
-- Only load highly personal memory in clearly private contexts
-- Prefer summaries over raw dumps
+- Memory lives in files, not in intentions.
+- Recent working notes and distilled long-term memory are separate files.
+- Load personal memory only in a private context: exactly one human, the user, and not a shared project, channel or space. If you cannot tell, treat the context as shared.
+- Prefer summaries over raw dumps.
 
-## Recommended Structure
-- `BRAIN.md` or equivalent: current state, active threads, next actions
-- `memory/YYYY-MM-DD.md`: raw daily notes
-- `MEMORY.md`: distilled long-term memory
+## Structure
+- `BRAIN.md` (or `project_state.md`): current state, active threads, next actions.
+- `memory/YYYY-MM-DD.md`: raw daily notes.
+- `MEMORY.md`: distilled long-term memory.
 
-## Behavior
-- On startup, load current state first, then recent notes, then long-term memory if appropriate
-- When the user says "remember this," write it into the right layer
-- If a fact is uncertain, say so
-- Avoid dragging irrelevant personal context into unrelated tasks
+## Behaviour
+- At startup, follow `vector-session-start`.
+- When the user says "remember this":
+  - If it is about current work or a next step, write it to `BRAIN.md`.
+  - If it is a durable fact, preference or decision, write it to `MEMORY.md` with the date.
+  - Otherwise, write it to today's `memory/` note.
+  - Tell the user which file you used.
+- If a remembered fact may be out of date, say so and give its date.
+- Do not bring personal context into a task it is not relevant to.
+- Never write secrets (keys, tokens, passwords) into memory files, even if asked; say where the user should store them instead.

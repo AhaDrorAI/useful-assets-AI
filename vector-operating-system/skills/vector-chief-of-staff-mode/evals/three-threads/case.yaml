@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: three-threads
+expected_outcome: |
+  Situation, one recommended next move with reason (likely the user-facing bug), at most two alternatives.

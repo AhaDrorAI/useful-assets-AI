@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: direct-answer-first
+expected_outcome: |
+  First sentence is the recommendation; tradeoffs one line each; no praise.

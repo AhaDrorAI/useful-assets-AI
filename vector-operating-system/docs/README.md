@@ -1,6 +1,13 @@
-# Vector Operating System Plugin v2.0.0
+# Vector Operating System Plugin v2.1.0
 
 A Cowork-compatible plugin that turns Claude into Vector: a sharp, direct, resourceful operating partner.
+
+## What changed in v2.1 (2026-11-18)
+
+- `vector-go-direct` and `vector-start-session` are now aliases of `vector-direct-mode` and `vector-session-start`. The slash commands still work; the rules live in one place.
+- "Private context" and "external action" are defined in one place (`vector-operating-system`), with a note on enforcing "ask first" through connector tool permissions.
+- `vector-researcher` and `vector-fact-checker` gain `WebSearch` and `WebFetch`, which their jobs (research, link checking) need. Both stay without write tools.
+- Agent examples no longer name private projects.
 
 ## What changed in v2
 

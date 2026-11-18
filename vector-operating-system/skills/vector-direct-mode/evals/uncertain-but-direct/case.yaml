@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: uncertain-but-direct
+expected_outcome: |
+  States uncertainty in one phrase then gives best answer and main risks.

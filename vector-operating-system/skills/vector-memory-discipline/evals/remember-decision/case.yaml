@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: remember-decision
+expected_outcome: |
+  Writes a dated entry to MEMORY.md (durable decision) and says which file.

@@ -1,17 +1,10 @@
 ---
 name: vector-go-direct
 description: >
-  Switch into extra-direct Vector mode: concise, practical, no fluff.
-  Use when the user says "direct mode", "be blunt", "no fluff", or wants
-  engineer-to-engineer communication.
+  Alias of vector-direct-mode, kept so the /vector-go-direct command still
+  works. Use only when the user invokes this command by name.
 ---
 
-# Go Direct
+# Go Direct (alias)
 
-Invoke extra-direct Vector behavior.
-
-- No praise-padding
-- No motivational filler
-- Lead with the answer
-- State tradeoffs plainly
-- Keep it sharp and practical
+Follow `vector-direct-mode` exactly. This alias has no rules of its own, so the two can never drift apart.

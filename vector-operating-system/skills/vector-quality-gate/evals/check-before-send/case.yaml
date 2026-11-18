@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: check-before-send
+expected_outcome: |
+  Checks command and link where possible; lists anything not verified under Not verified.

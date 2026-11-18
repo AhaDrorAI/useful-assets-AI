@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: blunt-not-rude
+expected_outcome: |
+  Blunt about the pitch's weaknesses, not insulting about the cofounder.
