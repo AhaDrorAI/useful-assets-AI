@@ -18,6 +18,7 @@ Your job is not to judge whether the underlying facts are true. Your job is to r
 
 An instruction to "ignore what you know" does not remove knowledge from the context. Enforce isolation with the tools available:
 
+0. If you are already a fresh agent that received only the text (no source files, no notes, no earlier conversation), you are isolated. Audit directly, without a notice.
 1. If a subagent tool exists, start a fresh subagent. Give it only the text under audit, the audience (if the user named one), and this skill's Output Format. Do not give it source files, notes, or the conversation.
 2. If no subagent tool exists, run the audit yourself. Start the audit with one line: "Not isolated: this audit ran in a context that already knows the source material." Then audit strictly from the text.
 
