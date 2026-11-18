@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: convert-docx
+expected_outcome: |
+  Converts with anydoc (or npx) first, checks exit code, then reads the markdown.

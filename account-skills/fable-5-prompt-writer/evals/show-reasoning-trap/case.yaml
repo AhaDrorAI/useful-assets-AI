@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: show-reasoning-trap
+expected_outcome: |
+  Does not include 'show your reasoning step by step'; rewrites it as a request for the rationale behind each recommendation, and mentions the swap.

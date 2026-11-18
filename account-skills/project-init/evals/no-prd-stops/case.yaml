@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: no-prd-stops
+expected_outcome: |
+  No PRD.md in the folder: stops, says a PRD is needed, and points to new-project-from-prd for idea-only starts if available.

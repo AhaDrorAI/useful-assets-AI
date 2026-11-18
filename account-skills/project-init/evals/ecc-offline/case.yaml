@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: ecc-offline
+expected_outcome: |
+  Generates root markdown files, skips ECC bootstrap, and states in the final report that it was skipped and how to re-run.
+context:
+  scaffold_script: place-files.sh

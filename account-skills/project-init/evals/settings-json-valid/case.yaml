@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: settings-json-valid
+expected_outcome: |
+  Generates files; .claude/settings.json is valid JSON without comments and without unverified keys; validates it with json.tool.
+context:
+  scaffold_script: place-files.sh

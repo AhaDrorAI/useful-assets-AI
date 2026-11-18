@@ -1,6 +1,9 @@
 ---
 name: pptx-hebrew
 description: "Hebrew and RTL language support for PowerPoint presentations created with PptxGenJS. MANDATORY when creating or editing .pptx files that contain Hebrew, Arabic, or any RTL text. Use this skill alongside the pptx skill whenever the presentation content includes Hebrew characters, the user communicates in Hebrew, or RTL text direction is needed. Also triggers for Arabic content. This skill fixes a critical PptxGenJS bug where all text is tagged as English (lang=\"en-US\"), causing PowerPoint to mishandle RTL text direction, cursor movement, spacing, and punctuation placement."
+metadata:
+  last_reviewed: "2026-11-18"
+  review_every_days: "180"
 ---
 
 # PPTX Hebrew / RTL Support
@@ -61,10 +64,10 @@ python <skill-path>/scripts/fix_rtl.py output.pptx
 ```
 
 This script opens the PPTX (which is a ZIP of XML files), and fixes:
-- Sets `lang="he-IL"` on text runs containing Hebrew characters
-- Sets `lang="ar-SA"` on text runs containing Arabic characters
-- Adds `rtl="1"` to paragraphs containing RTL text
-- Preserves `lang="en-US"` on purely English text runs
+- Sets `lang="he-IL"` on text runs containing Hebrew characters, and `lang="ar-SA"` on runs containing Arabic. A run without run properties gets them.
+- Adds `rtl="1"` (and right alignment, if none is set) to RTL-primary paragraphs: paragraphs with at least as many Hebrew/Arabic letters as Latin letters.
+- Leaves English-primary paragraphs left-to-right, even when they contain a Hebrew word. Pass `--any-rtl` to mark every paragraph that contains any RTL letter instead.
+- Preserves `lang="en-US"` on purely English text runs, and keeps the file's XML namespace prefixes unchanged.
 
 The script modifies the file in-place. You can also specify a separate output:
 ```bash
@@ -78,15 +81,17 @@ When creating a Hebrew/RTL presentation:
 1. Write the PptxGenJS script with `rtlMode: true` and `align: "right"` on all Hebrew text
 2. Generate the PPTX: `node create_presentation.js`
 3. **Run the RTL post-processor**: `python <skill-path>/scripts/fix_rtl.py output.pptx`
-4. Convert to PDF/images for QA: `python <pptx-skill>/scripts/office/soffice.py --headless --convert-to pdf output.pptx`
-5. Visually inspect slides
+4. **Verify the fix**: `python <skill-path>/scripts/fix_rtl.py output.pptx --check`. Exit code 0 and "0 changes needed" means every RTL run and paragraph is tagged. Exit code 1 means the fix did not run on this file; run step 3 again.
+5. Convert to PDF or images for layout QA: `python <pptx-skill>/scripts/office/soffice.py --headless --convert-to pdf output.pptx`. Inspect the slides visually.
+
+A visual check alone cannot confirm the RTL fix: LibreOffice renders Hebrew correctly even when the tags are wrong (see "Why This Matters"). Step 4 is the check for the fix; step 5 is the check for layout.
 
 ## Mixed Language Content
 
 For slides with both Hebrew and English:
-- The script handles mixed content automatically — Hebrew runs get `he-IL`, English runs stay `en-US`
-- Set the text box to `rtlMode: true` and `align: "right"` if the **primary** language is Hebrew
-- For English-primary text boxes with occasional Hebrew, you can omit `rtlMode`
+- The script handles mixed content automatically: Hebrew runs get `he-IL`, English runs stay `en-US`.
+- If the **primary** language of a text box is Hebrew, set `rtlMode: true` and `align: "right"`.
+- If a text box is English-primary with occasional Hebrew words, omit `rtlMode`. The script keeps those paragraphs left-to-right.
 
 ## Hyperlinks in Hebrew Presentations
 

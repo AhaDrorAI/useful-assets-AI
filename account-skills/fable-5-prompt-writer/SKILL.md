@@ -1,6 +1,9 @@
 ---
 name: fable-5-prompt-writer
 description: Writes a single, ready-to-paste task prompt tuned to Claude Fable 5 and Claude Mythos 5 behavior. Use this whenever the user wants a prompt for Fable 5 or Mythos 5, says they are "about to ask Fable to..." or "how should I word this for Fable 5", mentions Fable/Mythos prompting, or hands over a rough task description and wants it turned into a prompt for those models. Also use it when the user is drafting any substantial one-off request for Fable 5 — a build, an analysis, a research task — even if they never say the word "prompt".
+metadata:
+  last_reviewed: "2026-11-18"
+  review_every_days: "90"
 ---
 
 # Fable 5 prompt writer
@@ -37,7 +40,7 @@ Interview only if the brief is thin. A brief is thick enough when you can answer
 2. **What is it for?** Who reads it or runs it next, and what does it unblock. This one is load-bearing — see the intent frame below.
 3. **What does "done" look like?** The condition that makes the answer correct rather than merely plausible.
 
-If two or more are missing, ask — at most three questions, and prefer offering candidate answers over open-ended prompting. If only one is missing and you can infer it credibly, infer it and state the assumption when you hand over the prompt. Fable 5 handles ambiguity well; a prompt does not need every corner nailed down, it needs the *purpose* clear.
+If two or more are missing, ask at most three questions in one message. Offer candidate answers for each question instead of open-ended prompts. If only one is missing and you can infer it credibly, infer it and state the assumption when you hand over the prompt. Fable 5 handles ambiguity well; a prompt does not need every corner nailed down, it needs the *purpose* clear.
 
 ## Step 2: Diagnose the task
 
@@ -49,7 +52,7 @@ Read the task against these three axes. The answers select the blocks.
 | **Turn shape** | One answer, or a long stretch of tool calls and building? | Long → evidence-grounding, self-verification, re-grounded summary. |
 | **Specification** | Is the goal clear but the route open? | Open route → act-don't-survey. |
 
-Then read `references/steering-blocks.md` and pull only what the diagnosis calls for. That file has each block's text and the failure mode it exists to correct — if you can't name the failure mode this task would produce, don't include the block.
+Then read `references/steering-blocks.md` and pull only what the diagnosis calls for. If the file cannot be read, write the prompt without steering blocks and say so in the handover lines. That file has each block's text and the failure mode it exists to correct — if you can't name the failure mode this task would produce, don't include the block.
 
 ## Step 3: Compose
 
@@ -73,7 +76,7 @@ Fill it from the interview. Never leave the brackets in the output — a prompt 
 
 Watch for this one, because users ask for it constantly and it backfires specifically on Fable 5.
 
-If the user wants "show me your reasoning", "explain your thinking step by step", or "walk me through how you got there," **do not write that into the prompt.** Instructions to echo, transcribe, or narrate internal reasoning can trip Fable 5's reasoning-extraction safety classifier, which returns a refusal and, in API setups, silently falls back to Opus 4.8. The user gets a worse model and no idea why.
+If the user wants "show me your reasoning", "explain your thinking step by step", or "walk me through how you got there," **do not write that into the prompt.** Instructions to echo, transcribe, or narrate internal reasoning can trip Fable 5's reasoning-extraction safety classifier. The reported result is a refusal and, in some API setups, a fallback to an older model. The user gets a worse answer and no idea why. (This behaviour was reported at the time the skill was written; it was not re-verified on 2026-11-18.)
 
 Rewrite it as a request for a *rationale on the decision*, which is a legitimate deliverable and gets them what they actually wanted:
 

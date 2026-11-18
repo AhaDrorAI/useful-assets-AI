@@ -1,6 +1,9 @@
 ---
 name: fast-doc-to-markdown
-description: "Convert Word/PPT/Excel/PDF/EPUB documents to clean Markdown with anydoc before reading them — with Hebrew/RTL and OCR-privacy guardrails."
+description: "Convert Word, PowerPoint, Excel, OpenDocument, RTF, EPUB, CSV and PDF files to clean Markdown with anydoc before reading them, with Hebrew/RTL checks and a no-upload rule for scanned pages. Use whenever a task's input is a .docx, .doc, .pptx, .ppt, .xlsx, .xls, .odt, .ods, .odp, .rtf, .epub, .csv or .pdf file, especially for batch conversion, large files, Hebrew documents, exams or curriculum material."
+metadata:
+  last_reviewed: "2026-11-18"
+  review_every_days: "180"
 ---
 
 # Fast document → Markdown
@@ -14,10 +17,7 @@ Reading a .docx or .pdf directly is slow and lossy. `anydoc` converts documents 
 
 ## Steps
 
-1. **Ensure the binary exists** (cloud sessions start clean, so this is normal):
-   ```
-   which anydoc || npm install -g @firecrawl/anydoc
-   ```
+1. **Find the tool.** If `anydoc` is on the PATH, use it. If not, run it through `npx -y @firecrawl/anydoc` (needs Node 20+). That runs without a global install. Install globally (`npm install -g @firecrawl/anydoc`) only if the user agrees or the session is a disposable cloud container.
 
 2. **Prefer the original Office file over a PDF export of it.** If both a .docx and a .pdf of the same content exist, always convert the .docx — the PDF text layer loses structure and mangles Hebrew.
 
@@ -32,9 +32,14 @@ Reading a .docx or .pdf directly is slow and lossy. `anydoc` converts documents 
    - `2` — usage error (bad flag or `--format`).
    - `3` — one or more pages need OCR. anydoc is **all-or-nothing**: a single scanned page rejects the whole document.
 
-5. **On exit 3, do NOT reach for `--ocr hosted` by default.** That flag uploads the document to Firecrawl's API. Never use it for student work, exams, personal or client-confidential material. Instead fall back to the local `pdf` skill for OCR, or split the PDF and convert only the text pages with anydoc.
+5. **On exit 3, do not pass `--ocr hosted`.** That flag uploads the whole document to Firecrawl's servers. Use one of these instead, in this order:
+   1. If the `pdf` skill is installed, use its local OCR.
+   2. Split the PDF and convert only the text pages with anydoc. Report which pages were skipped.
+   3. Tell the user which pages need OCR and stop.
 
-6. **Hebrew / RTL check.** The Office path (.docx/.pptx) produces clean Hebrew. The **PDF path is unreliable for Hebrew**: it splits words mid-word (`ב ין`, `פדגוג יי ם`) and reverses embedded Latin runs (`Numicon` → `nocimuN`). If the source is a Hebrew PDF, sample the output before trusting it, and say so in the answer rather than analyzing corrupted text.
+   Pass `--ocr hosted` only if the user asks for it for this specific file after you have told them it uploads the document. Never pass it for student work, exams, personal data, or client-confidential material, even if asked in general terms. No tool setting blocks this flag; this rule is the only guard, so name the flag explicitly when you report what you ran.
+
+6. **Hebrew / RTL check.** The Office path (.docx/.pptx) produces clean Hebrew. The **PDF path is unreliable for Hebrew**: it splits words mid-word (`ב ין`, `פדגוג יי ם`) and reverses embedded Latin runs (`Numicon` → `nocimuN`). If the source is a Hebrew PDF, read the first 30 lines of the output. If you see split words or reversed Latin runs, say so in the answer and do not analyse the corrupted passages as if they were correct.
 
 7. Read and work from the generated `.md`, not the original binary file.
 

@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: hebrew-deck-pipeline
+expected_outcome: |
+  Uses rtlMode and right alignment, runs fix_rtl.py after export, then verifies with --check (exit 0) before visual QA.

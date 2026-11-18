@@ -1,190 +1,177 @@
 #!/usr/bin/env python3
 """
-Post-process a PptxGenJS-generated PPTX to fix RTL/Hebrew issues.
+Post-process a PptxGenJS-generated PPTX to fix RTL (Hebrew / Arabic) text.
 
-PptxGenJS sets lang="en-US" on ALL text runs, even Hebrew text. This causes
-PowerPoint to treat Hebrew text as LTR — wrong cursor direction, broken
-spacing, misplaced punctuation, and incorrect paragraph flow.
+PptxGenJS writes lang="en-US" on every text run, and its rtlMode does not reach
+every paragraph (bullets and numbered items are often missed). PowerPoint then
+treats Hebrew as English: wrong cursor movement, spacing and punctuation.
 
-This script fixes:
-1. lang="he-IL" on text runs containing Hebrew characters
-2. rtl="1" on paragraphs containing Hebrew text
-3. Preserves lang="en-US" for purely-English text runs
+What this script changes, per slide, layout and master XML file:
+1. Every text run that contains Hebrew gets lang="he-IL"; Arabic gets lang="ar-SA".
+   A run with no <a:rPr> gets one. Runs with no RTL letters keep their lang.
+2. A paragraph gets rtl="1" (and algn="r" if it has no alignment) when it is
+   RTL-primary: it has at least as many Hebrew/Arabic letters as Latin letters.
+   An English sentence with one Hebrew word stays left-to-right.
+   Use --any-rtl to mark every paragraph that contains any RTL letter instead.
+3. In an RTL-primary paragraph, <a:endParaRPr> gets the RTL lang too, so text
+   typed at the end of the line continues in Hebrew/Arabic.
+
+Namespace prefixes are preserved (p:, a:, r:, mc: ...). With lxml installed the
+XML is rewritten byte-for-byte except for the changed attributes; without lxml
+the standard library is used with every prefix in the file re-registered.
 
 Usage:
-    python fix_rtl.py input.pptx [output.pptx]
+    python fix_rtl.py input.pptx [output.pptx] [--any-rtl] [--check]
 
-If output is omitted, the input file is overwritten in place.
+    --check   Do not write. Print what would change and exit 1 if anything would.
+              Use it after a fix to verify: a fixed file reports 0 changes.
+
+If output is omitted, the input file is overwritten in place (via a temp file).
 """
 
-import sys
 import os
 import re
 import shutil
+import sys
 import tempfile
 import zipfile
-import xml.etree.ElementTree as ET
 
-# Hebrew Unicode range (includes Hebrew letters, points, and cantillation marks)
-HEBREW_RE = re.compile(r'[\u0590-\u05FF]')
+try:
+    from lxml import etree as ET  # preserves prefixes and declarations exactly
+    HAVE_LXML = True
+except ImportError:  # pragma: no cover
+    import xml.etree.ElementTree as ET
+    HAVE_LXML = False
 
-# Arabic Unicode range
-ARABIC_RE = re.compile(r'[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]')
+HEBREW_RE = re.compile(r"[֐-׿יִ-ﭏ]")
+ARABIC_RE = re.compile(r"[؀-ۿݐ-ݿࢠ-ࣿﭐ-﷿ﹰ-﻿]")
+LATIN_RE = re.compile(r"[A-Za-zÀ-ɏ]")
 
-# XML namespaces used in OOXML
-NSMAP = {
-    'a': 'http://schemas.openxmlformats.org/drawingml/2006/main',
-    'r': 'http://schemas.openxmlformats.org/officeDocument/2006/relationships',
-    'p': 'http://schemas.openxmlformats.org/presentationml/2006/main',
-}
-
-# Register namespaces to prevent ns0/ns1 prefix rewriting on save
-ET.register_namespace('a', NSMAP['a'])
-ET.register_namespace('r', NSMAP['r'])
-ET.register_namespace('p', NSMAP['p'])
-ET.register_namespace('', 'http://schemas.openxmlformats.org/presentationml/2006/main')
-ET.register_namespace('mc', 'http://schemas.openxmlformats.org/markup-compatibility/2006')
+A = "http://schemas.openxmlformats.org/drawingml/2006/main"
+Q = lambda tag: f"{{{A}}}{tag}"
 
 
-def has_hebrew(text):
-    """Check if a string contains Hebrew characters."""
-    return bool(HEBREW_RE.search(text)) if text else False
-
-
-def has_arabic(text):
-    """Check if a string contains Arabic characters."""
-    return bool(ARABIC_RE.search(text)) if text else False
-
-
-def detect_rtl_lang(text):
-    """Detect the appropriate RTL language tag for text content.
-    Returns 'he-IL' for Hebrew, 'ar-SA' for Arabic, or None for LTR text."""
-    if not text:
-        return None
-    if has_hebrew(text):
-        return 'he-IL'
-    if has_arabic(text):
-        return 'ar-SA'
+def rtl_lang(text):
+    if HEBREW_RE.search(text or ""):
+        return "he-IL"
+    if ARABIC_RE.search(text or ""):
+        return "ar-SA"
     return None
 
 
-def paragraph_has_rtl(p_elem):
-    """Check if any text run in a paragraph contains RTL characters."""
-    ns_a = NSMAP['a']
-    for r_elem in p_elem.findall(f'{{{ns_a}}}r'):
-        t_elem = r_elem.find(f'{{{ns_a}}}t')
-        if t_elem is not None and t_elem.text:
-            if has_hebrew(t_elem.text) or has_arabic(t_elem.text):
-                return True
-    return False
+def paragraph_text(p):
+    return "".join((t.text or "") for t in p.iter(Q("t")))
 
 
-def fix_slide_xml(xml_path):
-    """Fix RTL attributes in a single slide XML file.
-    Returns the number of changes made."""
-    ns_a = NSMAP['a']
+def is_rtl_primary(text, any_rtl):
+    rtl = len(HEBREW_RE.findall(text)) + len(ARABIC_RE.findall(text))
+    if rtl == 0:
+        return False
+    if any_rtl:
+        return True
+    return rtl >= len(LATIN_RE.findall(text))
 
-    tree = ET.parse(xml_path)
+
+def register_prefixes(xml_bytes):
+    """stdlib only: re-register every prefix declared in the file, so ET writes
+    the same prefixes back instead of ns0:/default namespaces."""
+    for prefix, uri in re.findall(rb'xmlns:([A-Za-z0-9_]+)="([^"]+)"', xml_bytes):
+        ET.register_namespace(prefix.decode(), uri.decode())
+
+
+def fix_xml(path, any_rtl=False, write=True):
+    with open(path, "rb") as f:
+        raw = f.read()
+    if not HAVE_LXML:
+        register_prefixes(raw)
+    tree = ET.ElementTree(ET.fromstring(raw))
     root = tree.getroot()
     changes = 0
 
-    for p_elem in root.iter(f'{{{ns_a}}}p'):
-        p_is_rtl = paragraph_has_rtl(p_elem)
+    for p in root.iter(Q("p")):
+        text = paragraph_text(p)
+        primary = is_rtl_primary(text, any_rtl)
+        para_lang = rtl_lang(text)
 
-        # Get or create paragraph properties
-        pPr = p_elem.find(f'{{{ns_a}}}pPr')
-
-        if p_is_rtl:
-            if pPr is None:
-                pPr = ET.SubElement(p_elem, f'{{{ns_a}}}pPr')
-                p_elem.remove(pPr)
-                p_elem.insert(0, pPr)
-
-            # Ensure rtl="1"
-            if pPr.get('rtl') != '1':
-                pPr.set('rtl', '1')
+        if primary:
+            ppr = p.find(Q("pPr"))
+            if ppr is None:
+                ppr = ET.Element(Q("pPr"))
+                p.insert(0, ppr)
+            if ppr.get("rtl") != "1":
+                ppr.set("rtl", "1")
+                changes += 1
+            if not ppr.get("algn"):
+                ppr.set("algn", "r")
+                changes += 1
+            end = p.find(Q("endParaRPr"))
+            if end is not None and para_lang and end.get("lang") != para_lang:
+                end.set("lang", para_lang)
                 changes += 1
 
-            # Ensure right alignment if none set
-            if not pPr.get('algn'):
-                pPr.set('algn', 'r')
+        for r in p.findall(Q("r")):
+            t = r.find(Q("t"))
+            lang = rtl_lang(t.text if t is not None else "")
+            if not lang:
+                continue
+            rpr = r.find(Q("rPr"))
+            if rpr is None:
+                rpr = ET.Element(Q("rPr"))
+                r.insert(0, rpr)  # rPr must be the first child of a:r
+            if rpr.get("lang") != lang:
+                rpr.set("lang", lang)
                 changes += 1
 
-        # Fix language on text runs
-        for r_elem in p_elem.findall(f'{{{ns_a}}}r'):
-            t_elem = r_elem.find(f'{{{ns_a}}}t')
-            rPr = r_elem.find(f'{{{ns_a}}}rPr')
-
-            if t_elem is not None and rPr is not None:
-                text = t_elem.text or ''
-                rtl_lang = detect_rtl_lang(text)
-
-                if rtl_lang and rPr.get('lang') != rtl_lang:
-                    rPr.set('lang', rtl_lang)
-                    changes += 1
-
-    if changes > 0:
-        tree.write(xml_path, xml_declaration=True, encoding='UTF-8')
-
+    if changes and write:
+        if HAVE_LXML:
+            tree.write(path, xml_declaration=True, encoding="UTF-8", standalone=True)
+        else:
+            tree.write(path, xml_declaration=True, encoding="UTF-8")
     return changes
 
 
-def fix_pptx(input_path, output_path=None):
-    """Fix RTL in a PPTX file by post-processing its XML."""
-    if output_path is None:
-        output_path = input_path
-
-    tmp_dir = tempfile.mkdtemp(prefix='rtl_fix_')
-
+def fix_pptx(input_path, output_path=None, any_rtl=False, check=False):
+    output_path = output_path or input_path
+    tmp_dir = tempfile.mkdtemp(prefix="rtl_fix_")
     try:
-        with zipfile.ZipFile(input_path, 'r') as zf:
+        with zipfile.ZipFile(input_path) as zf:
+            names = zf.namelist()  # keep the original entry order
             zf.extractall(tmp_dir)
 
-        total_changes = 0
+        total = 0
+        for name in names:
+            if re.match(r"ppt/(slides|slideLayouts|slideMasters)/[^/]+\.xml$", name):
+                n = fix_xml(os.path.join(tmp_dir, name), any_rtl, write=not check)
+                if n:
+                    print(f"  {name}: {n} {'needed' if check else 'fixes'}")
+                total += n
+        print(f"\nTotal RTL {'changes needed' if check else 'fixes'}: {total}")
+        if check:
+            return total
 
-        # Process slides, slide layouts, and slide masters
-        for subdir in ['slides', 'slideLayouts', 'slideMasters']:
-            xml_dir = os.path.join(tmp_dir, 'ppt', subdir)
-            if not os.path.isdir(xml_dir):
-                continue
-            for fname in sorted(os.listdir(xml_dir)):
-                if fname.endswith('.xml'):
-                    fpath = os.path.join(xml_dir, fname)
-                    n = fix_slide_xml(fpath)
-                    if n > 0:
-                        print(f"  {subdir}/{fname}: {n} fixes")
-                    total_changes += n
-
-        print(f"\nTotal RTL fixes: {total_changes}")
-
-        # Re-pack as PPTX
-        actual_output = output_path + '.tmp' if os.path.abspath(output_path) == os.path.abspath(input_path) else output_path
-        if os.path.exists(actual_output):
-            os.remove(actual_output)
-
-        with zipfile.ZipFile(actual_output, 'w', zipfile.ZIP_DEFLATED) as zf:
-            for dirpath, _, filenames in os.walk(tmp_dir):
-                for filename in filenames:
-                    file_path = os.path.join(dirpath, filename)
-                    arcname = os.path.relpath(file_path, tmp_dir)
-                    zf.write(file_path, arcname)
-
-        if actual_output != output_path:
-            shutil.move(actual_output, output_path)
-
+        tmp_out = output_path + ".tmp"
+        with zipfile.ZipFile(tmp_out, "w", zipfile.ZIP_DEFLATED) as zf:
+            for name in names:
+                full = os.path.join(tmp_dir, name)
+                if os.path.isfile(full):
+                    zf.write(full, name)
+        shutil.move(tmp_out, output_path)
         print(f"Saved to: {output_path}")
-
+        return total
     finally:
         shutil.rmtree(tmp_dir, ignore_errors=True)
 
 
-if __name__ == '__main__':
-    if len(sys.argv) < 2:
-        print("Usage: python fix_rtl.py input.pptx [output.pptx]")
-        sys.exit(1)
-
-    input_file = sys.argv[1]
-    output_file = sys.argv[2] if len(sys.argv) > 2 else input_file
-
-    print(f"Fixing RTL in: {input_file}")
-    fix_pptx(input_file, output_file)
+if __name__ == "__main__":
+    args = [a for a in sys.argv[1:] if not a.startswith("--")]
+    flags = {a for a in sys.argv[1:] if a.startswith("--")}
+    if not args:
+        print(__doc__)
+        sys.exit(2)
+    if not os.path.isfile(args[0]):
+        print(f"Not found: {args[0]}", file=sys.stderr)
+        sys.exit(2)
+    print(f"{'Checking' if '--check' in flags else 'Fixing'} RTL in: {args[0]}")
+    n = fix_pptx(args[0], args[1] if len(args) > 1 else None,
+                 any_rtl="--any-rtl" in flags, check="--check" in flags)
+    sys.exit(1 if ("--check" in flags and n) else 0)

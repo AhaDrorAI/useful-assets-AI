@@ -1,6 +1,9 @@
 ---
 name: project-init
-description: Bootstrap a complete project documentation and agent-harness architecture from an existing PRD. Use this skill whenever the user wants to "init", "set up", "bootstrap", "scaffold", or "kickstart" a project — or describes a fresh repo, empty folder, or new codebase that needs structure. Reads the user's PRD.md, judges complexity, synthesizes content into CLAUDE.md, AGENTS.md, planning.md, tasks.md, decisions.md, and project_state.md, interviews the user for missing critical information, initializes git if needed, and selectively bootstraps a curated subset of the everything-claude-code repo into .claude/. Works for Claude Code primarily but also produces AGENTS.md for cross-tool portability with Codex, Cursor, and OpenCode. Trigger this skill even when the user only says "I have a PRD, what's next" or "how do I start this project right" — they almost certainly want this.
+description: Bootstrap a complete project documentation and agent-harness architecture from an existing PRD. Use this skill whenever the user wants to "init", "set up", "bootstrap", "scaffold", or "kickstart" a project — or describes a fresh repo, empty folder, or new codebase that needs structure. Reads the user's PRD.md, judges complexity, synthesizes content into CLAUDE.md, AGENTS.md, planning.md, tasks.md, decisions.md, and project_state.md, interviews the user for missing critical information, initializes git if needed, and selectively bootstraps a curated subset of the everything-claude-code repo into .claude/. Works for Claude Code primarily but also produces AGENTS.md for cross-tool portability with Codex, Cursor, and OpenCode. Trigger this skill even when the user only says "I have a PRD, what's next" or "how do I start this project right" — they almost certainly want this. Requires a PRD.md; for an idea with no PRD, use new-project-from-prd instead.
+metadata:
+  last_reviewed: "2026-11-18"
+  review_every_days: "180"
 ---
 
 # Project Init
@@ -44,7 +47,7 @@ Before generating anything, read everything that's already there. This saves the
 - If `package.json`, `pyproject.toml`, `go.mod`, `Cargo.toml`, `Gemfile`, etc. exist, read them — they reveal stack and existing tooling.
 - Note what's already there so you don't ask redundant questions later.
 
-### 2. Initialize git if needed
+### 2. Initialize git if the folder is not a repository
 
 Git is non-negotiable for this skill. Decisions, tasks, and state files only make sense if the user can see them evolve over commits.
 
@@ -81,9 +84,9 @@ State your decision out loud to the user and explain your reasoning in one sente
 
 The PRD won't have everything. Read `references/interview-questions.md` for the question bank, then pick only the questions whose answers you actually need given what's already in the PRD and the existing files.
 
-Hard rule: **one batched interview, not drip-fed questions.** Asking 7 questions one at a time across 7 turns is exhausting. Asking all 7 in one message lets the user answer in one pass. Cap the interview at ~7 questions; if you need more, prioritize.
+Hard rule: **one batched interview, not drip-fed questions.** Asking 7 questions one at a time across 7 turns is exhausting. Asking all 7 in one message lets the user answer in one pass. Cap the interview at 7 questions. If you need more, keep the 7 whose answers change the generated files the most.
 
-If you have a way to ask multiple-choice questions in one shot (like `ask_user_input_v0`), use it for questions with clear discrete options (deployment target, primary language, etc.) and use prose for open-ended ones (conventions, guardrails).
+If the host offers a tool for multiple-choice questions, use it for questions with clear discrete options (deployment target, primary language, etc.) and use prose for open-ended ones (conventions, guardrails).
 
 ### 6. Generate the markdown files
 
@@ -109,10 +112,12 @@ Summary of what happens:
 
 1. **List globals**: check what the user already has at `~/.claude/skills/`, `~/.claude/rules/`, `~/.claude/agents/`. These are available everywhere — don't duplicate them at project level.
 2. **Inventory ECC's catalog**: clone ECC to a temp cache (or sparse-checkout the relevant paths), then read SKILL.md and rule frontmatter so you have name + description for each available item.
-3. **Apply the selection rubric** to propose: which `rules/common/` items, which language-specific rules folder (based on detected stack), and which skills are right for *this* project specifically.
-4. **Subtract globals**: remove anything the user already has globally.
-5. **Present the delta to the user for approval.** Be specific: "I want to add these 6 items to `.claude/`: [list with one-line reason for each]. You already have these globally so I'm skipping them: [list]. Approve, or drop any?"
-6. **Install only what's approved** by copying from the temp cache into `.claude/skills/`, `.claude/rules/`, `.claude/agents/`.
+3. **Record the exact ECC commit** (`git -C "$ECC_CACHE" rev-parse HEAD`). Write it in `decisions.md` (or the final report for the starter set), so the user knows which version was copied and can update deliberately later.
+4. **Apply the selection rubric** to propose: which `rules/common/` items, which language-specific rules folder (based on detected stack), and which skills are right for *this* project specifically.
+5. **Subtract globals**: remove anything the user already has globally.
+6. **Review what will be copied.** ECC is third-party code. For each proposed skill or agent, list any scripts it contains. Do not copy hooks or settings files from ECC. If a skill contains a script that runs shell commands or reaches the network, say so in the approval list.
+7. **Present the delta to the user for approval.** Be specific: "I want to add these 6 items to `.claude/`: [list with one-line reason for each]. You already have these globally so I'm skipping them: [list]. Approve, or drop any?"
+8. **Install only what's approved** by copying from the temp cache into `.claude/skills/`, `.claude/rules/`, `.claude/agents/`.
 
 Two non-obvious points the user explicitly asked for:
 - The skill should *help the agent decide* what's relevant for this project — not install a fixed set.
@@ -120,12 +125,19 @@ Two non-obvious points the user explicitly asked for:
 
 ### 8. Set up `.claude/settings.json`
 
-Write a minimal `.claude/settings.json` with sensible defaults:
-- `model`: leave unset (use Claude Code's default) unless the PRD signals otherwise
-- `disabledMcpServers`: empty array (user can add later)
-- A short comment block at top explaining what this file is
+If `.claude/settings.json` already exists, do not touch it. Otherwise write a minimal one. JSON does not allow comments, and Claude Code cannot load a settings file that contains them, so write exactly:
 
-Also write a `.claude/settings.local.json.example` so the user knows the personal-overrides file exists and what shape it has. The real `settings.local.json` stays gitignored.
+```json
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json"
+}
+```
+
+Leave `model` unset so Claude Code's default applies. Do not add keys you cannot confirm in the current Claude Code settings documentation.
+
+Explain the file in `CLAUDE.md` (one line: what `.claude/settings.json` is for and that personal overrides go in the gitignored `.claude/settings.local.json`). Do not write a `settings.local.json`.
+
+Validate before moving on: `python3 -m json.tool .claude/settings.json` must succeed.
 
 ### 9. Print the final report
 
@@ -161,8 +173,8 @@ Suggested next step:
 - **Existing `.claude/` folder**: don't blow it away. Merge — only add files that don't already exist.
 - **Existing markdown files at root** (other than PRD): treat as additional context for synthesis, don't overwrite. Generated files for those names go to `*.proposed.md`.
 - **No internet access** when trying to clone ECC: degrade gracefully. Generate the root markdown files anyway, skip step 7, and note in the final report that ECC bootstrap was skipped and how to re-run it later.
-- **PRD is in a language other than English**: still produce the templated files in English (the user picked English), but reference the PRD's actual content. Don't translate the PRD.
-- **User says "stop, I want to do this myself"** mid-flow: stop cleanly. Don't leave half-generated files. Either nothing or everything gets committed to disk per step.
+- **PRD is in a language other than English**: write `CLAUDE.md` and `AGENTS.md` in English unless the user asks otherwise; agents read them, and English keeps them portable. Write `planning.md`, `tasks.md`, `decisions.md` and `project_state.md` in the language the user asks for; if they did not say, ask once in the interview. Never translate or edit the PRD.
+- **User says "stop, I want to do this myself"** mid-flow: stop at once. Write each step's files only when that step is complete, so a stop never leaves a half-written file. Report which files were written and which were not.
 
 ## Why this skill exists
 

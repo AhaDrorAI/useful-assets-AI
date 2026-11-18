@@ -124,7 +124,7 @@ Fill files with real project-specific content:
 - `tasks.md`: now/next/later execution list
 - `decisions.md`: decisions made and open decisions
 - `project_state.md`: current status, last known good state, next action
-- `SPEC.md`: technical build contract if needed
+- `SPEC.md` or `SPEC.proposed.md`: technical build contract, only in the cases Step 2 names
 
 Do not leave `[FILL]` placeholders unless explicitly listed in the final report.
 

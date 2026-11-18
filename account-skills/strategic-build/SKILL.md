@@ -1,416 +1,113 @@
 ---
 name: strategic-build
-description: Distinguishes strategic vs tactical work during development using Shreyas Doshi's frameworks and Marty Cagan's empowered teams principles. Use when making architectural decisions, choosing what to build, preventing "product theater", or applying the LNO framework (Leverage, Neutral, Overhead). Helps avoid feature factory and build work that compounds.
+description: Decide whether a piece of build work is worth doing, and how much effort it deserves, using Shreyas Doshi's LNO effort framing and three levels of product work (impact, execution, optics), pre-mortems, and Marty Cagan's empowered-team vs feature-team lens. Use when the user asks "should I build this?", "is this worth it?", "what should I prioritise?", is about to make a reusable abstraction or architectural bet, is evaluating a feature request, suspects busy-work or "product theater", or wants a pre-mortem before a big build. Not for detailed sprint planning or code-level design.
+metadata:
+  last_reviewed: "2026-11-18"
+  review_every_days: "180"
 ---
 
-# Strategic Prototyping: Build What Matters
+# Strategic Build
 
-## When This Skill Activates
+Help the user put effort where it compounds, and spend as little as possible where it does not.
 
-Claude uses this skill when:
-- User asks "should I build this?" or "is this worth it?"
-- Making architectural decisions (reusable component, abstraction, etc.)
-- Evaluating feature requests
-- Distinguishing busy-work from high-impact work
-- Preventing premature optimization or "product theater"
+This skill is a judgment aid, not a scoring machine. Each lens below asks a question. Use the lenses the decision needs, state what each one shows, and give a recommendation. Do not run all of them on a small decision.
 
-## Core Frameworks
+## Source note
 
-### 1. The LNO Framework (Source: Shreyas Doshi, ex-Stripe/Twitter/Google PM)
+The frameworks are paraphrased from public talks and writing by Shreyas Doshi (LNO, the three levels, pre-mortems) and Marty Cagan (*Empowered*). The wording here is a summary, not a quotation. Do not present any sentence in this file to the user as a direct quote. If the user wants the original, point them to the authors' own writing.
 
-**Leverage, Neutral, Overhead:**
-> "Not all tasks are created equal. Some tasks compound (Leverage), some maintain (Neutral), and some drain without return (Overhead)."
+## Choose the lens
 
-**Use when:** Prioritizing what to build or evaluating if work is strategic
+| The user's question | Lens |
+|---|---|
+| "Is this task worth doing well?" / "I'm drowning in tasks" | 1. LNO effort |
+| "Why do we keep disagreeing about this?" / "We shipped but nothing moved" | 2. Three levels |
+| "We're about to commit to a big build or bet" | 3. Pre-mortem |
+| "We just get handed features to build" | 4. Empowered vs feature team |
+| "Should I make this reusable / abstract it now?" | 5. Abstraction timing |
 
-**The Three Categories:**
+If the request matches more than one row, use at most two lenses and say which you used.
 
-**🚀 Leverage Work (10x multipliers)**
-- Compounds over time
-- Enables future work
-- Used repeatedly
-- *Examples:* Design systems, core infrastructure, strategic features
+## 1. LNO: match effort to return
 
-**➡️ Neutral Work (1x necessary)**
-- Maintains current state
-- Necessary but doesn't compound
-- One-time impact
-- *Examples:* Bug fixes, minor UX tweaks, maintenance
+Classify each task by the return on doing it **well**:
 
-**⚓ Overhead Work (0x drain)**
-- Busy-work that doesn't move needle
-- "Product theater" - looks like PM work but isn't
-- Process for process's sake
-- *Examples:* Excessive docs, meetings about meetings, vanity features
+- **Leverage (L):** doing it well returns many times the effort. Examples: a decision that shapes months of work, a core interface many features will use, a key hire.
+- **Neutral (N):** the return is roughly proportional to the effort. Most routine work.
+- **Overhead (O):** it must get done, but doing it well returns little. Examples: routine status updates, expense forms, minor formatting.
 
-**How to Apply:**
-```
-For any work request, ask:
-1. Will this be used 10+ times? (Leverage candidate)
-2. Does this unblock future work? (Leverage candidate)
-3. Is this maintaining vs building? (Likely Neutral)
-4. Is this just "looking busy"? (Overhead - avoid)
+The point of LNO is effort allocation, not deletion. Overhead tasks often still have to be done.
 
-BUILD: Leverage > Neutral > Overhead
-RATIO: Aim for 70% Leverage, 20% Neutral, 10% Overhead max
-```
+- For L tasks: give full attention and the best hours. Do them excellently.
+- For N tasks: do them well enough, without perfectionism.
+- For O tasks: do them fast and "good enough", batch them, delegate or automate them. Skip an O task only if nothing depends on it, and say what you assumed.
 
-**Example:**
-```
-Request: "Make this component reusable across the app"
+Signals that a task is Leverage: other work is blocked on it; it will be reused or relied on repeatedly; it is hard to reverse; it changes what the user learns about users or the market. Treat these as signals for judgment, not as a points system.
 
-LNO Analysis:
-- Will we reuse it 10+ times? 
-  YES → Leverage work, do it
-  NO (only 2-3 uses) → Neutral/Overhead, build specific first
+**Output:** a short table: task, class (L/N/O), one-line reason, recommended effort level.
 
-- Does it unblock future teams?
-  YES → Leverage (design system contribution)
-  NO → Wait until 3rd use case, then refactor
-```
+## 2. Three levels: impact, execution, optics
 
----
+Any piece of work can be judged at three levels:
 
-### 2. The Three Levels of Product Work (Source: Shreyas Doshi)
+- **Impact:** does it change an outcome that matters (users, revenue, learning)?
+- **Execution:** is it being built well and delivered reliably?
+- **Optics:** how it is perceived and communicated.
 
-**Impact, Execution, Optics:**
-> "Most execution problems are actually strategy problems. Most failed launches had unclear strategy, not bad execution."
+Two uses:
 
-**The Hierarchy:**
+1. **Diagnose disagreement.** People who argue about a plan often argue at different levels: one about impact, one about execution. Name the level each position is at.
+2. **Check the order.** If the impact of the work is unclear, settle that first. Excellent execution of work with no impact is wasted. Optics matter, but they cannot replace impact.
 
-**Level 1: IMPACT (Why)**
-- What outcome matters?
-- Why does this move the business?
-- What problem are we solving?
-- **Failure mode:** Building without clear success criteria
+**Output:** for the work in question, one line per level: what is known, what is unclear. If impact is unclear, recommend the one question or test that would settle it before more execution.
 
-**Level 2: EXECUTION (How)**
-- How do we build this well?
-- Technical decisions
-- Quality standards
-- **Failure mode:** Great execution on wrong problem
+## 3. Pre-mortem
 
-**Level 3: OPTICS (Perception)**
-- How does this look to stakeholders?
-- Updating status, demos, comms
-- **Failure mode:** Theater - looks good but no impact
+Use before a build that is expensive or hard to reverse.
 
-**Critical Insight:**
-> "Teams often confuse Level 2 (execution) for Level 1 (impact). You ship fast but to nowhere. Always validate Level 1 before optimizing Level 2."
+1. Assume the work has failed six months from now.
+2. List the reasons it failed. Aim for breadth: users, technology, data, team, timing, dependencies.
+3. Pick the risks that are both likely and severe. Usually 2 to 4 risks meet both tests; use judgment, do not force a number.
+4. For each, give a mitigation or a cheap test that would reveal the risk early.
+5. Recommend: build as planned, build with changes, run a test first, or do not build.
 
-**How to Apply:**
-```
-Before building anything:
-1. Level 1: What's the outcome? (Impact)
-   - Define success metric
-   - Know why this matters
-   
-2. Level 2: How to build it? (Execution)
-   - Technical approach
-   - Quality bar
-   
-3. Level 3: How to communicate? (Optics)
-   - Stakeholder updates
-   - Launch narrative
+Base each risk on the user's situation. If a risk is generic ("scope creep"), make it specific to this project or drop it.
 
-Most teams skip Level 1 and jump to Level 2.
+## 4. Empowered team vs feature team
+
+From Cagan: a **feature team** is handed a list of features and measured by delivery. An **empowered team** is handed a problem and measured by whether the outcome moved.
+
+Use this lens when the user receives feature requests without the problem behind them.
+
+- Restate the feature request as the problem it is meant to solve and the outcome that would show it worked.
+- If the user cannot name the problem, recommend asking the requester before building.
+- If the user is a solo builder, apply the same test to their own feature ideas.
+
+Do not lecture the user about their organisation. Help them reframe the request in front of them.
+
+## 5. Abstraction timing
+
+When asked to make something reusable:
+
+- If the code has one real use, build it specifically.
+- If it has two uses, duplicate with care and note the shared shape.
+- If it has three or more real uses, or a confirmed upcoming third, extract the shared version.
+
+This "rule of three" is a heuristic. Override it when the cost of divergence is high (security, money, data integrity), and say why.
+
+## Recommendation format
+
+End with:
+
+```text
+Recommendation: [build / build with changes / test first / defer / do quickly and move on]
+Why: [the one or two findings that decided it]
+Lens(es) used: [...]
+What would change this: [the observation that would reverse the recommendation]
 ```
 
----
-
-### 3. Pre-Mortems for Strategic Decisions (Source: Shreyas Doshi)
-
-**Imagine Failure Before Building:**
-> "Six months from now, this failed completely. Why did it fail?"
-
-**Use when:** Making big architectural decisions or starting major features
-
-**How:**
-1. **Assume Failure:** Imagine it's 6 months later, project failed
-2. **Work Backwards:** List all reasons it could have failed
-3. **Address Top Risks:** Mitigate the most likely failure modes
-4. **Decide:** Build with eyes open or don't build at all
-
-**Example:**
-```
-Feature: "Build AI-powered recommendations"
-
-Pre-Mortem (Imagine it failed):
-- Model wasn't accurate enough (users ignored recommendations)
-- Too slow (users left before results loaded)
-- Cold start problem (no data for new users)
-- Team underestimated ML expertise needed
-
-Mitigations:
-✅ Start with hybrid: AI + rule-based fallback
-✅ Set latency budget: <500ms or use cached results
-✅ Plan cold start: Popular items + collaborative filtering
-✅ Hire ML advisor or partner with ML team
-```
-
----
-
-### 4. Empowered vs Feature Teams (Source: Marty Cagan)
-
-**Product Theater Warning:**
-> "Too many companies overhired. Product owners, product ops, agile coaches - dramatically overpaid for value they provide. It's project management, not product management."
-
-**Feature Team (Avoid This):**
-- Given features to build
-- Success = shipped on time
-- PM is project manager
-- **Result:** Feature factory, no ownership
-
-**Empowered Team (Aim for This):**
-- Given problems to solve
-- Success = business outcome
-- PM discovers solutions
-- **Result:** Innovation, ownership
-
-**How to Identify:**
-```
-Feature Team Signs:
-❌ "We need to ship X by Q2"
-❌ Roadmap is list of features
-❌ Success = velocity, not outcomes
-❌ PM writes tickets, not strategies
-
-Empowered Team Signs:
-✅ "We need to increase retention by 20%"
-✅ Roadmap is list of outcomes
-✅ Success = metrics moved
-✅ PM discovers solutions
-```
-
-**Action:**
-If you're in a feature team, shift your framing:
-- Feature request → User problem
-- Ship date → Outcome timeline
-- Velocity → Impact
-
----
-
-## Decision Tree: Strategic vs Tactical
-
-```
-DECISION: Should I build this?
-│
-├─ LNO Check ──────────────────────────┐
-│  Is this Leverage work? ──YES──────→ PRIORITIZE
-│  Is this Overhead? ───YES──────────→ SKIP
-│  Is this Neutral? ────YES──────────↓
-│
-├─ Three Levels Check ─────────────────┤
-│  Clear Level 1 (Impact)? ──NO──────→ PAUSE & DEFINE
-│  Clear Level 2 (How)? ─────YES─────↓
-│
-├─ Pre-Mortem ─────────────────────────┤
-│  Top failure risks mitigated? NO───→ REDESIGN
-│  Confident in approach? ────YES────↓
-│
-├─ Feature vs Empowered ───────────────┤
-│  Solving problem or building feature?
-│  Problem-focused ──────────────────→ BUILD
-│  Feature-focused ──────────────────→ REFRAME AS PROBLEM
-│
-└─ BUILD WITH STRATEGY ←──────────────┘
-```
-
-## Action Templates
-
-### Template 1: LNO Assessment
-
-```markdown
-# Work Item: [Name]
-
-## LNO Classification
-- [ ] **Leverage** - Compounds over time, enables future work
-- [ ] **Neutral** - Maintains, necessary but doesn't compound
-- [ ] **Overhead** - Busy-work, no meaningful impact
-
-## Evidence
-- Times this will be used: [number]
-- Future work it enables: [list]
-- Business impact if skipped: [high/medium/low]
-
-## Decision
-- Priority: [High/Medium/Low]
-- Rationale: [explain using LNO framework]
-```
-
-### Template 2: Three Levels Check
-
-```markdown
-# Feature: [Name]
-
-## Level 1: IMPACT (Why)
-- Problem we're solving: [describe]
-- Success metric: [specific number]
-- Business outcome: [revenue/retention/acquisition/etc.]
-- **✓ Clear?** [yes/no - if no, stop and define]
-
-## Level 2: EXECUTION (How)
-- Technical approach: [describe]
-- Quality bar: [standards]
-- Timeline: [estimate]
-- **Only proceed if Level 1 is clear**
-
-## Level 3: OPTICS (Communication)
-- Stakeholders: [list]
-- Update cadence: [frequency]
-- Launch story: [how we'll talk about it]
-```
-
-### Template 3: Pre-Mortem
-
-```markdown
-# Pre-Mortem: [Feature Name]
-
-**Scenario:** It's 6 months from now. This completely failed.
-
-## Why It Failed (Brainstorm)
-1. [failure reason]
-2. [failure reason]
-3. [failure reason]
-4. [failure reason]
-5. [failure reason]
-
-## Top 3 Risks
-1. **Risk:** [most likely failure]
-   **Mitigation:** [how to prevent]
-
-2. **Risk:** [second most likely]
-   **Mitigation:** [how to prevent]
-
-3. **Risk:** [third most likely]
-   **Mitigation:** [how to prevent]
-
-## Go/No-Go Decision
-- [ ] Risks acceptable and mitigated
-- [ ] Still believe in the approach
-- [ ] **Decision:** [Build / Redesign / Skip]
-```
-
-## Quick Reference Card
-
-### 🎯 Strategic Build Checklist
-
-**Before Committing:**
-- [ ] Classified as Leverage/Neutral/Overhead (LNO)
-- [ ] If not Leverage, questioning if worth building
-- [ ] Level 1 (Impact) crystal clear
-- [ ] Success metric defined
-- [ ] Pre-mortem completed
-- [ ] Top risks mitigated
-
-**During Build:**
-- [ ] Avoiding "product theater" - building real value
-- [ ] Focusing on outcomes, not just output
-- [ ] Making decisions with strategy in mind
-- [ ] Building for reuse only when justified (3+ use cases)
-
-**Red Flags (Stop & Reassess):**
-- [ ] Can't articulate the "why" (Level 1 unclear)
-- [ ] Building because "stakeholder wants it"
-- [ ] No clear success metric
-- [ ] Feels like busy-work
-
----
-
-## Real-World Examples
-
-### Example 1: Stripe's API Design (Shreyas Doshi at Stripe)
-
-**Challenge:** Should we build this new API endpoint?
-
-**LNO Analysis:**
-- Used by 1000+ developers → Leverage
-- Enables ecosystem growth → High leverage
-- Alternative: Developers build workarounds → Tech debt
-
-**Decision:** Build (high Leverage work)
-
----
-
-### Example 2: Feature Factory Trap (Marty Cagan)
-
-**Challenge:** Product team shipping fast but metrics flat
-
-**Diagnosis:** Feature Team, not Empowered Team
-- Roadmap = list of features
-- PM = project manager
-- No ownership of outcomes
-
-**Fix:**
-- Shifted to outcome-based roadmap
-- PM discovers solutions, not just builds features
-- Measured impact, not velocity
-
-**Result:** Fewer features, better outcomes
-
----
-
-### Example 3: Premature Abstraction
-
-**Request:** "Make this component super reusable"
-
-**LNO Assessment:**
-- Currently used: 2 times
-- Abstraction adds complexity
-- Not clear if we'll need it again
-
-**Decision:** Build specific, wait for 3rd use case
-- First 2 uses: Copy-paste (acceptable tech debt)
-- 3rd use: Refactor into shared component (data-driven)
-
----
-
-## Common Pitfalls
-
-### ❌ Mistake 1: Optimizing Execution Without Strategy
-**Problem:** Building fast but in wrong direction
-**Fix:** Always validate Level 1 (Impact) before Level 2 (Execution)
-
-### ❌ Mistake 2: Overhead Disguised as Work
-**Problem:** Updating stakeholders, writing docs, tweaking process
-**Fix:** Audit your week - what % was Leverage vs Overhead?
-
-### ❌ Mistake 3: Building for "Someday"
-**Problem:** "We might need this later" → premature abstraction
-**Fix:** YAGNI (You Aren't Gonna Need It) - build when needed
-
-### ❌ Mistake 4: Feature Team Mentality
-**Problem:** Success = shipped, not impact
-**Fix:** Reframe every feature as a problem to solve
-
----
-
-## Related Skills
-
-- **zero-to-launch** - For scoping MVP strategically
-- **decision-frameworks** - For structured decision-making
-- **prioritization-craft** - For choosing between options
-- **strategic-pm** - For moving from tactical to strategic thinking
-- **ship-decisions** - For when to ship vs iterate
-
----
-
-## Key Quotes
-
-**Shreyas Doshi:**
-> "The hardest thing about product management isn't the frameworks - it's distinguishing Leverage work from Overhead disguised as work."
-
-**Marty Cagan:**
-> "If you're just delivering output, you're a project manager. Product managers deliver outcomes."
-
-**Shreyas on Pre-Mortems:**
-> "Most teams do post-mortems when it's too late. Do pre-mortems when you can still change course."
-
----
-
-## Further Learning
-
-- **references/shreyas-doshi-frameworks.md** - Deep dive on LNO and Three Levels
-- **references/marty-cagan-empowered.md** - Feature teams vs empowered teams
-- **references/strategic-vs-tactical.md** - Case studies and examples
-
+## Boundaries
+
+- Do not invent examples about real companies or people. If an illustration helps, label it as hypothetical.
+- Do not push the user to drop work they have already decided to do. If you disagree, say so once with the reason, then help them do it well.
+- If a decision depends on data the user has not shared (usage numbers, revenue, deadlines), ask for it or state the assumption.

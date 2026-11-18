@@ -7,20 +7,15 @@
 #   ./inventory_globals.sh /path/to/dir   # custom config root
 #
 # Output: machine-readable, three sections separated by `---`:
-#   skills:
-#   <name>
-#   <name>
-#   ---
-#   rules:
-#   <relative-path>
-#   <relative-path>
-#   ---
-#   agents:
-#   <name>
-#   <name>
+#   skills:   <folder name per line>
+#   rules:    <path relative to rules/ per line>
+#   agents:   <name without .md per line>
 #
 # If a directory doesn't exist, its section is empty.
 # Exit code is always 0 — missing globals is a normal state, not an error.
+#
+# Portable: runs on GNU/Linux, macOS (BSD tools) and Git Bash. Avoids GNU-only
+# flags such as `find -printf`, which fail silently on macOS.
 
 set -uo pipefail
 
@@ -28,14 +23,14 @@ ROOT="${1:-$HOME/.claude}"
 
 echo "skills:"
 if [ -d "$ROOT/skills" ]; then
-  # Skills are folders, each containing a SKILL.md. Print the folder names.
-  find "$ROOT/skills" -mindepth 1 -maxdepth 1 -type d -printf '%f\n' 2>/dev/null | sort
+  for d in "$ROOT/skills"/*/; do
+    [ -d "$d" ] && basename "$d"
+  done | sort
 fi
 
 echo "---"
 echo "rules:"
 if [ -d "$ROOT/rules" ]; then
-  # Rules can be flat .md files or nested in language subfolders. Print relative paths.
   find "$ROOT/rules" -type f -name '*.md' 2>/dev/null \
     | sed "s|^$ROOT/rules/||" \
     | sort
@@ -44,8 +39,8 @@ fi
 echo "---"
 echo "agents:"
 if [ -d "$ROOT/agents" ]; then
-  # Agents are flat .md files. Print names without extension.
-  find "$ROOT/agents" -maxdepth 1 -type f -name '*.md' -printf '%f\n' 2>/dev/null \
-    | sed 's/\.md$//' \
-    | sort
+  for f in "$ROOT/agents"/*.md; do
+    [ -f "$f" ] && basename "$f" .md
+  done | sort
 fi
+exit 0

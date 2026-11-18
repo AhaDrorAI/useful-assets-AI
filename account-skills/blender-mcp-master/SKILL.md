@@ -11,6 +11,9 @@ description: >
   Blender MCP connected and asks to "make", "build", "design", or "create"
   something visual — even if they don't say "Blender" explicitly. This skill
   is MANDATORY reading before writing ANY execute_blender_code calls.
+metadata:
+  last_reviewed: "2026-11-18"
+  review_every_days: "90"
 ---
 
 # Blender MCP Master Skill
@@ -44,7 +47,11 @@ You have these tools when Blender MCP is connected:
 | `set_texture` | Apply a downloaded Poly Haven texture to an object |
 | `search_sketchfab_models` | Search Sketchfab's library |
 | `download_sketchfab_model` | Import a Sketchfab model at a target size |
-| `generate_hyper3d_model_via_text` | AI-generate a 3D model from a text prompt |
+| `generate_hyper3d_model_via_text` | AI-generate a 3D model from a text prompt (uses Hyper3D credits) |
+| `poll_rodin_job_status` | Check whether a Hyper3D generation has finished |
+| `import_generated_asset` | Import a finished Hyper3D model into the scene |
+
+Tool names come from the Blender MCP server and can change between versions. If a tool in this table is missing, list the tools the server actually offers and use the closest match; do not call a tool that is not offered.
 
 ---
 
@@ -52,9 +59,31 @@ You have these tools when Blender MCP is connected:
 
 These rules prevent the most common MCP session failures:
 
-### 1. Always start with `get_scene_info`
-Before touching anything, know what exists. The default scene has a Cube, Camera,
-and Light. Don't assume — verify.
+### 0. Safety boundaries for `execute_blender_code`
+`execute_blender_code` runs arbitrary Python on the user's own machine, with the
+user's file permissions. Inside it:
+
+- Do not read, write or delete files outside Blender's temp directory and the
+  folder the user named for output.
+- Do not install packages (`pip`, `ensurepip`), add-ons or extensions unless the
+  user asks for that specific item.
+- Do not make network requests from Python. Use the MCP asset tools for downloads.
+- Do not save over an existing `.blend` file. Save to a new filename, or ask first.
+
+### 1. Always start with `get_scene_info` and the Blender version
+Before touching anything, know what exists and which Blender is running:
+
+```python
+import bpy; print(bpy.app.version_string)
+```
+
+If the version is not 5.0.x, the breaking-change list in rule 3 may not apply.
+Say so, and check an API call in the Python console before relying on it.
+
+**Protect the user's scene.** The factory default scene has exactly a Cube, a Camera
+and a Light. If the scene has only those three, you may delete or change them.
+If it has anything else, it is the user's work: do not delete, rename or move
+existing objects unless the user asks. Add new objects alongside instead.
 
 ### 2. Keep `execute_blender_code` calls small and incremental
 Break complex work into steps of 20-40 lines each. If one step fails, you don't
@@ -116,7 +145,7 @@ Use screenshots for quick checks, renders for final output.
 
 ```
 1. get_scene_info → know what exists
-2. execute_blender_code → clear/modify default objects
+2. execute_blender_code → clear/modify default objects (only if the scene is the factory default; see rule 1)
 3. execute_blender_code → create new objects + materials (one step per concept)
 4. execute_blender_code → set up lighting
 5. execute_blender_code → position camera
@@ -332,6 +361,11 @@ Key Blender 5.0 additions:
 For Poly Haven, Sketchfab, and Hyper3D patterns, read
 `references/polyhaven_sketchfab.md`.
 
+**Licences and credits.** Poly Haven assets are CC0. Sketchfab models carry
+per-model licences (some forbid commercial use or need attribution): report the
+model's licence and author to the user when you import it. Hyper3D generation
+spends the user's credits: ask before each generation.
+
 Quick reference:
 ```python
 # Check if integrations are available
@@ -374,7 +408,9 @@ bpy.ops.object.select_all(action='DESELECT')
 obj.select_set(True)
 bpy.ops.object.delete()
 
-# Clean orphan data
+# Clean orphan data. Orphans can include the user's own unused meshes and
+# materials (kept with a fake user or awaiting reuse). Run this only on a scene
+# you built in this session, or after the user agrees.
 for block in bpy.data.meshes:
     if block.users == 0:
         bpy.data.meshes.remove(block)

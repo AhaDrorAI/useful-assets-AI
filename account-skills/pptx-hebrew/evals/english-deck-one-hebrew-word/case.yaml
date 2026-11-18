@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: english-deck-one-hebrew-word
+expected_outcome: |
+  English-primary text keeps LTR; the Hebrew word gets lang he-IL; rtlMode is not set on the text box.

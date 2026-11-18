@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: sketchfab-commercial
+expected_outcome: |
+  Reports the model's licence and author and flags that commercial use may be restricted before using it in a client ad.

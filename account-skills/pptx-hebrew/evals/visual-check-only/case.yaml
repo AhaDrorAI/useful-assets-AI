@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: visual-check-only
+expected_outcome: |
+  Explains that LibreOffice/PDF preview looks right even when tags are wrong; recommends running fix_rtl.py --check on the file.

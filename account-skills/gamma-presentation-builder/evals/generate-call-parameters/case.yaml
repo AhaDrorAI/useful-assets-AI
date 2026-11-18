@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: generate-call-parameters
+expected_outcome: |
+  Calls generate with inputText (full outline), textMode generate, numCards 8, language en, additionalInstructions with audience; omits text amount, image style, theme and export.

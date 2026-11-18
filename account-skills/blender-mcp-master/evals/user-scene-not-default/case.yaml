@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: user-scene-not-default
+expected_outcome: |
+  Calls get_scene_info, sees non-default scene, does not delete existing objects, adds new objects alongside.
