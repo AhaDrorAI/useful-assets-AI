@@ -114,7 +114,7 @@ Summary of what happens:
 2. **Inventory ECC's catalog**: clone ECC to a temp cache (or sparse-checkout the relevant paths), then read SKILL.md and rule frontmatter so you have name + description for each available item.
 3. **Record the exact ECC commit** (`git -C "$ECC_CACHE" rev-parse HEAD`). Write it in `decisions.md` (or the final report for the starter set), so the user knows which version was copied and can update deliberately later.
 4. **Apply the selection rubric** to propose: which `rules/common/` items, which language-specific rules folder (based on detected stack), and which skills are right for *this* project specifically.
-5. **Subtract globals**: remove anything the user already has globally.
+5. **Subtract globals and project copies**: remove anything the user already has globally, and mark anything that already exists in the project's `.claude/` as "skipped (already in project)". Never overwrite a project file; see `references/ecc-bootstrap.md` step 7.
 6. **Review what will be copied.** ECC is third-party code. For each proposed skill or agent, list any scripts it contains. Do not copy hooks or settings files from ECC. If a skill contains a script that runs shell commands or reaches the network, say so in the approval list.
 7. **Present the delta to the user for approval.** Be specific: "I want to add these 6 items to `.claude/`: [list with one-line reason for each]. You already have these globally so I'm skipping them: [list]. Approve, or drop any?"
 8. **Install only what's approved** by copying from the temp cache into `.claude/skills/`, `.claude/rules/`, `.claude/agents/`.

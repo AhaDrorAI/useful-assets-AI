@@ -26,6 +26,7 @@ No dependencies. Standard library only.
 
 import datetime as dt
 import re
+import subprocess
 import sys
 import zipfile
 from pathlib import Path
@@ -49,6 +50,8 @@ EXCLUDE_NAMES = {".DS_Store", "Thumbs.db", "desktop.ini", "__pycache__", ".git",
                  "node_modules"}
 EXCLUDE_SUFFIXES = {".pyc", ".tmp", ".bak", ".skill"}
 EXCLUDE_TOP_DIRS = {"evals"}
+# Never zipped, even outside a git checkout: local config and likely secrets.
+SECRET_NAME_RE = re.compile(r"^(\.env(\..*)?|\.claude|\.wolf|.*\.(pem|key|p12|pfx)|id_(rsa|ed25519).*|credentials\.json)$", re.I)
 
 # Vague wording that hides a decision. Each hit should become a rule, a threshold,
 # a fallback, or a question to the user. Quoted text and code are ignored.
@@ -323,11 +326,27 @@ def check(skill_dir: Path, today: dt.date, upload_check: bool):
 # Packaging
 # --------------------------------------------------------------------------- #
 
-def should_skip(path: Path, skill_dir: Path) -> bool:
+def publishable_files(skill_dir: Path):
+    """Files git would publish: tracked, or untracked but not ignored.
+    Returns None outside a git checkout. The ZIP then relies on the name rules
+    alone. .gitignore is the publish boundary (docs/maintaining.md), so an
+    uploaded ZIP must respect it the same way the repo does."""
+    try:
+        out = subprocess.run(
+            ["git", "ls-files", "-z", "--cached", "--others", "--exclude-standard", "--", "."],
+            cwd=skill_dir, capture_output=True, check=True).stdout
+    except (OSError, subprocess.CalledProcessError):
+        return None
+    return {(skill_dir / f.decode()).resolve() for f in out.split(b"\0") if f}
+
+
+def should_skip(path: Path, skill_dir: Path, allowed=None) -> bool:
     rel = path.relative_to(skill_dir)
     if rel.parts and rel.parts[0] in EXCLUDE_TOP_DIRS:
         return True
-    if any(part in EXCLUDE_NAMES for part in rel.parts):
+    if any(part in EXCLUDE_NAMES or SECRET_NAME_RE.match(part) for part in rel.parts):
+        return True
+    if allowed is not None and path.resolve() not in allowed:
         return True
     return path.suffix in EXCLUDE_SUFFIXES
 
@@ -335,9 +354,10 @@ def should_skip(path: Path, skill_dir: Path) -> bool:
 def build_zip(skill_dir: Path) -> Path:
     OUT_DIR.mkdir(exist_ok=True)
     out = OUT_DIR / f"{skill_dir.name}.zip"
+    allowed = publishable_files(skill_dir)
     with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as z:
         for path in sorted(skill_dir.rglob("*")):
-            if path.is_dir() or should_skip(path, skill_dir):
+            if path.is_dir() or should_skip(path, skill_dir, allowed):
                 continue
             z.write(path, path.relative_to(skill_dir.parent).as_posix())
     return out

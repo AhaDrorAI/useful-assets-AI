@@ -5,6 +5,6 @@ timeout_seconds: 600
 allowed_tools: [Read, Glob, Skill]
 ---
 
-good morning
+(private one-to-one chat) good morning
 
 Input files: BRAIN.md

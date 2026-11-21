@@ -107,23 +107,36 @@ Wait for confirmation. Don't auto-install.
 
 ### 7. Install approved items
 
-Copy from `$ECC_CACHE` to `.claude/` preserving directory structure:
+Never overwrite anything that already exists in the project's `.claude/`. A project copy may hold local customisations, and the approval list did not tell the user it would be replaced.
+
+Before you present the approval list (step 6), check each proposed item against the project as well as the globals:
 
 ```bash
-# Rules
-mkdir -p .claude/rules/common
-cp "$ECC_CACHE/rules/common/coding-style.md" .claude/rules/common/
-cp "$ECC_CACHE/rules/common/git-workflow.md" .claude/rules/common/
-# ... etc
-
-# Skills (preserve full skill folder)
-mkdir -p .claude/skills
-cp -r "$ECC_CACHE/skills/tdd-workflow" .claude/skills/
-
-# Agents
-mkdir -p .claude/agents
-cp "$ECC_CACHE/agents/code-reviewer.md" .claude/agents/
+# A rule, skill or agent that already exists in the project is "skipped (exists)"
+for p in rules/common/coding-style.md skills/tdd-workflow agents/code-reviewer.md; do
+  [ -e ".claude/$p" ] && echo "skipped (exists in project): $p"
+done
 ```
+
+List those items as "skipped (already in project)" in the approval message.
+
+Copy only items that do not exist yet. Copy a skill as a whole folder, and only when the destination folder does not exist; never merge into an existing skill folder:
+
+```bash
+copy_new_file() {  # $1 = source, $2 = destination file
+  if [ -e "$2" ]; then echo "skipped (exists): $2"; else mkdir -p "$(dirname "$2")" && cp "$1" "$2"; fi
+}
+copy_new_dir() {   # $1 = source folder, $2 = destination folder
+  if [ -e "$2" ]; then echo "skipped (exists): $2"; else mkdir -p "$(dirname "$2")" && cp -R "$1" "$2"; fi
+}
+
+copy_new_file "$ECC_CACHE/rules/common/coding-style.md" .claude/rules/common/coding-style.md
+copy_new_file "$ECC_CACHE/rules/common/git-workflow.md" .claude/rules/common/git-workflow.md
+copy_new_dir  "$ECC_CACHE/skills/tdd-workflow"          .claude/skills/tdd-workflow
+copy_new_file "$ECC_CACHE/agents/code-reviewer.md"      .claude/agents/code-reviewer.md
+```
+
+Report every "skipped (exists)" line in the final report.
 
 ### 8. Clean up the cache
 

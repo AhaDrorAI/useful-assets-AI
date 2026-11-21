@@ -80,10 +80,14 @@ import bpy; print(bpy.app.version_string)
 If the version is not 5.0.x, the breaking-change list in rule 3 may not apply.
 Say so, and check an API call in the Python console before relying on it.
 
-**Protect the user's scene.** The factory default scene has exactly a Cube, a Camera
-and a Light. If the scene has only those three, you may delete or change them.
-If it has anything else, it is the user's work: do not delete, rename or move
-existing objects unless the user asks. Add new objects alongside instead.
+**Protect the user's scene.** Treat every existing object as the user's work.
+Object names do not prove a scene is untouched: a user can reshape the default
+Cube without renaming it. Do not delete, rename, move or modify existing objects
+unless the user asks for it in this conversation. Add new objects alongside instead.
+
+If the new scene needs the existing objects gone (for example, the default Cube
+sits where the new subject goes), ask once: "The scene has [objects]. Delete them,
+or keep them and place the new scene elsewhere?" Delete only after a yes.
 
 ### 2. Keep `execute_blender_code` calls small and incremental
 Break complex work into steps of 20-40 lines each. If one step fails, you don't
@@ -145,7 +149,7 @@ Use screenshots for quick checks, renders for final output.
 
 ```
 1. get_scene_info → know what exists
-2. execute_blender_code → clear/modify default objects (only if the scene is the factory default; see rule 1)
+2. execute_blender_code → clear or modify existing objects (only after the user agrees; see rule 1)
 3. execute_blender_code → create new objects + materials (one step per concept)
 4. execute_blender_code → set up lighting
 5. execute_blender_code → position camera

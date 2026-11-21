@@ -16,12 +16,20 @@ What this script changes, per slide, layout and master XML file:
 3. In an RTL-primary paragraph, <a:endParaRPr> gets the RTL lang too, so text
    typed at the end of the line continues in Hebrew/Arabic.
 
-Namespace prefixes are preserved (p:, a:, r:, mc: ...). With lxml installed the
-XML is rewritten byte-for-byte except for the changed attributes; without lxml
-the standard library is used with every prefix in the file re-registered.
+Requires lxml (`pip install lxml`; python-pptx already depends on it). lxml keeps
+every namespace declaration, including prefixes used only inside mc:Ignorable.
+The standard-library XML writer drops those, which corrupts the slide, so there
+is no fallback: without lxml the script stops before changing anything.
+
+Untrusted input: the deck is treated as untrusted. An archive whose entry names
+are absolute or climb out of the archive (`../`) is refused, and XML is parsed
+with entity resolution and network access turned off.
 
 Usage:
     python fix_rtl.py input.pptx [output.pptx] [--any-rtl] [--check]
+
+Exit codes: 0 done (or --check found nothing to change); 1 --check found changes
+needed; 2 bad input (missing file, not a zip, unsafe archive); 3 lxml missing.
 
     --check   Do not write. Print what would change and exit 1 if anything would.
               Use it after a fix to verify: a fixed file reports 0 changes.
@@ -40,8 +48,10 @@ try:
     from lxml import etree as ET  # preserves prefixes and declarations exactly
     HAVE_LXML = True
 except ImportError:  # pragma: no cover
-    import xml.etree.ElementTree as ET
+    ET = None
     HAVE_LXML = False
+
+SAFE_PARSER = ET.XMLParser(resolve_entities=False, no_network=True, huge_tree=False) if HAVE_LXML else None
 
 HEBREW_RE = re.compile(r"[֐-׿יִ-ﭏ]")
 ARABIC_RE = re.compile(r"[؀-ۿݐ-ݿࢠ-ࣿﭐ-﷿ﹰ-﻿]")
@@ -72,19 +82,34 @@ def is_rtl_primary(text, any_rtl):
     return rtl >= len(LATIN_RE.findall(text))
 
 
-def register_prefixes(xml_bytes):
-    """stdlib only: re-register every prefix declared in the file, so ET writes
-    the same prefixes back instead of ns0:/default namespaces."""
-    for prefix, uri in re.findall(rb'xmlns:([A-Za-z0-9_]+)="([^"]+)"', xml_bytes):
-        ET.register_namespace(prefix.decode(), uri.decode())
+class UnsafeArchive(Exception):
+    pass
+
+
+def safe_member_names(zf):
+    """Return the archive's file entries, or raise if any name could escape the
+    extraction folder. A real .pptx never has such names."""
+    names = []
+    for info in zf.infolist():
+        n = info.filename
+        if info.is_dir():
+            continue
+        parts = n.replace("\\", "/").split("/")
+        if n.startswith(("/", "\\")) or re.match(r"^[A-Za-z]:", n) or ".." in parts or "" in parts[:-1]:
+            raise UnsafeArchive(f"unsafe entry name in archive: {n!r}")
+        names.append(n)
+    return names
+
+
+def inside(base, path):
+    base = os.path.realpath(base)
+    return os.path.commonpath([base, os.path.realpath(path)]) == base
 
 
 def fix_xml(path, any_rtl=False, write=True):
     with open(path, "rb") as f:
         raw = f.read()
-    if not HAVE_LXML:
-        register_prefixes(raw)
-    tree = ET.ElementTree(ET.fromstring(raw))
+    tree = ET.ElementTree(ET.fromstring(raw, SAFE_PARSER))
     root = tree.getroot()
     changes = 0
 
@@ -123,10 +148,7 @@ def fix_xml(path, any_rtl=False, write=True):
                 changes += 1
 
     if changes and write:
-        if HAVE_LXML:
-            tree.write(path, xml_declaration=True, encoding="UTF-8", standalone=True)
-        else:
-            tree.write(path, xml_declaration=True, encoding="UTF-8")
+        tree.write(path, xml_declaration=True, encoding="UTF-8", standalone=True)
     return changes
 
 
@@ -135,8 +157,14 @@ def fix_pptx(input_path, output_path=None, any_rtl=False, check=False):
     tmp_dir = tempfile.mkdtemp(prefix="rtl_fix_")
     try:
         with zipfile.ZipFile(input_path) as zf:
-            names = zf.namelist()  # keep the original entry order
-            zf.extractall(tmp_dir)
+            names = safe_member_names(zf)  # keeps the original entry order
+            for name in names:
+                dest = os.path.join(tmp_dir, name)
+                if not inside(tmp_dir, dest):
+                    raise UnsafeArchive(f"entry escapes the archive: {name!r}")
+                os.makedirs(os.path.dirname(dest), exist_ok=True)
+                with zf.open(name) as src, open(dest, "wb") as out:
+                    shutil.copyfileobj(src, out)
 
         total = 0
         for name in names:
@@ -153,7 +181,7 @@ def fix_pptx(input_path, output_path=None, any_rtl=False, check=False):
         with zipfile.ZipFile(tmp_out, "w", zipfile.ZIP_DEFLATED) as zf:
             for name in names:
                 full = os.path.join(tmp_dir, name)
-                if os.path.isfile(full):
+                if inside(tmp_dir, full) and os.path.isfile(full):
                     zf.write(full, name)
         shutil.move(tmp_out, output_path)
         print(f"Saved to: {output_path}")
@@ -171,7 +199,14 @@ if __name__ == "__main__":
     if not os.path.isfile(args[0]):
         print(f"Not found: {args[0]}", file=sys.stderr)
         sys.exit(2)
+    if not HAVE_LXML:
+        print("fix_rtl.py needs lxml: pip install lxml. Nothing was changed.", file=sys.stderr)
+        sys.exit(3)
     print(f"{'Checking' if '--check' in flags else 'Fixing'} RTL in: {args[0]}")
-    n = fix_pptx(args[0], args[1] if len(args) > 1 else None,
-                 any_rtl="--any-rtl" in flags, check="--check" in flags)
+    try:
+        n = fix_pptx(args[0], args[1] if len(args) > 1 else None,
+                     any_rtl="--any-rtl" in flags, check="--check" in flags)
+    except (UnsafeArchive, zipfile.BadZipFile) as e:
+        print(f"Refused: {e}. Nothing was changed.", file=sys.stderr)
+        sys.exit(2)
     sys.exit(1 if ("--check" in flags and n) else 0)

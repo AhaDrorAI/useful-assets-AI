@@ -69,6 +69,10 @@ This script opens the PPTX (which is a ZIP of XML files), and fixes:
 - Leaves English-primary paragraphs left-to-right, even when they contain a Hebrew word. Pass `--any-rtl` to mark every paragraph that contains any RTL letter instead.
 - Preserves `lang="en-US"` on purely English text runs, and keeps the file's XML namespace prefixes unchanged.
 
+The script needs `lxml` (`pip install lxml`; python-pptx already installs it). Without it the script stops with exit code 3 and changes nothing, because Python's built-in XML writer would drop namespace declarations and corrupt the slide. It also refuses (exit 2) a deck whose archive entries are unsafe, and parses XML with entity resolution and network access off.
+
+To check the script itself after any change: `python <skill-path>/scripts/test_fix_rtl.py` (12 regression tests).
+
 The script modifies the file in-place. You can also specify a separate output:
 ```bash
 python <skill-path>/scripts/fix_rtl.py input.pptx output.pptx

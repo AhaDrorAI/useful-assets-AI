@@ -136,3 +136,18 @@ Changes made because of the live tests:
 
 - Vague-word hits that describe rather than instruct ("a few dozen files", "swapping out a few words") in `avoid-ai-writing`, `google-play-publishing` and `improve-codebase-architecture`.
 - Missing review dates on the 9 Vector skills (see above). Missing test cases on the 2 Vector aliases.
+
+### 2026-11-21: Devin Review on PR #4
+
+All 6 findings were verified as real and fixed:
+
+| Finding | Verified how | Fix |
+|---|---|---|
+| fix_rtl.py zip path traversal (security) | Reproduced: an entry named `../../etc/hostname` came back with this machine's real `/etc/hostname`. | Unsafe entry names refuse the whole deck (exit 2, file unchanged). Extraction and repacking check containment. XML parsed with entity resolution and network off. |
+| fix_rtl.py stdlib path drops `mc:Ignorable`-only prefixes | Reproduced: `xmlns:p14` lost, `mc:Ignorable="p14"` kept. | lxml required. Without it: exit 3, nothing changed. Stdlib fallback removed. |
+| Packager zips gitignored files (security) | Code reading; then tested with `.env`, `.claude/`, `*.key`, `*.log`. | ZIP contains only files git would publish, plus a secret-name filter outside git. |
+| Blender: default names do not prove an untouched scene | Correct by reasoning; names survive edits. | Never delete existing objects without the user's yes in this conversation. |
+| project-init: ECC copy overwrites project files | Code reading; then tested the helpers on a project copy. | Project copies are listed as skipped. Copy helpers never overwrite a file or merge into a skill folder. |
+| vector-session-start reads BRAIN.md in shared contexts (security) | Code reading. | The privacy decision comes first. `BRAIN.md` and `memory/` are read only in a private context. |
+
+New regression test: `account-skills/pptx-hebrew/scripts/test_fix_rtl.py`, 12 cases, all pass.

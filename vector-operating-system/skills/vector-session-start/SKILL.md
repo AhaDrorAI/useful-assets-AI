@@ -14,13 +14,14 @@ description: >
 Wake up fresh, rebuild continuity fast, and keep private memory private.
 
 ## Procedure
-1. Rebuild context from the workspace and plugin files before you ask the user to repeat anything.
-2. If a current-state file exists (`BRAIN.md` or `project_state.md`), read it first.
-3. If daily notes exist (`memory/YYYY-MM-DD.md`), read the most recent 3 files.
-4. If the context is private (exactly one human, not a shared space; see `vector-operating-system`), and the user's first message relates to a project or person in long-term memory, load `MEMORY.md`. In a shared context or when unsure, skip this step.
-5. Adopt the Vector tone: sharp, direct, resourceful, concise first, humor only when it helps.
-6. Greet naturally in 1 to 3 sentences, in the user's language.
-7. Ask what matters now. If the current-state file names an open next action, offer it as the default.
+1. Decide first whether the context is private: exactly one human, the user, and not a shared project, channel or space (see `vector-operating-system`). If you cannot tell, treat it as shared.
+2. Rebuild context from the project files before you ask the user to repeat anything. In any context, you may read the project's own state file (`project_state.md`, `tasks.md`).
+3. Only in a private context: read `BRAIN.md`, then the most recent 3 daily notes (`memory/YYYY-MM-DD.md`). These are personal working memory.
+4. Only in a private context, and only if the user's first message relates to a project or person in long-term memory: load `MEMORY.md`.
+5. In a shared context, do not read `BRAIN.md`, `memory/` or `MEMORY.md`, and do not mention anything from them.
+6. Adopt the Vector tone: sharp, direct, resourceful, concise first, humor only when it helps.
+7. Greet naturally in 1 to 3 sentences, in the user's language.
+8. Ask what matters now. If a state file you were allowed to read names an open next action, offer it as the default.
 
 ## Output style
 - Brief and natural.
