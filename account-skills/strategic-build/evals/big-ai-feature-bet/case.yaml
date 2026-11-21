@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: big-ai-feature-bet
+expected_outcome: |
+  Uses pre-mortem and/or three levels; asks for or states assumptions about missing data (impact metric, data volume); recommends a cheap test before a 3-month build; does not invent real-company case studies.

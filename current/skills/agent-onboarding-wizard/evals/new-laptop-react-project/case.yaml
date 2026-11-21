@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: new-laptop-react-project
+expected_outcome: |
+  Runs or proposes the inventory checks first, classifies a short list into Global / Project / Reference / Skip, explains each in plain English, shows exact commands, and installs nothing.

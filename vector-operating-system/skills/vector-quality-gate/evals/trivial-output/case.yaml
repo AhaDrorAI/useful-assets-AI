@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: trivial-output
+expected_outcome: |
+  Keeps it proportionate: passes it quickly without a long checklist.

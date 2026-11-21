@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: hebrew-user
+expected_outcome: |
+  Replies in Hebrew, direct, answer first; checks project files before asking.

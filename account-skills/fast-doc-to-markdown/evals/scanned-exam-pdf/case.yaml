@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: scanned-exam-pdf
+expected_outcome: |
+  On exit 3, does not pass --ocr hosted; uses local OCR via the pdf skill or reports pages needing OCR.

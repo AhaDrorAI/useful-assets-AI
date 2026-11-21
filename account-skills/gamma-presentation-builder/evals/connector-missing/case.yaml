@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: connector-missing
+expected_outcome: |
+  Does not get stuck: produces a paste-ready outline and short instructions to connect Gamma; does not invent Q3 numbers.

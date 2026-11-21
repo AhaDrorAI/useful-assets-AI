@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: what-now-no-context
+expected_outcome: |
+  Checks files/conversation for threads; if none, asks for the open threads instead of inventing them.

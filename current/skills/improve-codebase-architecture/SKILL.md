@@ -2,7 +2,10 @@
 name: improve-codebase-architecture
 description: "Surveys a whole codebase or subsystem for deepening opportunities — shallow modules whose interface is nearly as complex as the implementation it hides — ranks them in a self-contained HTML report with before/after diagrams, then designs whichever one the user picks. Use when the user asks for an architecture review or audit, wants to find where a codebase should be refactored, asks what shape a legacy or vibe-coded repo is in, wants to find missing seams before writing tests, or asks how to make an upcoming change easy. This is a periodic survey run outside the build loop, not a refactoring tool: do not use it to restructure one module the user has already chosen, or to carry out a refactor already decided on. Proposes only; never edits code."
 license: Inherits the license of the repository it ships in
-allowed-tools: Read, Glob, Grep, Bash, Write, Edit, Task
+allowed-tools: Read, Glob, Grep, Task, Bash(git log:*), Bash(git status:*), Bash(grep:*), Bash(wc:*)
+metadata:
+  last_reviewed: "2026-11-18"
+  review_every_days: "180"
 ---
 
 # Improve Codebase Architecture
@@ -21,7 +24,7 @@ This skill proposes. It does not refactor.
 
 These four hold on every run. They exist because each one has a recorded failure mode.
 
-1. **Nothing inside the repo changes without approval.** The report always lands outside it. Writes to tracked files (`CONTEXT.md`, ADRs) happen only after the user approves that specific write. A survey that silently edits files is not a survey.
+1. **Nothing inside the repo changes without approval.** The report always lands outside it. This rule is enforced by the tool list too: `allowed-tools` pre-approves only reading and four read-only shell commands, so every `Write`, `Edit` or other shell command shows the user a permission prompt. Do not ask the user to pre-approve write tools for this skill. Writes to tracked files (`CONTEXT.md`, ADRs) happen only after the user approves that specific write. A survey that silently edits files is not a survey.
 2. **Report first, design second.** Do not design, propose interfaces, or interview the user about a candidate before the report exists and the user has named one. Scoping questions in Step 1 are fine and often necessary — the gate is on design discussion. The most common failure of this skill is latching onto the first idea and interviewing the user about it while eleven better candidates go unwritten.
 3. **The scan is bounded.** Budgets are in Step 1. An unbounded exploration of a large repo exhausts the context window and produces a worse report than a scoped one, not a better one.
 4. **"Nothing worth doing" is a valid result.** Say so plainly when it is true. Manufacturing candidates to look useful is the failure this invariant prevents.

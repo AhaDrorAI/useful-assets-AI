@@ -1,7 +1,9 @@
 ---
 name: startup-free-traffic
 description: A diagnose-then-execute framework for generating free, organic traffic for early-stage startups (B2B and B2C). Use this skill whenever a user asks about getting their first users, organic growth, zero-budget or low-budget marketing, lead generation, launching a product, growing an audience, distribution strategy, GEO/AEO (visibility in AI search like ChatGPT and Perplexity), Product Hunt, build-in-public, or how to market without paid ads — even if they don't use the word "traffic". Also trigger when a user describes having built a product but having no users.
-license: Complete terms in LICENSE.txt
+metadata:
+  last_reviewed: "2026-11-18"
+  review_every_days: "90"
 ---
 
 # Startup Free Traffic Framework
@@ -25,7 +27,7 @@ Building an MVP is easier than ever; acquiring users is the hard part. The commo
 
 **Exception — direct tactical questions.** If the user asks a specific tactical question ("how do I get cited by ChatGPT?", "write me a Product Hunt launch plan"), answer it directly; weave in only the 1-2 diagnostic questions that would actually change the answer. Full diagnosis is for open-ended situations ("I have no users, what do I do?").
 
-Otherwise, never recommend channels before understanding the situation. Ask the user (conversationally, not as an interrogation — skip anything already clear from context):
+Otherwise, never recommend channels before understanding the situation. Skip every question the profile or the conversation already answers. Ask the rest conversationally: at most 3 questions per message, stage and audience first. If the user does not answer a question, state the assumption you make instead and continue.
 
 1. **Stage**: Pre-launch, just launched (MVP), or post-launch with some users?
 2. **Audience**: B2B or B2C? Who exactly is the ideal customer, and where do they already spend time online?
@@ -68,4 +70,5 @@ Typical deliverables to offer: a 30-day traction plan, a content calendar with a
 2. **Tailor B2B vs. B2C** — the playbooks mark which methods fit which audience.
 3. **Emphasize measurement**: traffic is useless without tracking. Push for conversion metrics (signups, demos, activation), not vanity metrics (impressions, likes). A useful diagnostic: "If this channel stopped tomorrow, would demand continue?" — that distinguishes building pull from renting attention.
 4. **Prioritize the email list**: most free traffic methods should funnel users toward an owned audience rather than immediate purchase.
-5. **Set honest expectations**: content/SEO/GEO channels take months to compound; launches produce spikes measured in days. Say so explicitly so the user doesn't quit a working channel too early.
+5. **Date volatile facts.** Platform rules, algorithms, Product Hunt mechanics and AI-search behaviour change often. The reference files describe them as of this skill's `last_reviewed` date. If you can browse, check any rule the plan depends on. If you cannot, say the advice may be out of date.
+6. **Set honest expectations**: content/SEO/GEO channels take months to compound; launches produce spikes measured in days. Say so explicitly so the user doesn't quit a working channel too early.

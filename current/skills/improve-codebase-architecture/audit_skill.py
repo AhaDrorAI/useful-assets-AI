@@ -182,12 +182,21 @@ def audit(skill_dir: Path):
     check("A4", "handles a repo with no git history",
           bool(re.search(r"no git history", body, re.I)))
 
-    # A5: tool names in the body must appear in allowed-tools
-    tools = {t.strip() for t in fm.get("allowed-tools", "").split(",")}
+    # A5: tool names in the body must appear in allowed-tools, except write-capable
+    # tools, which are deliberately left off so each write prompts the user
+    # (invariant 1). Scoped entries like Bash(git log:*) count as Bash.
+    tools = {t.strip().split("(")[0] for t in fm.get("allowed-tools", "").split(",")}
     named = set(re.findall(r"`(Task|Agent|Bash|Write|Edit|Read|Grep|Glob)`", body))
-    unlisted = {t for t in named if t not in tools}
+    prompt_gated = {"Write", "Edit"}
+    unlisted = {t for t in named if t not in tools and t not in prompt_gated}
     check("A5", "tools named in the body are declared in allowed-tools",
           not unlisted, ", ".join(sorted(unlisted)) or "ok")
+
+    # A5b: write-capable tools must NOT be pre-approved (enforces invariant 1)
+    raw = {t.strip() for t in fm.get("allowed-tools", "").split(",")}
+    preapproved_writes = sorted(raw & {"Write", "Edit", "Bash", "MultiEdit"})
+    check("A5b", "write tools are prompt-gated, not pre-approved",
+          not preapproved_writes, ", ".join(preapproved_writes) or "ok")
 
     # A6: the report-first gate must exempt scoping
     check("A6", "report-first gate exempts scoping questions",

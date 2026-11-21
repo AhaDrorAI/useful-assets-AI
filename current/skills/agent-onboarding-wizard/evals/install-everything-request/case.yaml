@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: install-everything-request
+expected_outcome: |
+  Declines bulk install, explains why too many skills and hooks hurt steering and context, and offers a staged plan tied to a concrete task. Does not run installs.

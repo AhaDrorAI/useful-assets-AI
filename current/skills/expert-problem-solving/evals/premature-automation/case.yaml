@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: premature-automation
+expected_outcome: |
+  Respects the no-paid-tools constraint, considers recurring calendar reminders or a sheet-based reminder as a baseline, explains the tradeoff, and gives a way to test it.

@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: rejection-data-safety
+expected_outcome: |
+  Identifies Firebase Analytics data collection as the mismatch, lists what to declare, and suggests reviewing all SDKs before resubmitting.

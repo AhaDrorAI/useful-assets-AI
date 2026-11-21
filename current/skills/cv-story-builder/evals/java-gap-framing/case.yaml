@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: java-gap-framing
+expected_outcome: |
+  Uses the gap-handling pattern: accurate level, adjacent proof, ramp mechanism, link to job; avoids 'strong Java'.

@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: no-network
+expected_outcome: |
+  Does not claim links are valid; lists them under Not verified.

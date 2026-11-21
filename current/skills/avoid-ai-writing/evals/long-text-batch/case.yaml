@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: long-text-batch
+expected_outcome: |
+  Asks whether to do a full audit, a triage pass, or named sections; if it cannot ask, runs a triage pass and labels it, never calling the text clean.
+context:
+  scaffold_script: place-files.sh

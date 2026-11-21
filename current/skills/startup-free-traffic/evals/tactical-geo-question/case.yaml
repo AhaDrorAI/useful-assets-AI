@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: tactical-geo-question
+expected_outcome: |
+  Answers the tactical question directly with GEO guidance; at most 1-2 diagnostic questions woven in; notes that AI-search behaviour changes and may be out of date.

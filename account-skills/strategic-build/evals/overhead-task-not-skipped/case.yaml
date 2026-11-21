@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: overhead-task-not-skipped
+expected_outcome: |
+  Explains LNO is about effort level, not deletion: do the overhead task quickly and good-enough, since something depends on it.

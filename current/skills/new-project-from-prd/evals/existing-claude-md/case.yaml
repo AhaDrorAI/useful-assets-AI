@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: existing-claude-md
+expected_outcome: |
+  Does not overwrite CLAUDE.md; writes CLAUDE.proposed.md and tells the user to diff and merge.
+context:
+  scaffold_script: place-files.sh

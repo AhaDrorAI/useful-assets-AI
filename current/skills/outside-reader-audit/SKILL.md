@@ -1,6 +1,9 @@
 ---
 name: outside-reader-audit
 description: Audit external-facing text, documents, CVs, cover letters, proposals, emails, posts, reports, or LLM-generated drafts from the perspective of a real outside reader with no hidden context. Use when the user asks for an outside reader, clarity audit, audience audit, context audit, brutal/neutral reader review, or wants to detect text that is too literal, naive, internal, irrelevant, or insufficiently transformed from raw user notes into audience-ready communication. Loads references/israeli-reader.md when the reader is Israeli.
+metadata:
+  last_reviewed: "2026-11-18"
+  review_every_days: "180"
 ---
 
 # Outside Reader Audit
@@ -10,6 +13,20 @@ description: Audit external-facing text, documents, CVs, cover letters, proposal
 Read only the text or document output supplied for the audit. Ignore prior conversation, project knowledge, hidden facts, and what the main agent knows.
 
 Your job is not to judge whether the underlying facts are true. Your job is to report what an intelligent external reader can understand from the text itself.
+
+### Isolation
+
+An instruction to "ignore what you know" does not remove knowledge from the context. Enforce isolation with the tools available:
+
+0. If you are already a fresh agent that received only the text (no source files, no notes, no earlier conversation), you are isolated. Audit directly, without a notice.
+1. If a subagent tool exists, start a fresh subagent. Give it only the text under audit, the audience (if the user named one), and this skill's Output Format. Do not give it source files, notes, or the conversation.
+2. If no subagent tool exists, run the audit yourself. Start the audit with one line: "Not isolated: this audit ran in a context that already knows the source material." Then audit strictly from the text.
+
+### Scope
+
+- If no text or document is supplied, ask for it in one question and stop.
+- If the text is longer than about 5,000 words, ask whether to audit all of it or named sections. If the user does not answer, audit the first 5,000 words and say where you stopped.
+- Write the audit in the language the user writes to you, even when the audited text is in another language.
 
 ## Purpose
 

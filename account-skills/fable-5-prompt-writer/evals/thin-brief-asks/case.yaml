@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: thin-brief-asks
+expected_outcome: |
+  Brief is too thin (deliverable, purpose, done condition missing): asks at most 3 questions in one message with candidate answers; does not output a prompt yet.

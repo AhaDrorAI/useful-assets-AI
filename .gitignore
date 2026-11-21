@@ -24,3 +24,10 @@ desktop.ini
 node_modules/
 .venv/
 __pycache__/
+
+# vector-private-memory: personal memory files stay local. Only the skill and
+# manifest are public. CI fails if any of these is ever tracked.
+vector-private-memory/USER.md
+vector-private-memory/MEMORY.md
+vector-private-memory/BRAIN.md
+vector-private-memory/memory/

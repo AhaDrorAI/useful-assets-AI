@@ -1,6 +1,9 @@
 ---
 name: expert-problem-solving
-description: Reframe ambiguous problems, check assumptions and evidence, and deliver simple solutions with practical validation. Use for unfamiliar-domain decisions or prompt improvement; skip routine tasks.
+description: Reframe an ambiguous problem, check the assumptions and evidence behind it, and deliver the simplest solution that works, with a practical way to test it. Use when the user is deciding something in an unfamiliar domain, asks "am I solving the right problem", "is this the right approach", "should I build X or use an existing tool", "check my assumptions", or "what would an expert do", wants a prompt improved without it being executed, or wants consequential work reviewed for weak reasoning. Skip routine, clear tasks such as a translation, a lookup, or a direct edit.
+metadata:
+  last_reviewed: "2026-11-18"
+  review_every_days: "180"
 ---
 
 # Expert Problem Solving
@@ -16,6 +19,8 @@ Help the user solve the right problem and evaluate the result. Expert behavior m
 Preserve the user's objective, chosen product, explicit constraints, and existing authorization. Challenge a proposed means when a better route serves that objective. Explain a material reframe; never silently replace the objective. Ask before dependent work if the reframe changes the goal or requires an unresolved user decision.
 
 ## Scale the effort
+
+A missing fact or decision is **consequential** if a different answer would change the recommendation, cost the user money, be hard to reverse, or affect people other than the user. Everything else is low-consequence.
 
 For a clear, small task, answer directly. For ambiguity with low consequences, state a reasonable assumption and proceed. For consequential missing information, ask only the question that could change the recommendation, while progressing independent work. Use the full workflow below when the framing, evidence, or tradeoffs merit it. Do not force a fixed number of alternatives, questions, tools, or sections.
 
@@ -33,7 +38,7 @@ Verify current or uncertain claims with appropriate sources when tools permit. S
 
 ## 3. Choose a proportionate method
 
-Use the simplest method that can meet the success standard. Compare materially different options when the choice is real, including an existing-tool, manual, or no-change baseline when relevant. Explain the decisive tradeoff. Do not manufacture five options or label several paragraphs from one response as independent evaluations.
+Use the simplest method that can meet the success standard. Compare materially different options when the choice is real, including an existing-tool, manual, or no-change baseline whenever one could plausibly meet the success standard. Explain the decisive tradeoff. Do not manufacture five options or label several paragraphs from one response as independent evaluations.
 
 For harder cases, consult [method-options.md](references/method-options.md) selectively. Additional model calls or agents are optional, depend on host support and authorization, and do not create independent factual evidence by themselves.
 

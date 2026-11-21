@@ -1,0 +1,23 @@
+{
+  "skill_name": "blender-mcp-master",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Create a low-poly island scene with palm trees, blue ocean water, and a sunset HDRI. Render it from a slightly elevated camera angle.",
+      "expected_output": "A rendered image showing a stylized island scene with correct material setup, HDRI environment, and properly framed camera shot.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "I have a default Blender scene. Replace the cube with a glass wine goblet shape using basic primitives and boolean operations. Make it look like actual glass with proper refraction. Render a product shot with studio lighting.",
+      "expected_output": "A glass-material goblet rendered with studio lighting, visible refraction, caustics enabled, and clean composition.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Create an animated solar system with the sun at the center (glowing emission), Earth with a blue/green texture, and the moon orbiting Earth. Set up Cycles and render a single frame showing all three bodies.",
+      "expected_output": "A scene with emission sun, textured Earth, and positioned moon. Proper scale relationships and a rendered frame.",
+      "files": []
+    }
+  ]
+}

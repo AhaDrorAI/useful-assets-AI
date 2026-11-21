@@ -18,14 +18,20 @@ CI fails the build if a tracked file matches `.gitignore`.
 | `guides/` | Human-readable guides. Invisible to the plugin loader. |
 | `start-here/` | Course sequence. |
 | `docs/` | Maintainer notes. |
+| `account-skills/` | Skills uploaded to the maintainer's Claude account, kept here for history, review dates and tests. Not part of the plugin. |
+| `vector-operating-system/`, `vector-private-memory/` | Personal plugins, kept as sibling folders. Not in `marketplace.json`. Memory files of `vector-private-memory` are gitignored. |
 
 `current/skills/<name>/` paths stay put so published GitHub links keep resolving.
 
 A second plugin is a sibling of `current/`, then a new entry in `marketplace.json`. Do not put it inside `current/`.
 
+## Skill review
+
+`docs/skill-review.md` is the writing standard, the test-case layout, and the drift review. `docs/skill-audit-log.md` records each review. Every skill carries `metadata.last_reviewed`; the packager warns when one is overdue.
+
 ## Packaged skill files
 
-`scripts/package_skills.py` builds one zip per skill into `dist/`. GitHub Actions runs that on every push and attaches the zips to a GitHub Release when you push a version tag:
+`scripts/package_skills.py` lints every skill root and builds one zip per skill into `dist/`. Test cases (`evals/`) and `.skill` files never go into a zip. GitHub Actions runs that on every push and attaches the zips to a GitHub Release when you push a version tag:
 
 ```bash
 git tag v1.2.0

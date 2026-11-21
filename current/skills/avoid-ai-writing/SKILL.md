@@ -1,15 +1,17 @@
 ---
 name: avoid-ai-writing
 description: Audit and rewrite content to remove AI writing patterns ("AI-isms"). Use this skill when asked to "remove AI-isms," "clean up AI writing," "edit writing for AI patterns," "audit writing for AI tells," or "make this sound less like AI." Also triggers on "audit your text," which targets the assistant's own most recent draft rather than user-supplied text. Supports a detection-only mode that flags patterns without rewriting, and a quick mode that returns the clean text with no commentary. Works on Hebrew text as well; loads references/hebrew.md for Hebrew-specific patterns.
-version: 3.8.0
+version: 3.8.1
 license: MIT
 compatibility: Any AI coding assistant that supports the agentskills.io SKILL.md format (Claude Code, Codex CLI, Grok Build, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required.
 metadata:
   author: Conor Bronsdon
   fork_maintainer: Dror Moshe Aharoni
-  fork_changes: "3.8.0 adds analogy and metaphor control in references/metaphor.md (banned setups, exhausted image families, the metaphor-verb list, a length-based frequency budget and a five-point permission test), generalises the single 'it is not X, it is Y' bullet into a full Reframes section covering the soft variants, the pivot-word watchlist, reframe headings and the rhetorical-question form, adds a rule-priority ladder for when two rules disagree, adds a quick output mode and own-draft targeting, wires forbidden-patterns.md into the audit path instead of only the generation path, and adds fake-depth participles, meta commentary, engagement bait and a digits rule. Added rules for overgeneralized 'Most people...' openers, adverb crutches, fake profundity, and the 'after careful consideration' / 'here's the thing' stalls. 3.5.0 adds the post-em-dash tells (paired fragments, two-image contrasts, self-applause tags, X-of-Y analogies, hedged numeric ranges), a generation-time prevention section built on ASD-STE100 and Zinsser's fourth principle, and guidance on keeping a project-local forbidden-patterns file. 3.7.0 splits the file: the vocabulary tiers, the long-tail pattern catalogue, the STE grammar rules, the generation-time controls and the context profiles moved into references/ and load on demand, leaving the highest-signal checks inline. No rule was changed or dropped. 3.6.0 absorbs the transferable grammar rules from Simplified Technical English (nominalisations, actorless passive, tense bloat, empty-subject openers, noun stacks), adds 22 controlled-language substitutions across Tiers 1 and 2, and states explicitly which STE rules to reject because they flatten voice."
+  fork_changes: "3.8.1 (2026-11-18) fixes terminology: one name per pass (fast pass = the inline checks; triage pass = P0+P1 only; quick = an output mode), adds a length rule for long texts, and adds review metadata. 3.8.0 adds analogy and metaphor control in references/metaphor.md (banned setups, exhausted image families, the metaphor-verb list, a length-based frequency budget and a five-point permission test), generalises the single 'it is not X, it is Y' bullet into a full Reframes section covering the soft variants, the pivot-word watchlist, reframe headings and the rhetorical-question form, adds a rule-priority ladder for when two rules disagree, adds a quick output mode and own-draft targeting, wires forbidden-patterns.md into the audit path instead of only the generation path, and adds fake-depth participles, meta commentary, engagement bait and a digits rule. Added rules for overgeneralized 'Most people...' openers, adverb crutches, fake profundity, and the 'after careful consideration' / 'here's the thing' stalls. 3.5.0 adds the post-em-dash tells (paired fragments, two-image contrasts, self-applause tags, X-of-Y analogies, hedged numeric ranges), a generation-time prevention section built on ASD-STE100 and Zinsser's fourth principle, and guidance on keeping a project-local forbidden-patterns file. 3.7.0 splits the file: the vocabulary tiers, the long-tail pattern catalogue, the STE grammar rules, the generation-time controls and the context profiles moved into references/ and load on demand, leaving the highest-signal checks inline. No rule was changed or dropped. 3.6.0 absorbs the transferable grammar rules from Simplified Technical English (nominalisations, actorless passive, tense bloat, empty-subject openers, noun stacks), adds 22 controlled-language substitutions across Tiers 1 and 2, and states explicitly which STE rules to reject because they flatten voice."
   additional_sources: "Post-em-dash pattern list and the Simplified Technical English rules adapted from Ruben Hassid's nine tells and his /ste skill (ste.rubenhassid.ai). ASD-STE100 is an ASD specification; the rules here are paraphrased from public secondary sources and are not a compliance claim."
   tags: writing editing voice quality
+  last_reviewed: "2026-11-18"
+  review_every_days: "180"
   agentskills_spec: "1.0"
   openclaw:
     emoji: "✍️"
@@ -40,7 +42,7 @@ This skill operates in one of three modes:
 - The writer wants to see what's flagged and decide what to fix themselves
 - The flagged patterns might be intentional (AI patterns aren't always bad — they can be effective in small doses)
 - You're auditing text you don't want altered (published content, someone else's writing, reference material)
-- You want a quick scan without waiting for a full rewrite
+- You want a triage pass (see Severity tiers) without waiting for a full rewrite
 
 Trigger detect mode when the user says "detect," "flag only," "audit only," "just flag," "scan," "what AI patterns are in this," or similar.
 
@@ -71,6 +73,7 @@ Default target is the text the user supplied. Two other cases:
 
 - **"Audit your text" / "humanise your last answer"** — the target is your own most recent draft in this conversation. Audit it as if someone else wrote it. Your own output is the most likely place for these patterns, not the least.
 - **No text present** — ask which text, in one short question, then stop. Do not audit the conversation itself as a substitute.
+- **Long text** — if the text is longer than 3,000 words, ask whether the user wants a full audit, a triage pass, or named sections. If you cannot ask (for example, in a batch job), run a triage pass and say so at the top.
 
 ## Rule priority
 
@@ -101,14 +104,12 @@ were not written for produces a clean bill of health that means nothing.
 
 ---
 
----
-
 ## How to run an audit
 
 The checks in this file are the fast pass: the highest-signal tells, the ones the
 "tells move" section says the signal has moved to. They need no extra reads.
 
-**For anything beyond a quick scan, load the reference files below.** They hold the full
+**For anything beyond a triage pass, load the reference files below.** They hold the full
 rule set. Auditing a text against the fast pass alone and reporting it clean is a false
 pass, and a false pass is worse than no audit.
 
@@ -229,7 +230,7 @@ If the text has 5+ flagged vocabulary hits across multiple categories, 3+ distin
 
 ## Severity tiers
 
-Not all AI-isms are equal. When doing a quick pass or triaging a large document, prioritize by tier:
+Not all AI-isms are equal. A **triage pass** runs only the P0 and P1 checks. Use it when the user asks for a quick scan, or when a long text (below) gets triage instead of a full audit. Prioritize by tier:
 
 ### P0: credibility killers (fix immediately)
 - Cutoff disclaimers ("As of my last update")
@@ -270,17 +271,13 @@ Not all AI-isms are equal. When doing a quick pass or triaging a large document,
 - Meta commentary ("In this section", "This article will cover")
 - Spelled-out numbers where digits read faster
 
-Use P0+P1 for quick passes. Full audit covers all three tiers.
-
----
+A triage pass covers P0+P1. A full audit covers all three tiers. A triage pass never reports a text "clean"; it reports "no P0/P1 issues found".
 
 ---
 
 ## Self-reference escape hatch
 
 When writing *about* AI writing patterns (blog posts, tutorials, skill documentation like this file), quoted examples are exempt from flagging. Text inside quotation marks, code blocks, or explicitly marked as illustrative ("for example, AI might write...") should not be rewritten. Only flag patterns that appear in the author's own prose, not in cited examples of bad writing.
-
----
 
 ---
 

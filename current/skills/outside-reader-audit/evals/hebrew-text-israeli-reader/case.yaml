@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: hebrew-text-israeli-reader
+expected_outcome: |
+  Loads the Israeli reader model, flags marketing register as a negative trust signal for an Israeli reader, and writes the audit in Hebrew.

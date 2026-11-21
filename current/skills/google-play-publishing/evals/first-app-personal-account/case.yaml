@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: first-app-personal-account
+expected_outcome: |
+  Identifies stage, states the 12-tester / 14-day closed test requirement, gives a checklist for listing, Data Safety and testing.
